@@ -35,10 +35,15 @@
 # print(a)
 
 
-a=[1,2,3,4,5,5,6,5]
-a.remove(5)   #실행시켜 볼 경우 맨 앞의 5만 없애는것을 확인 할 수 있음 따라서 모든 값을 지우기위해선
-print(a)      #컴프리헨션을 사용하는것이 빠르다
-print('')
-RemoveSet={3,5}
-result = [i for i in a if i not  in RemoveSet]
-print(result)
+# a=[1,2,3,4,5,5,6,5]
+# a.remove(5)   #실행시켜 볼 경우 맨 앞의 5만 없애는것을 확인 할 수 있음 따라서 모든 값을 지우기위해선
+# print(a)      #컴프리헨션을 사용하는것이 빠르다
+# print('')
+# RemoveSet={3,5}
+# result = [i for i in a if i not  in RemoveSet]
+# print(result)
+
+
+
+
+############ 비교연산자 ############
