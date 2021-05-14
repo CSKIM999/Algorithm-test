@@ -66,6 +66,18 @@
 
 # print(count)
 
+########### 시간 속 3 ###########
+
+# n = int(input())
+# count=0
+# for i in range(n+1):
+#     for j in range(60):
+#         for k in range(60):
+#             if '3' in (str(i)+str(j)+str(k)):
+#             # if 3 in (str(i)+str(j)+str(k)):  <<= str 값 안에 3 이 있는가를 비교해야하므로 3또한 str로 바꿔야함
+#                 count+=1
+
+# print(count)
 ########### 상하좌우 ###########
 
 # moves = input().split()
@@ -94,24 +106,12 @@
 
 
 
-########### 시간 속 3 ###########
-
-# n = int(input())
-# count=0
-# for i in range(n+1):
-#     for j in range(60):
-#         for k in range(60):
-#             if '3' in (str(i)+str(j)+str(k)):
-#             # if 3 in (str(i)+str(j)+str(k)):  <<= str 값 안에 3 이 있는가를 비교해야하므로 3또한 str로 바꿔야함
-#                 count+=1
-
-# print(count)
 
 
 ########### 체스판 나이트의 움직임 ###########
-
-
 # print('나이트의 위치를 입력해주세요 : ',end='')
+
+
 # data = input()
 # values = ('a','b','c','d','e','f','g','h')
 # if (int(data[1])<1 or int(data[1])>8) or (data[0].lower() not in values):
