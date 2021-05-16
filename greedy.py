@@ -132,44 +132,46 @@
 
 ########### 게임 시뮬레이션 ###########
 # 북 서 남 동 순서 0 1 2 3
-i=0
+# i=0
 
-dx= [-1,0,1,0]
-dy= [0,-1,0,1]
-x,y = 1,1
-hist = []
-location = (x,y)
-hist.append(location)
-map_data = [(1,1,1,1),(1,0,0,1),(1,1,0,1),(1,1,1,1)]
-turn_count = 0
-def turn():
-    global i
-    i+=1
-    if i == 4:
-        i=0
+# dx= [-1,0,1,0]
+# dy= [0,-1,0,1]
+# x,y = 1,1
+# hist = []
+# location = (x,y)
+# hist.append(location)
+# map_data = [(1,1,1,1),(1,0,0,1),(1,1,0,1),(1,1,1,1)]
+# turn_count = 0
+# def turn():
+#     global i
+#     i+=1
+#     if i == 4:
+#         i=0
 
-while True:
-    turn()
-    nx = x+dx[i]
-    ny = y+dy[i]
-    if map_data[nx][ny] ==1 or (nx,ny) in hist:
-        turn_count+=1
-        pass
-    elif map_data[nx][ny] ==0 and (nx,ny) not in hist:
-        x,y = nx,ny
-        location = (x,y)
-        hist.append(location)
-        print('move! {}'.format(location))
-        turn_count = 0
-    if turn_count == 4:
-        if map_data[x-dx[i]][y-dy[i]] == 1:
-            break
-        x,y = x-dx[i],y-dy[i]
-        location = (x-dx[i],y-dy[i])
-        turn_count =0
+# while True:
+#     turn()
+#     nx = x+dx[i]
+#     ny = y+dy[i]
+#     if map_data[nx][ny] ==1 or (nx,ny) in hist:
+#         turn_count+=1
+#         pass
+#     elif map_data[nx][ny] ==0 and (nx,ny) not in hist:
+#         x,y = nx,ny
+#         location = (x,y)
+#         hist.append(location)
+#         print('move! {}'.format(location))
+#         turn_count = 0
+#     if turn_count == 4:
+#         if map_data[x-dx[i]][y-dy[i]] == 1:
+#             break
+#         x,y = x-dx[i],y-dy[i]
+#         location = (x-dx[i],y-dy[i])
+#         turn_count =0
 
 
-print(len(hist))
+# print(len(hist))
 
+
+######################d  ######################
 
 
