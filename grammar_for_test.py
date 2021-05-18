@@ -140,27 +140,28 @@ from functools import partial
 # bfs(graph,1,visited)
 
 
-n,m = 3,5
-
-graph = [
-    [1,0,1,1,1],
-    [1,0,1,0,1],
-    [1,1,1,0,1]
-]
-x,y=0,0
-
-dx = [-1,1,0,0]
-dy = [0,0,-1,1]
-
-def bfs(x,y):
     start =[x,y]
-    queue =deque([start])
-    while queue:
-        for i in range(4):
-            nx = x + dx[i]
-            ny = y + dy[i]
-            if nx<=-1 or nx>=n or ny<=-1 or ny>=m:
-                return False
-            if graph[nx][ny] !=0:
+# n,m = 3,5
+
+# graph = [
+#     [1,0,1,1,1],
+#     [1,0,1,0,1],
+#     [1,1,1,0,1]
+# ]
+# x,y=0,0
+
+# dx = [-1,1,0,0]
+# dy = [0,0,-1,1]
+
+# def bfs(x,y):
+#     start =[x,y]
+#     queue =deque([start])
+#     while queue:
+#         for i in range(4):
+#             nx = x + dx[i]
+#             ny = y + dy[i]
+#             if nx<=-1 or nx>=n or ny<=-1 or ny>=m:
+#                 return False
+#             if graph[nx][ny] !=0:
                 
 
