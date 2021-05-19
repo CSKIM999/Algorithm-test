@@ -140,61 +140,16 @@ from functools import partial
 # bfs(graph,1,visited)
 
 
+###################### 선택정렬 연습 ######################
 
 
+array = [7,5,9,0,3,1,6,2,4,8]
+
+for i in range(len(array)):
+    min_index = i
+    for j in range(i+1 , len(array)):
+        if array[min_index]>array[j]:
+            array[min_index], array[j] = array[j],array[min_index]
 
 
-###################### BFS 예제 ######################
-n,m = 4,7
-
-graph = [
-    [1,0,1,1,1,1,1],
-    [1,0,1,0,1,0,1],
-    [1,0,1,0,1,0,1],
-    [1,1,1,0,1,0,1]
-]
-x,y=0,0
-
-dx = [-1,1,0,0]
-dy = [0,0,-1,1]
-count = 0
-def bfs(x,y):
-    global count
-
-    start =[x,y]
-    queue =deque([start])
-    while queue:
-        for i in range(4):
-            nx = x + dx[i]
-            ny = y + dy[i]
-            new = [nx,ny]
-            if nx<=-1 or nx>=n or ny<=-1 or ny>=m:
-                count +=1
-                print('#1')
-            elif (graph[nx][ny] ==1) and (new not in queue):
-                queue.append(new)
-                x=nx
-                y=ny
-                count = 0
-                print('#2')
-
-            elif (graph[nx][ny] ==0) or (new in queue):
-                count +=1
-                print('#3')
-
-            
-            if count == 4:
-                count = 0
-                graph[x][y] == 0
-                v = queue.pop()
-                x= v[0]
-                y= v[1]
-                print('pop')
-                
-
-        if x == n-1 and y == m - 1:
-            print(len(queue))
-            break
-
-bfs(0,0)
-
+print(array)
