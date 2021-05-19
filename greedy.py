@@ -172,3 +172,45 @@
 # print(len(hist))
 
 
+
+###################### 아이스크림 덩어리세기 ######################
+
+# n,m = 3,3
+# graph = [
+#     [0,0,1],
+#     [0,1,0],
+#     [1,0,1]
+# ]
+
+# def dfs(x,y):
+#     # 범위를 벗어날 경우 즉시종료
+#     if x<=-1 or x>=n or y<=-1 or y>=m:
+#         return False
+#     # 현재 노드를 만약 방문하지 않았다면
+#     if graph[x][y] ==0:
+#         # 해당 노드 방문처리
+#         graph[x][y] =1
+#         # 현재 위치에서 상, 하, 좌, 우 모두 재귀적 호출
+#         dfs(x-1,y)
+#         dfs(x,y-1)
+#         dfs(x+1,y)
+#         dfs(x,y+1)
+#         return True
+#     return False
+
+# result = 0
+# for i in range(n):
+#     for j in range(m):
+#         # 현재 위치에서 DFS 수행
+#         if dfs(i,j) ==True:
+#             result +=1
+# """
+# 한번의 메서드 dfs 에서 True 가 몇번 return 되는지는 중요하지 않았다
+# line 173 에서의 조건문은 메인 메서드 dfs 값이 True 인지 아닌지만 확인된다면
+# result 값을 1 더하는 것일 뿐, 메인 메서드에서 재귀로 인한 메서드가 호출되고 
+# 그 호출 메서드의 return True 값은 result 에 영향을 주지 않음
+# 물론 당연히도 호출 메서드가 True 를 return 한다면 메인 메서드 또한 True를 return할 것이기 때문에
+# 호출 메서드의 True return 이 의미가 없는것은 아닐 듯 함
+# """
+
+# print(result)
