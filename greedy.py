@@ -300,15 +300,25 @@ from functools import partial
 
 ###################### 성적순 정렬 ######################
 
-Input = list(input().split())
-print(type(Input[1]))
+
+# print('학생 수를 입력해주세요 : ',end='')
+# Input =[]
+# n = int(input())
+# for i in range(n):
+#     Input.append(input().split())
+#     map(int,Input[i][1])
+
 # Input =[
-#     '홍길동 95',
-#     '이순신 77'
+#     ['이순신',95],
+#     ['홍길동',85],
+#     ['김찬섭',88]
 # ]
 
-for i in range(len(Input)):
-    for j in range(2):
-        Input.append(Input[i][j].split())
+# Input.sort(key=lambda Input : Input[1])
+# # Input = sorted(Input, key=lambda Input : Input[1])
 
-print(Input)
+'''
+sort 와 sorted 의 사용법을 구분하자
+'''
+
+
