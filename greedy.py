@@ -322,3 +322,57 @@ sort 와 sorted 의 사용법을 구분하자
 '''
 
 
+###################### 두 배열의 원소 교체 ######################
+
+# n,k = 5,3
+
+# A = [1,2,5,4,3]
+# B = [5,5,6,6,5]
+
+# A.sort()
+# B.sort(reverse=True)
+
+# print(A,B)
+
+# for i in range(k):
+#     A[i],B[i] = B[i],A[i]
+
+# print(A,B)
+
+# print('답은 :' + str(sum(A)))
+
+###################### 부품 찾기 ######################
+'''
+이 문제를 이진탐색으로도, 집합자료형으로도 풀어보고자 한다
+'''
+
+n = 5 #내가 가지고있는 부품의 종류
+n_list = [8,3,7,9,2]
+
+m = 3 #원하는 부품의 종류 수
+m_list = [5,7,9]
+
+# return 은 가지고있는지 없는지 여부를 'yes' or 'no' 로 입력
+n_list.sort()
+m_list.sort()
+
+def binary_search(array,target,start,end):
+    mid = (start+end) // 2
+    if len(array[start:end+1]) ==2 and target !=array[start] and target !=array[end]:
+        print('No')
+        return False
+    
+    if target == array[mid]:
+        print('Yes')
+        return True
+    elif target > array[mid]:
+        binary_search(array,target,mid+1,end)
+    elif target<array[mid]:
+        binary_search(array, target,start,mid-1)
+
+for i in m_list:
+    result = binary_search(n_list,i,0,len(n_list)-1)
+    if result == True:
+        print('{} 번 부품은 보유중입니다.'.format(i))
+    else:
+        print('{} 번 부품은 보유중이지 않습니다.'.format(i))

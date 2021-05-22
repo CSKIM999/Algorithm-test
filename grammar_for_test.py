@@ -144,7 +144,7 @@ Breadth First Search [[ 너비 우선 탐색 ]]
 
 
 ###################### 정렬 연습 ######################
-array = [5,7,9,0,3,1,6,2,4,8]
+# array = [5,7,9,0,3,1,6,2,4,8]
 
 ###################### 선택 정렬 ######################
 
@@ -158,6 +158,7 @@ array = [5,7,9,0,3,1,6,2,4,8]
 # print(array)
 
 '''
+** 선택정렬 **
 각 정렬마다 최솟값을 찾기위해 탐색하고, 정렬 후 다시 탐색하므로 가장 원시적이고 느린 방법
 '''
 
@@ -171,6 +172,7 @@ array = [5,7,9,0,3,1,6,2,4,8]
 # print(array)
 
 '''
+** 삽입정렬 **
 만약 거의 정렬되지 않은 상태의 array 라면 선택정렬과 비슷한 시간을 소요하지만, 거의 정렬돼있는 경우
 삽입정렬의 효율은 훨씬 더 올라간다.
 '''
@@ -178,6 +180,7 @@ array = [5,7,9,0,3,1,6,2,4,8]
 ###################### 퀵 정렬 ######################
 
 '''
+** 퀵정렬 **
 정렬 방법을 쓰기에 앞서서 퀵 정렬에 대한 설명을 먼저 짚고 넘어가자
 퀵정렬은 기준을 정하고, 그보다 큰 수와 작은 수를 교환한 후 리스트를 반으로 나누는 방식으로 동작한다.
 여기서 그 기준을 피벗이라 함.
@@ -218,19 +221,19 @@ array = [5,7,9,0,3,1,6,2,4,8]
 
 ###################### Python_Ver 퀵 정렬 ######################
 
-def quick_sort(array):
-    if len(array) <= 1:
-        return array
+# def quick_sort(array):
+#     if len(array) <= 1:
+#         return array
 
-    pivot = array[0]
-    lst = array[1:]
+#     pivot = array[0]
+#     lst = array[1:]
 
-    left = [x for x in lst if x <=pivot]
-    right = [x for x in lst if x >pivot]
+#     left = [x for x in lst if x <=pivot]
+#     right = [x for x in lst if x >pivot]
 
-    return quick_sort(left) + [pivot] + quick_sort(right)
+#     return quick_sort(left) + [pivot] + quick_sort(right)
 
-print(quick_sort(array))
+# print(quick_sort(array))
 
 '''
 파이썬의 특성을 살린 퀵정렬 방식으로, 앞서 풀어낸 방식에 비해 아주 간결하다
@@ -241,5 +244,46 @@ print(quick_sort(array))
 위의 방법과 같이 맨 앞의 데이터를 피벗으로 삼을때, 만약 이미 대다수가 정렬되어있는 데이터라면
 퀵정렬은 매우 느리게 작동한다. 앞서 공부했던 삽입정렬과는 반대되는 셈
 '''
+
+
+###################### 순차 탐색 ######################
+'''
+순차탐색은 지금까지 해왔던 리스트의 앞부분부터 원하는 검색값을 하나씩 차례대로 비교하는 방법이다.
+이는 복잡한 알고리즘을 필요로하지 않으므로 구현또한 매우 간단하다.
+기본 메서드에서 count() 메서드 또한 이 순차탐색을 이용한다.
+이 파일에선 굳이 알고리즘을 작성하지 않겠다 앞서 말한대로 count() 메서드가 그 순차탐색을 사용하기 때문
+'''
+
+
+###################### 이진 탐색 ######################
+'''
+*** 이진탐색은 배열 내부의 데이터가 이미 정렬되어있어야만 사용할 수 있는 탐색방법이다.
+이진탐색은 배열이 정렬되어있지 않다면 사용할 수 없지만, 만약 정렬되어있다면 순차탐색보다 훨씬 빠르게 값을 찾을 수 있다.
+
+시작점과 끝점의 인덱스를 확인 후 중간점 인덱스의 값 또한 확인한다.
+이미 정렬이 되어있다면 중간점을 기점으로 하여 원하는 탐색값은 중간보다 위에 혹은 중간보다 아래에 있을 것이다.
+여기서 중간점의 인덱스값이 실수라면 소수점 이하의 값은 버린다.
+'''
+
+# array = [0,2,4,6,8,10,12,14,16,18]
+# array.sort()
+
+# n = 4
+
+# def binary_search(array, target, start, end):
+    
+#     if len(array[start:end+1]) == 2 and array[start] != target and array[end] != target:
+#         print('Target 값은 Array 안에 없습니다.')
+#         return
+    
+#     mid = (start + end) // 2  #  "//" 연산자는 나누고 소수점 이하는 버리는 연산자
+#     if target > array[mid]:
+#         binary_search(array,target,mid,end)
+#     elif target < array[mid]:
+#         binary_search(array,target,start,mid)
+#     elif target == array[mid]:
+#         print('Target 의 index_number 는 : ' + str(mid))
+    
+# binary_search(array,n,0,len(array)-1)
 
 
