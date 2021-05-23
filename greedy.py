@@ -345,34 +345,55 @@ sort 와 sorted 의 사용법을 구분하자
 '''
 이 문제를 이진탐색으로도, 집합자료형으로도 풀어보고자 한다
 '''
+# # binary-search
+# n = 5 #내가 가지고있는 부품의 종류
+# n_list = [8,3,7,9,2]
 
-n = 5 #내가 가지고있는 부품의 종류
-n_list = [8,3,7,9,2]
+# m = 3 #원하는 부품의 종류 수
+# m_list = [5,7,9]
 
-m = 3 #원하는 부품의 종류 수
-m_list = [5,7,9]
+# # return 은 가지고있는지 없는지 여부를 'yes' or 'no' 로 입력
+# n_list.sort()
+# m_list.sort()
 
-# return 은 가지고있는지 없는지 여부를 'yes' or 'no' 로 입력
-n_list.sort()
-m_list.sort()
-
-def binary_search(array,target,start,end):
-    mid = (start+end) // 2
-    if len(array[start:end+1]) ==2 and target !=array[start] and target !=array[end]:
-        print('No')
-        return False
+# def binary_search(array,target,start,end):
+#     mid = (start+end) // 2
+#     if len(array[start:end+1]) ==2 and target !=array[start] and target !=array[end]:
+#         print('No')
+#         return False
     
-    if target == array[mid]:
-        print('Yes')
-        return True
-    elif target > array[mid]:
-        binary_search(array,target,mid+1,end)
-    elif target<array[mid]:
-        binary_search(array, target,start,mid-1)
+#     if target == array[mid]:
+#         print('Yes')
+#         return True
+#     elif target > array[mid]:
+#         return binary_search(array,target,mid+1,end)
+#     elif target<array[mid]:
+#         return binary_search(array, target,start,mid-1)
 
-for i in m_list:
-    result = binary_search(n_list,i,0,len(n_list)-1)
-    if result == True:
-        print('{} 번 부품은 보유중입니다.'.format(i))
-    else:
-        print('{} 번 부품은 보유중이지 않습니다.'.format(i))
+# for i in m_list:
+#     result = binary_search(n_list,i,0,len(n_list)-1)
+#     if result == True:
+#         print('{} 번 부품은 보유중입니다.'.format(i))
+#     else:
+#         print('{} 번 부품은 보유중이지 않습니다.'.format(i))
+
+# # 집합자료형
+# n = 5 #내가 가지고있는 부품의 종류
+# n_list = [8,3,7,9,2]
+
+# m = 3 #원하는 부품의 종류 수
+# m_list = [5,7,9]
+
+# n_list,m_list = set(n_list),set(m_list)
+# print(type(n_list))
+# print(n_list)
+# # set 자료형은 알아서 오름차순으로 정렬이 됨.
+
+# for i in m_list:
+#     if i in n_list:
+#         print('yes')
+#     else:
+#         print('no')
+
+
+
