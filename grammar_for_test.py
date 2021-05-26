@@ -356,9 +356,30 @@ n = 6 # number of nodes
 
 #  **** 튜플은 리스트와 달리 한번 넣은 자료의 수정이 까다롭다. (= 연산자로 불가) 그렇기 때문에 반대로 자신의 코드가 잘못 진행되는지도 판단 가능함
 data = [[],[(2,2),(3,5),(4,1)],[(3,3),(4,2)],[(2,3),(6,5)],[(3,3),(5,1)],[(3,1),(6,2)]]
-visited = False * (n+1)
+visited = [False] * (n+1)
 distance = [inf] * (n+1)
-print(data[1][1][1])
-print(data)
-print(distance)
+
+distance[0],visited[0] = 0,True
+# 각 list 의 [0] 값은 비워두었음 매번 인덱스 설정할 때 +1 하기 귀찮으니까
+distance[1] = 0
+
+
+for i in range(1,n+1):
+    for j in range(len(data[i])):
+        node = data[i][j][0]
+        if distance[node] == inf:
+            distance[node] = data[i][j][1]
+        distance[node] = min(distance[node],data[i][j][1])
+
+def travel(node):
+    visited[node] =True
+    for i in range(len(data[node])):
+        destination = data[node][i][0]
+        if distance[destination] == inf:
+            distance[destination] =  data[node][i][1]
+            visited[destination] = True
+        else:
+            distance[destination] = min((distance[node]+data[node][i][1]),distance[destination])
+
+
 
