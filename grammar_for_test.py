@@ -353,9 +353,8 @@ Breadth First Search [[ 너비 우선 탐색 ]]
 
 n = 6 # number of nodes
 
-
 #  **** 튜플은 리스트와 달리 한번 넣은 자료의 수정이 까다롭다. (= 연산자로 불가) 그렇기 때문에 반대로 자신의 코드가 잘못 진행되는지도 판단 가능함
-data = [[],[(2,2),(3,5),(4,1)],[(3,3),(4,2)],[(2,3),(6,5)],[(3,3),(5,1)],[(3,1),(6,2)]]
+data = [[],[(2,2),(3,5),(4,1)],[(3,3),(4,2)],[(2,3),(6,5)],[(3,3),(5,1)],[(3,1),(6,2)],[]]
 visited = [False] * (n+1)
 distance = [inf] * (n+1)
 
@@ -363,23 +362,35 @@ distance[0],visited[0] = 0,True
 # 각 list 의 [0] 값은 비워두었음 매번 인덱스 설정할 때 +1 하기 귀찮으니까
 distance[1] = 0
 
-
-for i in range(1,n+1):
-    for j in range(len(data[i])):
-        node = data[i][j][0]
-        if distance[node] == inf:
-            distance[node] = data[i][j][1]
-        distance[node] = min(distance[node],data[i][j][1])
+def get_smallest_index(distance):
+    index = 0
+    min_val = inf
+    for i in range(1,n+1):
+        if visited[i] !=True: 
+            if distance[i] != 0 and distance[i] < min_val:
+                min_val = distance[i]
+                index = i
+    return index
 
 def travel(node):
+    if False not in visited:
+        return
     visited[node] =True
     for i in range(len(data[node])):
-        destination = data[node][i][0]
-        if distance[destination] == inf:
-            distance[destination] =  data[node][i][1]
-            visited[destination] = True
+        w2go = data[node][i][0]
+        if distance[w2go] == inf:
+            distance[w2go] =  distance[node] + data[node][i][1]
         else:
-            distance[destination] = min((distance[node]+data[node][i][1]),distance[destination])
+            distance[w2go] = min((distance[node]+data[node][i][1]),distance[w2go])
+    index = get_smallest_index(distance)
+    print(distance)
+    travel(index)
 
+travel(1)
 
+'''
+우선, 책과 다르게 나는 재귀함수를 사용했다. 이 문제에서 사용해도 괜찮았던 이유는 노드의 수가 약 1000개보다 훨씬 적었기 때문이다.
+만약 노드의 수가 그보다 더 늘어난다면 재귀함수의 재귀회수 제한을 풀던지 아니면 반복문을 통해 위의 travel()  함수를 반복시켜야 할 것이다.
 
+그리고 이는 비교적 느린 방법의 경로찾기이다. 테스트를 준비한다면 다음에 이어질 다른 방법의 다익스트라 알고리즘 구현방법을 체화 시켜야 한다.
+'''
