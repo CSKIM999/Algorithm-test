@@ -1,6 +1,9 @@
 from collections import deque
 from functools import partial
+import sys
+import heapq
 
+input = sys.stdin.readline
 inf = int(1e9)
 ########### 리스트 초기화 ###########
 # array = [[1,2,3,4],[5,6,7,8],[9,10,11,12]]
@@ -410,7 +413,7 @@ Breadth First Search [[ 너비 우선 탐색 ]]
 여기서 사용되는것이 [힙] 자료구조, 우선순위 큐 이다. 큐는 원래 가장 먼저 삽입된 데이터가 가장 먼저 삭제되는 특징을 가지고 있지만,
 우선순위 큐의 경우 가장 높은 데이터가 가장 먼저 삭제되는 특징을 가지고 있다.
 하지만 직접 우선순위 큐의 구현은 하지 않는다. 파이썬에서 기본적으로 제공하는 라이브러리이기도 하고 많은 프로그램에서도 지원한다.
-
+우선순위 큐의 힙은 최소힙에 기반한다.
 
 우선순위 큐를 사용한 알고리즘의 순서는 다음과 같다. 앞서 구현했던 다익스트라 알고리즘과 같이 1번 노드가 출발 노드인 경우를 고려하자. 
 
@@ -427,3 +430,38 @@ Breadth First Search [[ 너비 우선 탐색 ]]
 위의 과정은 간소화 되긴 했지만, 앞서 구성했던 다익스트라 알고리즘과 매우 유사하다. 단 한가지, 최단거리 노드 선정 방법을 우선순위 큐를 이용하는
 방법으로 대체하여 굉장히 큰 시간의 단축을 기대할 수 있다.
 '''
+
+
+# n = 6 
+# data = [[],[(2,2),(3,5),(4,1)],[(3,3),(4,2)],[(2,3),(6,5)],[(3,3),(5,1)],[(3,1),(6,2)],[]]
+# distance = [inf] * (n+1)
+# distance[0]= 0
+
+
+# def dijkstra(node):
+#     q = []
+#     # 시작 노드로 가기 위한 최단경로는 0 으로 설정해서 큐에 삽입
+#     heapq.heappush(q,(0,node))
+#     distance[node] = 0
+#     while q: #큐가 비어있지 않다면
+#         # 가장 최단거리가 짧은 노드에 대해 정보 꺼내기
+#         dist, now = heapq.heappop(q)
+#         # 현재 노드가 처리된 적 있다면 무시
+#         if distance[now] < dist:
+#             continue
+#         #현재 노드와 연결된 다른 인접 노드정보 확인
+#         for i in data[now]:
+#             cost = dist + i[1]
+#             #만약 현재 노드를 거쳐 가는 거리가 현재 저장된 거리보다 짧다면?
+#             if cost < distance[i[0]]:
+#                 distance[i[0]] = cost
+#                 #힙 푸쉬를 이용해 q 에 (cost, node) 를 저장
+#                 heapq.heappush(q,(cost,i[0]))
+
+# dijkstra(1)
+
+# for i in range(1,n+1):
+#     if distance[i] == inf:
+#         print('IMPOSSIBLE')
+#     else:
+#         print(distance[i])
