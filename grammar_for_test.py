@@ -489,32 +489,32 @@ Breadth First Search [[ 너비 우선 탐색 ]]
 직접 A에서 B로 이동할 수도, A-1 + 1-B 로 이동할 수도 있다. 이를 3중 반복문을 통해 수행하면 끝나는 비교적 간단한 수식이다.
 '''
 
-n = 4
+# n = 4
 
-data = [[(inf),(inf),(inf),(inf)],[(inf),(4),(inf),(6)],[(3),(inf),(7),(inf)],
-[(5),(inf),(inf),(4)],[(inf),(inf),(2),(inf)]]
+# data = [[(inf),(inf),(inf),(inf)],[(inf),(4),(inf),(6)],[(3),(inf),(7),(inf)],
+# [(5),(inf),(inf),(4)],[(inf),(inf),(2),(inf)]]
 
-# # 아래 방법으로 거리 리스트를 초기화 할 경우 리스트 컴프리헨션 오류가 생김
-# dist = [[inf]*n]*n
+# # # 아래 방법으로 거리 리스트를 초기화 할 경우 리스트 컴프리헨션 오류가 생김
+# # dist = [[inf]*n]*n
 
-# 리스트 컴프리헨션을 이용한 리스트 초기화
-dist = [[inf]*n for _ in range(n)]
+# # 리스트 컴프리헨션을 이용한 리스트 초기화
+# dist = [[inf]*n for _ in range(n)]
 
 
-for i in range(n):
-    for j in range(n):
-        if i == j:
-            dist[i][j] = 0
+# for i in range(n):
+#     for j in range(n):
+#         if i == j:
+#             dist[i][j] = 0
 
-for k in range(1,n+1):
-    for i in range(1,n+1):
-        for j in range(1,n+1):
-            if i == j:
-                continue
-            dist[i-1][j-1] = min(data[i][j-1],dist[i-1][j-1],dist[i-1][k-1]+dist[k-1][j-1])
+# for k in range(1,n+1):
+#     for i in range(1,n+1):
+#         for j in range(1,n+1):
+#             if i == j:
+#                 continue
+#             dist[i-1][j-1] = min(data[i][j-1],dist[i-1][j-1],dist[i-1][k-1]+dist[k-1][j-1])
 
-for i in range(len(dist)):
-    print(dist[i])
+# for i in range(len(dist)):
+#     print(dist[i])
 
 
 '''
