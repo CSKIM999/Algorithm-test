@@ -1,7 +1,10 @@
 from collections import deque
 from functools import partial
+import sys
+import heapq
 
-
+input = sys.stdin.readline
+inf = int(1e9)
 
 ###################### 일개미의 식량훔치기 ######################
 '''
@@ -62,3 +65,72 @@ from functools import partial
 #     print(-1)
 # else:
 #     print(array[target])
+
+
+
+
+######################  미래도시  ######################
+'''
+ 0<=N<=100 (노드의 개수)
+ 노드개수 n 개이며 sub node 를 거쳐 main node 로 향하는 최단거리를 구한다
+ 문제 이름답게 미래도시에선 간선이 있는곳은 모두 1의 시간만을 소요한다
+'''
+# main = 4
+# sub = 5
+# n = 5
+
+# data = [[0,1,1,1,inf],[1,0,inf,1,inf],[1,inf,0,1,1],[1,1,1,0,1],[inf,inf,1,1,0]]
+
+# dist = [[inf]*n for _ in range(n)]
+# for i in range(n):
+#     for j in range(n):
+#         if i == j:
+#             dist[i][j] = 0
+
+# for i in range(n):
+#     for j in range(n):
+#         for k in range(n):
+#             if j == k:
+#                 continue
+#             dist[j][k] = min(data[j][k],dist[j][k],dist[j][i]+dist[i][k])
+
+# print(dist[1][sub-1]+dist[sub-1][main-1])
+'''
+해설에서는 해당 문제가 전형적인 플로이드 워셜 문제라고 소개하고있다.
+노드의 개수가 100개에 불과하기때문에 "모든 점에서 모든 점까지의 거리" 를 구하는 플로이드 워셜알고리즘이
+매우 쓸모가 있는것이다.
+'''
+
+######################  전보  ######################
+'''
+N 개의 도시 사이에 간선이 놓여있다.
+A) start 도시에서 전보를 보냈을 때 메세지를 받을 수 있는 도시는 몇개이며
+B) 모든 도시가 메세지를 받는데 걸리는 시간은?
+1<= N <=30000
+
+노드의 개수는 최대 30000이다. 만약 플로이드워셜 알고리즘을 사용 할 경우, 시간복잡도는 O(N^3) 이므로 N^3 는 3조에 달한다
+따라서 위 문제는 다익스트라 알고리즘을 사용하는것이 적절하다.
+A 를 풀기위해서 dist 내의 inf 값이 아닌 값을 count 하면 될 듯 하다.
+B 를 위해서는 dist 값 내에서 inf를 제외한 최대값을 output 하면 될 듯 하다.
+'''
+
+n = 3
+data = [[[2,4],[3,2]],[],[]]
+dist = [inf] * n
+
+# q=[]
+# node = 1
+# heapq.heappush(q,(0,node))
+# dist[node] = 0
+# distance, now = heapq.heappop(q)
+# print(distance,now)
+
+def dijkstra(node):
+    q =[]
+    heapq.heappush(q,(0,node))
+    dist[node] = 0
+    while q:
+        distance, now = heapq.heappop(q)
+        if dist[now] < distance:
+            continue
+
