@@ -114,23 +114,44 @@ A 를 풀기위해서 dist 내의 inf 값이 아닌 값을 count 하면 될 듯 
 B 를 위해서는 dist 값 내에서 inf를 제외한 최대값을 output 하면 될 듯 하다.
 '''
 
-n = 3
-data = [[[2,4],[3,2]],[],[]]
-dist = [inf] * n
+# n = 3
+# data = [[],[(2,4),(3,2)],[],[]]
+# dist = [inf] * (n+1)
 
-# q=[]
-# node = 1
-# heapq.heappush(q,(0,node))
-# dist[node] = 0
-# distance, now = heapq.heappop(q)
-# print(distance,now)
+# # q=[]
+# # node = 1
+# # heapq.heappush(q,(0,node))
+# # dist[node] = 0
+# # distance, now = heapq.heappop(q)
+# # print(distance,now)
 
-def dijkstra(node):
-    q =[]
-    heapq.heappush(q,(0,node))
-    dist[node] = 0
-    while q:
-        distance, now = heapq.heappop(q)
-        if dist[now] < distance:
-            continue
+# def dijkstra(node):
+#     q =[]
+#     heapq.heappush(q,(0,node))
+#     dist[node] = 0
+#     while q:
+#         distance, now = heapq.heappop(q)
+#         if dist[now] < distance:
+#             continue
+#         for i in data[now]:
+#             cost = distance + i[1]
+#             if cost < dist[i[0]]:
+#                 dist[i[0]] = cost
+#                 heapq.heappush(q,(cost,i[0]))
 
+# dijkstra(1)
+# count = 0
+# max_value = 0
+# for i in dist:
+#     if i > 0 and i != inf:
+#         count +=1
+# for i in dist:
+#     if i > max_value and i != inf:
+#         max_value = i
+# print(dist)
+# print(max_value , count)
+
+'''
+21/06/03 직접 작성해보려고 한 결과 단 2일 지났다고 굉장히 버벅였다. 다익스트라 외에도 많은 알고리즘을 배웠지만,
+알고있는것도 중요하나 응용할 수 있어야 비로소 사용 할 수 있는것이다. 앞으로 예제를 더 접하면서 응용할 수 있도록 많이 사용하자.
+'''
