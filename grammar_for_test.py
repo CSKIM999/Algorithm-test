@@ -536,25 +536,25 @@ Breadth First Search [[ 너비 우선 탐색 ]]
 1) Union 연산을 확인 (A,B) 하여 각각 A 와 B 의 루트 노드 A` 와 B` 을 찾는다. 두 루트노드 중 큰 루트노드값을 더 작은 루트를 가지고있는 값으로 향하게한다.
 2) 모든 Union 연산을 처리할때까지 반복한다. 
 '''
-n=6
-data = [[1,4],[2,3],[2,4],[5,6]]
-parent = [0]*(n+1)
+# n=6
+# data = [[1,4],[2,3],[2,4],[5,6]]
+# parent = [0]*(n+1)
 
-def find_union(parent,a):
-    if parent[a] != a:
-        return find_union(parent,parent[a])
-    return a
+# def find_union(parent,a):
+#     if parent[a] != a:
+#         return find_union(parent,parent[a])
+#     return a
 
-for i in range(len(parent)):
-    parent[i] = i
+# for i in range(len(parent)):
+#     parent[i] = i
 
-for i in data:
-    A,B = i[0],i[1]
-    parent[A],parent[B] = min(parent[A],parent[B]),min(parent[A],parent[B])
+# for i in data:
+#     A,B = i[0],i[1]
+#     parent[A],parent[B] = min(parent[A],parent[B]),min(parent[A],parent[B])
 
-for i in range(1,n+1):
-    a= find_union(parent,i)
-    print( a ,end=' ')
+# for i in range(1,n+1):
+#     a= find_union(parent,i)
+#     print( a ,end=' ')
 
-print()
-print(parent)
+# print()
+# print(parent)
