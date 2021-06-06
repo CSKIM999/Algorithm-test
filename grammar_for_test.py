@@ -565,9 +565,12 @@ Breadth First Search [[ 너비 우선 탐색 ]]
 '''
 이어서 새로운 그래프 알고리즘은 "신장 트리" 이다. 신장트리는 하나의 그래프가 있을 때 모든 노드를 포함하되 사이클이 존재하지 않는 부분그래프를 뜻한다.
 모든 노드가 연결되며 사이클이 존재하지만 않으면 된다는 조건때문에 한 개의 그래프에서는 여러개의 신장 트리가 성립한다.
-하지만 문제상황에서 최소한의 값을 가지는 신장트리를 찾아야 하는 경우가 있다. 그 경우 사용하는 대표적 최소 신장 트리 알고리즘을 "크루스칼 알고리즘" 이라 한다.
+하지만 문제상황에서 최소한의 값을 가지는 신장트리를 찾아야 하는 경우가 있다.
+
+그 경우 사용하는 대표적 최소 신장 트리 알고리즘을 "크루스칼 알고리즘" 이라 한다.
 여기서 크루스칼 알고리즘은 그리디 알고리즘으로 분류된다. 모든 간선에 대해 정렬을 수행한 뒤 가장 거리가 짧은 간선부터 집합에 포함시킨다는 알고리즘이다.
 자세한 알고리즘의 프로세스 플로우는 다음과 같다.
+
 1) 간선 데이터를 비용에 따라 오름차 순 정렬
 2) 간선을 하나씩 확인하며 사이클을 발생시키고 있는지 확인
     2-1) 사이클이 없는경우 최소 신장 트리에 포함
@@ -579,31 +582,87 @@ Breadth First Search [[ 너비 우선 탐색 ]]
 같은 루트노드를 가진 값은 연결되어있는 것으로 생각한다.
 **** 여기서 최소 신장 트리의 간선의 개수는 N-1 개 이다
 '''
-n = 7
-data = [(29,1,2),(75,1,5),(35,2,3),(34,2,6),(7,3,4),(23,4,6),(13,4,7),(53,5,6),(25,6,7)]
-total_value = 0
-# print(sorted(data,key=lambda data : data[0]))
+# n = 7
+# data = [(29,1,2),(75,1,5),(35,2,3),(34,2,6),(7,3,4),(23,4,6),(13,4,7),(53,5,6),(25,6,7)]
+# total_value = 0
+
+# # print(sorted(data,key=lambda data : data[0]))
+# # data.sort()
+# # print(data)
+
+# def find_parent(parent,x):
+#     if parent[x] !=x:
+#         parent[x] = find_parent(parent,parent[x])
+#     return parent[x]
+
+# def union_parent(parent,a,b):
+#     a = find_parent(parent,a)
+#     b = find_parent(parent,b)
+#     val = min(a,b)
+#     parent[a] = parent[b] = val
+
+# parent = [0]*(n+1)
 # data.sort()
-# print(data)
-def find_parent(parent,x):
-    if parent[x] !=x:
-        parent[x] = find_parent(parent,parent[x])
-    return parent[x]
+# for i in range(n+1):
+#     parent[i] = i
 
-def union_parent(parent,a,b):
-    a = find_parent(parent,a)
-    b = find_parent(parent,b)
-    val = min(a,b)
-    parent[a] = parent[b] = val
+# for bit in data:
+#     if find_parent(parent,bit[1]) != find_parent(parent,bit[2]):
+#         union_parent(parent,bit[1],bit[2])
+#         total_value += bit[0]
 
-parent = [0]*(n+1)
-data.sort()
-for i in range(n+1):
-    parent[i] = i
+# print(total_value)
 
-for bit in data:
-    if find_parent(parent,bit[1]) != find_parent(parent,bit[2]):
-        union_parent(parent,bit[1],bit[2])
-        total_value += bit[0]
+'''
+sort 와 sorted 함수의 차이는 알고 있을것이다. 
+두개 모두 key= lambda A:B 를 통해 정렬조건을 부여할 수 있다는 점을 더욱 정확히 알아두자
 
-print(total_value)
+크루스칼 알고리즘의 시간복잡도는 O(ElogE) 를 가진다. 이는 알고리즘에서 가장 오래 걸리는 부분이 간선 정렬의 작업이며
+그에비해 내부에서 사용되는 서로소집합 알고리즘의 시간복잡도는 매우 작으므로 무시한다.
+'''
+
+
+
+########################################################################################################################
+########################################################################################################################
+'''
+위상정렬 알고리즘
+
+위상정렬 알고리즘 또한 정렬 알고리즘의 일종으로서 방향그래프의 모든 노드를 방향성에 거스르지 않도록 순서대로 나열하는 방식이다
+여기서 위상정렬에서 중요한 것이 진입차수이다. 진입차수란, 특정 노드로 "들어오는" 간선의 개수를 의미한다.
+위상정렬 알고리즘은 다음과 같다.
+1)  진입차수가 0 인 노드를 큐에 넣는다
+2)  큐가 빌 때 까지 다음의 과정을 반복한다.
+    2-1) 큐에서 원소를 꺼내 해당 노드에서 출발하는 간선을 그래프에서 제거한다.
+    2-2) 새롭게 집입차수가 된 노드를 큐에 넣는다
+
+여기서 만약 모든 원소를 방문하지 못했음에도, 큐가 빈다면 사이클이 존재한다고 판단할 수 있다. 하지만 보통 위상정렬 문제는
+사이클이 발생하지 않는것을 전제로 하는 경우가 더 많으므로, 일단 이 문법과정에서는 다루지 않도록 하고 예제에서 다뤄보도록 한다.
+'''
+# n = 7
+# data = [[],[2,5],[3,6],[4],[7],[6],[4],[]]
+
+# # data = [[],[],[1],[2],[3,6],[1],[2,5],[4]]
+# topology = [0]*(n+1)
+# queue = deque()
+# for i in data:
+#     for j in i:
+#         topology[j] += 1
+
+# for i in range(1,n+1):
+#     if topology[i] == 0:
+#         queue.append(i)
+#         # for j in data[i]:
+#         #     queue.append(j)
+
+# result = []
+# while queue:
+#     q = queue.popleft()
+#     result.append(q)
+#     for i in data[q]:
+#         topology[i] -=1
+#         if topology[i] == 0:
+#             queue.append(i)
+        
+# print(result)
+
