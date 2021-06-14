@@ -149,9 +149,9 @@ Given ) 무지에게는 먹어야 할 음식 N 개가 있다. 각 음식에는 1
         food_times 의 원소른 1 이상 1,000 이하의 자연수
         k 는 1 이상 2,000,000 이하의 자연수이다.
 '''
-n = 3
-food_times = [3,1,2]
-k = 5
+# n = 3
+# food_times = [3,1,2]
+# k = 5
 # def sol(food_times, k):
 #     answer = 0
 #     while True:

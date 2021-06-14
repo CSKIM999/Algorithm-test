@@ -29,7 +29,33 @@ Output) 첫째 줄에 럭키스트레이트 발동 가능할 경우 "LUCKY" 를 
 '''
 
 ############################################  Q8 _ 문자열 재정렬  ############################################
+'''
+Given ) 알파벳 대문자와 숫자로 이루어진 문자열이 주어진다. 여기서 알파벳은 오름차순 정렬, 숫자는 모두 더해서 알파벳 뒤에 출력하라
+Input ) 하나의 문자열 S 가 주어진다. (( 1 <= S <= 10,000 ))
+Output) 요구 정답 출력
+'''
+# count = 0
+# lst = []
+# data = 'K1KA5CB7'
+# for i in range(len(data)):
+#     if data[i].isdigit() == True:
+#         count+=int(data[i])
+#     else:
+#        lst.append(data[i]) 
+# lst.sort()
+# lst.append(str(count))
+# print(''.join(lst))
 
+'''
+1회차>> isdigit // isalpha 를 들어는 봤는데 사용은 처음해본다. 그리고 join메서드도 처음 사용해본다.
+        추가로 join 메서드는 list 안에 모든 값이 같은 타입이어야 join 이 되는듯 하다.
+'''
 
-
-
+############################################  Q9 _ 문자열 압축  ############################################
+'''
+'''
+data ='abcabcabcabcdedededededee'
+min_len = len(data)
+print(int(len(data)/2))
+half_num = int(len(data)/2)
+# for i in range(2,half_num):
