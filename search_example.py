@@ -48,14 +48,16 @@ Output) 요구 정답 출력
 
 '''
 1회차>> isdigit // isalpha 를 들어는 봤는데 사용은 처음해본다. 그리고 join메서드도 처음 사용해본다.
-        추가로 join 메서드는 list 안에 모든 값이 같은 타입이어야 join 이 되는듯 하다.
+추가로 join 메서드는 list 안에 모든 값이 같은 타입이어야 join 이 되는듯 하다.
 '''
-
 ############################################  Q9 _ 문자열 압축  ############################################
-'''
-'''
-data ='abcabcabcabcdedededededee'
-min_len = len(data)
-print(int(len(data)/2))
-half_num = int(len(data)/2)
+
+# data ='abcabcabcabcdedededededee'
+# code = ''
+# code = data[0]+data[1]
+# print(type(code))
+# min_len = len(data)
+# print(int(len(data)/2))
+# half_num = int(len(data)/2)
 # for i in range(2,half_num):
+

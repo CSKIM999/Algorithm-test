@@ -1,10 +1,3 @@
-from collections import deque
-from functools import partial
-
-array = [5,7,9,0,3,1,6,2,4,8]
-end = len(array)-1
-right = end
-print(array[end])
 ############################################  Q7 _ 럭키 스트레이트  ############################################
 '''
 Given ) 럭키 스트레이트는 특정 조건 만족할 경우만 발동한다
@@ -59,13 +52,25 @@ Output) 요구 정답 출력
 '''
 ############################################  Q9 _ 문자열 압축  ############################################
 
-# data ='abcabcabcabcdedededededee'
-# code = ''
-# code = data[0]+data[1]
-# print(type(code))
-# min_len = len(data)
-# print(int(len(data)/2))
-# half_num = int(len(data)/2)
-# for i in range(2,half_num):
-#     for j in range(i):
-#         lst = 
+data ='abcabcabcabcdededededede'
+code = ''
+count = 1
+min_len = len(data)
+print(int(len(data)/2))
+half_num = int(len(data)/2)
+for i in range(2,half_num): # 자르기 문자 개수
+    # i = 2
+    for j in range(i): # 문자 개수에 따라 잘린 문자열 반환
+        code += data[j]
+    # code = 'ab'
+    for now in range(i,len(data),i): # 반환된 문자열과 뒤이어서 나오는 주어진 문자개수만큼의 문자열 비교
+        # now = 2
+        now_code = data[now:now+i]
+        # data[2:2+2 = 4] = 'ca'
+        if code == now_code: #비교후 맞다면 카운트 추가 후  진행
+            count +=1
+        else:
+            code = now_code
+            print('{}{}'.format(count,code))
+            count = 1
+
