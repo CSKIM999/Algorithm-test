@@ -50,27 +50,79 @@ Output) 요구 정답 출력
 1회차>> isdigit // isalpha 를 들어는 봤는데 사용은 처음해본다. 그리고 join메서드도 처음 사용해본다.
 추가로 join 메서드는 list 안에 모든 값이 같은 타입이어야 join 이 되는듯 하다.
 '''
+
+
 ############################################  Q9 _ 문자열 압축  ############################################
+'''
+Given ) 임의의 문자열 S 가 주어진다 해당 문자열을 압축하고자 한다
+        'aabbaccc' 의 경우 '2a2ba3c' 와 같이 압축하고 해당 패턴은 맨 앞부터 n 개 자리의 문자열을 선택하기로 한다
+        따라서 문자열 'abcabcabcdedede' 3개 자리로 압축할 경우 '3abcdedede' 가 되는것.
+Output) 주어진 문자열에서 가장 짧게 압축한 문자열의 길이를 반환하라
+'''
 
-data ='abcabcabcabcdededededede'
-code = ''
-count = 1
-min_len = len(data)
-print(int(len(data)/2))
-half_num = int(len(data)/2)
-for i in range(2,half_num): # 자르기 문자 개수
-    # i = 2
-    for j in range(i): # 문자 개수에 따라 잘린 문자열 반환
-        code += data[j]
-    # code = 'ab'
-    for now in range(i,len(data),i): # 반환된 문자열과 뒤이어서 나오는 주어진 문자개수만큼의 문자열 비교
-        # now = 2
-        now_code = data[now:now+i]
-        # data[2:2+2 = 4] = 'ca'
-        if code == now_code: #비교후 맞다면 카운트 추가 후  진행
-            count +=1
-        else:
-            code = now_code
-            print('{}{}'.format(count,code))
-            count = 1
 
+# data = 'abcabcabcabcdededededede'
+
+# min_len = len(data)
+# half_num = int(len(data)/2)
+# for i in range(1,half_num+1): 
+#     compare = ''
+#     count = 1
+#     code = data[0:i]
+#     for now in range(i,len(data),i): 
+#         now_code = data[now:now+i]
+#         if code == now_code: 
+#             count +=1
+#             if now+i >= len(data):
+#                 compare += '{}{}'.format(count,code)
+#                 code = now_code
+#                 count = 1
+#                 continue
+#         elif code !=now_code and count == 1:
+#             compare += '{}'.format(code)
+#             code = now_code
+#         else: 
+#             compare += '{}{}'.format(count,code)
+#             code = now_code
+#             count = 1
+#         if now+i >= len(data):
+#             compare += (data[now:len(data)])
+#     min_len = min(min_len,len(compare))
+
+# print(min_len)
+
+'''
+1회차 > 다른 사람의 해답을 보았을 때 나보다 더욱 간결했다. 2개의 함수를 만들어서 사용했다.
+        하지만 나는 함수 없이 2중 for문을 사용했기때문에, 아마 그 코드보다는 더욱 복잡한 코드일 것이다.
+        또한 시간도 30분의 제한시간을 갖는 문제이지만, 나는 약 80분에 걸쳐서 풀어냈다. 아직 갈 길이 멀다.
+
+'''
+
+
+############################################  Q10 _ 자물쇠와 열쇠  ############################################
+'''
+Given ) 자물쇠의 크기는 n*n 크기의 정사각 격자형태이고 특이한 모양의 열쇠는 m*m 크기의 정사각 격자이다.
+        자물쇠의 영역을 벗어나더라도 영역 내의 홈이 정확히 일치하면 자물쇠를 열 수 있다.
+        열쇠를 나타내는 2차원 배열 key 와 lock이 매개변수로 주어질 때 해당 열쇠로 열 수 있다면 True를
+        불가능하다면 False 를 return 하도록 함수를 작성하라.
+        Key 는 M*M (3<= M <= 20 , M 은 자연수) 크기의 2차원 배열
+        lock 는 N*N (3<= M <= 20 , M 은 자연수) 크기의 2차원 배열
+        언제나 M < N 이며, key 와 lock의 원소는 0 또는 1 로 이루어져 있고, 0은 홈부분 1은 돌기를 나타낸다
+'''
+
+m,n = 3,3
+
+
+key = list([0]*m for _ in range(m))
+lock = list([0]*n for _ in range(n))
+
+def rotate(data):
+    for i in range(len(data)):
+
+        list_prime = list([0]*len(data) for _ in range(len(data)))
+        for j in data[i]:
+            pass
+
+print(key)
+for i in key:
+        
