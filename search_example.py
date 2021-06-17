@@ -61,3 +61,4 @@ Output) 요구 정답 출력
 # half_num = int(len(data)/2)
 # for i in range(2,half_num):
 
+

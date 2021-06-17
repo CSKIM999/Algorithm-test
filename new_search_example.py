@@ -114,10 +114,10 @@ m,n = 3,3
 
 
 key = list([0]*m for _ in range(m))
-lock = list([0]*n for _ in range(n))
+lock = list(list([0]*(n) for _ in range(n)) for _ in range(9))
 key = [[0,0,0],[1,0,0],[0,1,1]]
-lock = [[1,1,1],[1,1,0],[1,0,1]]
-
+lck = [[1,1,1],[1,1,0],[1,0,1]]
+print(lck+key)
 def rotate(data):
     data_prime = list([0]*len(data) for _ in range(len(data)))
     for i in range(len(data)):
@@ -126,7 +126,7 @@ def rotate(data):
             data_prime[j][-i-1] = data[i][j]
     data = data_prime
     return data
-key = rotate(key)
 
-print(key[1] + lock[1])
-print(key)
+
+# key = rotate(key)
+# print(key)
