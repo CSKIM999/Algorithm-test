@@ -128,5 +128,5 @@ def rotate(data):
     return data
 
 
-# key = rotate(key)
-# print(key)
+key = rotate(key)
+print(key)

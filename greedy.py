@@ -134,7 +134,6 @@ from functools import partial
 # print(count)
 
 ############################################ 게임 시뮬레이션 ############################################
-# 북 서 남 동 순서 0 1 2 3
 # i=0
 
 # dx= [-1,0,1,0]
@@ -207,14 +206,14 @@ from functools import partial
 #         # 현재 위치에서 DFS 수행
 #         if dfs(i,j) ==True:
 #             result +=1
-# """
-# 한번의 메서드 dfs 에서 True 가 몇번 return 되는지는 중요하지 않았다
-# line 173 에서의 조건문은 메인 메서드 dfs 값이 True 인지 아닌지만 확인된다면
-# result 값을 1 더하는 것일 뿐, 메인 메서드에서 재귀로 인한 메서드가 호출되고 
-# 그 호출 메서드의 return True 값은 result 에 영향을 주지 않음
-# 물론 당연히도 호출 메서드가 True 를 return 한다면 메인 메서드 또한 True를 return할 것이기 때문에
-# 호출 메서드의 True return 이 의미가 없는것은 아닐 듯 함
-# """
+"""
+한번의 메서드 dfs 에서 True 가 몇번 return 되는지는 중요하지 않았다
+line 173 에서의 조건문은 메인 메서드 dfs 값이 True 인지 아닌지만 확인된다면
+result 값을 1 더하는 것일 뿐, 메인 메서드에서 재귀로 인한 메서드가 호출되고 
+그 호출 메서드의 return True 값은 result 에 영향을 주지 않음
+물론 당연히도 호출 메서드가 True 를 return 한다면 메인 메서드 또한 True를 return할 것이기 때문에
+호출 메서드의 True return 이 의미가 없는것은 아닐 듯 함
+"""
 
 # print(result)
 
