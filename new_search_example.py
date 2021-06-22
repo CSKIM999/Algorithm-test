@@ -114,19 +114,56 @@ m,n = 3,3
 
 
 key = list([0]*m for _ in range(m))
-lock = list(list([0]*(n) for _ in range(n)) for _ in range(9))
+new = [[0]*(n*3) for _ in range(n*3)]
 key = [[0,0,0],[1,0,0],[0,1,1]]
 lck = [[1,1,1],[1,1,0],[1,0,1]]
-print(lck+key)
+# print(lck[1]+key[1])
 def rotate(data):
-    data_prime = list([0]*len(data) for _ in range(len(data)))
-    for i in range(len(data)):
+    n = len(data)
+    m = len(data[0])
+    data_prime = [[0]*n for _ in range(m)]
+    for i in range(n):
+        for j in range(m):
+            data_prime[j][n-i-1] = data[i][j]
+    return data_prime
 
-        for j in range(len(data)):
-            data_prime[j][-i-1] = data[i][j]
-    data = data_prime
-    return data
+def check(data):
+    a = len(data)//3
+    for i in range(a,a*2):
+        for j in range(a,a*2):
+            if data[i][j] !=1:
+                return False
+    return True
 
+def solution(key,lock):
+    n = len(lock)
+    m = len(key)
 
-key = rotate(key)
-print(key)
+    for i in range(n):
+        for j in range(n):
+            new[i+n][j+n] = lock[i][j]
+
+    for _ in range(4):
+        key = rotate(key)
+        for x in range(n*2):
+            for y in range(n*2):
+
+                for i in range(m):
+                    for j in range(m):
+                        new[x+i][y+j] += key[i][i]
+                if check(new) == True:
+                    return True
+                
+                for i in range(m):
+                    for j in range(m):
+                        new[x+i][y+j] -= key[i][i]
+    return False
+
+print(solution(key,lck))
+
+'''
+1회차 > 160 line 의 들여쓰기 실수로 인해 틀렸다. for 문을 모두 순회하고서도 답이 안나온다면, false 를 반환해야 했지만, 들여쓰기 오류로 인해 line 146 의 첫 순환이 끝날 때 false
+        를 반환해서 계속해서 오답처리되었음. 혹시나 하고 rotate 함수와 check 함수를 조금 만졌지만, 역시나 그 둘의 문제가 아니었음.
+        흔히들 파이썬은 들여쓰기가 아주 중요하다고 하는데 이번 문제야말로 내가 그 오류를 범한 문제였음.
+        물론 그것 말고도 for문이 많이 반복되어서 내 머리로 시뮬레이션 하기에 상당히 어려운 문제였음.
+'''
