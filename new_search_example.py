@@ -1,3 +1,5 @@
+from collections import deque
+
 ############################################  Q7 _ 럭키 스트레이트  ############################################
 '''
 Given ) 럭키 스트레이트는 특정 조건 만족할 경우만 발동한다
@@ -98,8 +100,9 @@ Output) 주어진 문자열에서 가장 짧게 압축한 문자열의 길이를
 
 '''
 
-
+###############################################################################################################
 ############################################  Q10 _ 자물쇠와 열쇠  ############################################
+###############################################################################################################
 '''
 Given ) 자물쇠의 크기는 n*n 크기의 정사각 격자형태이고 특이한 모양의 열쇠는 m*m 크기의 정사각 격자이다.
         자물쇠의 영역을 벗어나더라도 영역 내의 홈이 정확히 일치하면 자물쇠를 열 수 있다.
@@ -110,56 +113,56 @@ Given ) 자물쇠의 크기는 n*n 크기의 정사각 격자형태이고 특이
         언제나 M < N 이며, key 와 lock의 원소는 0 또는 1 로 이루어져 있고, 0은 홈부분 1은 돌기를 나타낸다
 '''
 
-m,n = 3,3
+# m,n = 3,3
 
 
-key = list([0]*m for _ in range(m))
-new = [[0]*(n*3) for _ in range(n*3)]
-key = [[0,0,0],[1,0,0],[0,1,1]]
-lck = [[1,1,1],[1,1,0],[1,0,1]]
-# print(lck[1]+key[1])
-def rotate(data):
-    n = len(data)
-    m = len(data[0])
-    data_prime = [[0]*n for _ in range(m)]
-    for i in range(n):
-        for j in range(m):
-            data_prime[j][n-i-1] = data[i][j]
-    return data_prime
+# key = list([0]*m for _ in range(m))
+# new = [[0]*(n*3) for _ in range(n*3)]
+# key = [[0,0,0],[1,0,0],[0,1,1]]
+# lck = [[1,1,1],[1,1,0],[1,0,1]]
+# # print(lck[1]+key[1])
+# def rotate(data):
+#     n = len(data)
+#     m = len(data[0])
+#     data_prime = [[0]*n for _ in range(m)]
+#     for i in range(n):
+#         for j in range(m):
+#             data_prime[j][n-i-1] = data[i][j]
+#     return data_prime
 
-def check(data):
-    a = len(data)//3
-    for i in range(a,a*2):
-        for j in range(a,a*2):
-            if data[i][j] !=1:
-                return False
-    return True
+# def check(data):
+#     a = len(data)//3
+#     for i in range(a,a*2):
+#         for j in range(a,a*2):
+#             if data[i][j] !=1:
+#                 return False
+#     return True
 
-def solution(key,lock):
-    n = len(lock)
-    m = len(key)
+# def solution(key,lock):
+#     n = len(lock)
+#     m = len(key)
 
-    for i in range(n):
-        for j in range(n):
-            new[i+n][j+n] = lock[i][j]
+#     for i in range(n):
+#         for j in range(n):
+#             new[i+n][j+n] = lock[i][j]
 
-    for _ in range(4):
-        key = rotate(key)
-        for x in range(n*2):
-            for y in range(n*2):
+#     for _ in range(4):
+#         key = rotate(key)
+#         for x in range(n*2):
+#             for y in range(n*2):
 
-                for i in range(m):
-                    for j in range(m):
-                        new[x+i][y+j] += key[i][i]
-                if check(new) == True:
-                    return True
+#                 for i in range(m):
+#                     for j in range(m):
+#                         new[x+i][y+j] += key[i][i]
+#                 if check(new) == True:
+#                     return True
                 
-                for i in range(m):
-                    for j in range(m):
-                        new[x+i][y+j] -= key[i][i]
-    return False
+#                 for i in range(m):
+#                     for j in range(m):
+#                         new[x+i][y+j] -= key[i][i]
+#     return False
 
-print(solution(key,lck))
+# print(solution(key,lck))
 
 '''
 1회차 > 160 line 의 들여쓰기 실수로 인해 틀렸다. for 문을 모두 순회하고서도 답이 안나온다면, false 를 반환해야 했지만, 들여쓰기 오류로 인해 line 146 의 첫 순환이 끝날 때 false
@@ -167,3 +170,61 @@ print(solution(key,lck))
         흔히들 파이썬은 들여쓰기가 아주 중요하다고 하는데 이번 문제야말로 내가 그 오류를 범한 문제였음.
         물론 그것 말고도 for문이 많이 반복되어서 내 머리로 시뮬레이션 하기에 상당히 어려운 문제였음.
 '''
+
+###############################################################################################################
+##################################################  Q11 _ 뱀  #################################################
+###############################################################################################################
+
+'''
+Given ) 뱀은 돌아다니다 사과를 먹으면 길이가 늘어난다. 또한 뱀은 돌아다니다 벽 또는 자신의 몸과 부딫히면 게임이 끝난다.
+        게임은 N*N 크기 정사각 보드위에서 시작되어 몇몇칸에는 사과가 놓여진다. 뱀은 왼쪽위에 오른쪽을 보며 위치하여 시작한다.
+        1. 뱀은 움직일 때 몸을 늘려 머리를 다음칸에 위치시킨다.
+        2. 이동칸에 사과가 있다면, 그 칸에 있는 사과는 없어지고 꼬리는 움직이지 않음
+        3. 없다면 몸 길이를 줄여 꼬리가 위치한 칸을 비워준다.
+
+input ) 첫째 줄에는 보드의 크기 N 이 주어짐  (2 <= N <= 100), 그리고 그 다음줄에는 사과의 개수 K 가 주어짐 (0<= K <= 100)
+        다음 K개 줄에는 사과의 위치가 (행,열) 로 주어짐, (1행,1열)에는 사과가 없음
+        그 다음줄에는 뱀의 방향변환횟수 L 이 주어짐 (1 <= L <= 100)
+        다음 L개 줄에는 뱀의 방향변환 정보가 (정수 X , 문자 C) 로 주어짐. 게임 시작 후 X 초가 지나고 C(왼쪽 L 혹은 오른쪽 R) 방향으로 움직인다는 뜻
+        여기서 X 는 10,000 이하의 양의 정수이며, 방향 전환 정보는 X 가 증가하는 순으로 주어짐.
+
+Output) 게임이 몇초 뒤에 끝나는지 출력하라.
+
+1회차 > 처음엔 단순히 2차원 행렬에 더하는 방식으로 풀어볼까했으나, 오히려 우선순위 큐를 이용하는것이 꼬리를 밟는것도 구현 가능하여 좋겠다 생각함.
+'''
+
+n = 10
+k = 4
+k_map = [(1,2),(1,3),(1,4),(1,5)]
+L = 4
+L_Time = [(8,'D'),(10,'D'),(11,'D'),(13,'L')]
+#  OUTPUT = 21
+time_count = 0
+snake = [0,0]
+queue = deque()
+queue.appendleft(snake)
+snake = [1,0]
+queue.appendleft(snake)
+
+direction = 0
+direction_option = 1
+table = [[0]*(n) for _ in range(n)]
+for i in k_map:
+    table[i[0]-1][i[1]-1] = 1
+
+# while snake[0]== n or snake[0] <0 or snake[1] == n or snake[1] < 0:
+#     time_count +=1
+#     # if table[snake[0]][snake[1]] ==2:
+#     snake[direction] += direction_option
+#     queue.appendleft(snake)
+#     table[snake[0]][snake[1]] += 1
+
+#     pass
+
+
+    
+    
+
+
+print(queue)
+print([1,0] in queue)
