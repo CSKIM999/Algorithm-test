@@ -69,3 +69,18 @@ Output) 요구 정답 출력
 # for i in range(2,half_num):
 #     for j in range(i):
 #         lst = 
+
+
+# n = input()
+# k = input()
+# for i in range(k):
+#     k_map = 
+
+# L = input()
+L_Time = [(8,'D'),(10,'D'),(11,'D'),(13,'L')]
+k_map = []
+k=2
+for i in range(k):
+    a,b = map(int, input().split(' '))
+    k_map.append((a,b))
+print(k_map)

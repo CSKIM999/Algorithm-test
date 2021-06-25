@@ -1,4 +1,5 @@
 from collections import deque
+import typing_extensions
 
 ############################################  Q7 _ 럭키 스트레이트  ############################################
 '''
@@ -193,38 +194,71 @@ Output) 게임이 몇초 뒤에 끝나는지 출력하라.
 1회차 > 처음엔 단순히 2차원 행렬에 더하는 방식으로 풀어볼까했으나, 오히려 우선순위 큐를 이용하는것이 꼬리를 밟는것도 구현 가능하여 좋겠다 생각함.
 '''
 
-n = 10
-k = 4
-k_map = [(1,2),(1,3),(1,4),(1,5)]
-L = 4
-L_Time = [(8,'D'),(10,'D'),(11,'D'),(13,'L')]
-#  OUTPUT = 21
+n = int(input())
+
+k = int(input())
+
+k_map = []
+for i in range(k):
+    a,b = map(int, input().split(' '))
+    k_map.append((a,b))
+
+L = int(input())
+
+L_Time = []
+
+for i in range(L):
+    time,dis = input().split(' ')
+    L_Time.append((int(time),dis))
+
 time_count = 0
 snake = [0,0]
 queue = deque()
-queue.appendleft(snake)
-snake = [1,0]
-queue.appendleft(snake)
+queue.appendleft([0,0])
+time_queue = deque()
 
-direction = 0
-direction_option = 1
+for i in L_Time:
+    time_queue.append(i)
+
+D = 1
+direction_y =  [-1,0,1,0]
+direction_x =  [0,1,0,-1]
+
 table = [[0]*(n) for _ in range(n)]
+
 for i in k_map:
     table[i[0]-1][i[1]-1] = 1
 
-# while snake[0]== n or snake[0] <0 or snake[1] == n or snake[1] < 0:
-#     time_count +=1
-#     # if table[snake[0]][snake[1]] ==2:
-#     snake[direction] += direction_option
-#     queue.appendleft(snake)
-#     table[snake[0]][snake[1]] += 1
+while True:
 
-#     pass
+    time_count +=1
 
 
-    
-    
+    snake[0] += direction_y[D]
+    snake[1] += direction_x[D]
+    new = [snake[0],snake[1]]
+    queue.appendleft(new)
+
+    if table[snake[0]][snake[1]] == 1:
+        table[snake[0]][snake[1]] = 0
+    else:
+        queue.pop()
+
+    if len(time_queue) > 0:
+        if time_queue[0][0] == time_count:
+            if time_queue[0][1] == 'D':
+                D += 1
+                if D == 4:
+                    D = 0
+            else:
+                D -= 1
+                if D == -1:
+                    D = 3
+            time_queue.popleft()
+
+    if (snake[0] == n or snake[0] < 0 or snake[1] == n or snake[1] < 0):
+        break
 
 
-print(queue)
-print([1,0] in queue)
+
+print(time_count)
