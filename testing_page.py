@@ -1,10 +1,10 @@
 from collections import deque
 from functools import partial
 
-array = [5,7,9,0,3,1,6,2,4,8]
-end = len(array)-1
-right = end
-print(array[end])
+# array = [5,7,9,0,3,1,6,2,4,8]
+# end = len(array)-1
+# right = end
+# print(array[end])
 ############################################  Q7 _ 럭키 스트레이트  ############################################
 '''
 Given ) 럭키 스트레이트는 특정 조건 만족할 경우만 발동한다
@@ -77,10 +77,13 @@ Output) 요구 정답 출력
 #     k_map = 
 
 # L = input()
-L_Time = [(8,'D'),(10,'D'),(11,'D'),(13,'L')]
-k_map = []
-k=2
-for i in range(k):
-    a,b = map(int, input().split(' '))
-    k_map.append((a,b))
-print(k_map)
+# L_Time = [(8,'D'),(10,'D'),(11,'D'),(13,'L')]
+# k_map = []
+# k=2
+# for i in range(k):
+#     a,b = map(int, input().split(' '))
+#     k_map.append((a,b))
+# print(k_map)
+
+
+print(2%2)

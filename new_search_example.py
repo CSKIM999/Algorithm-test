@@ -1,3 +1,4 @@
+from _typeshed import SupportsReadline
 from collections import deque
 import typing_extensions
 
@@ -194,71 +195,141 @@ Output) 게임이 몇초 뒤에 끝나는지 출력하라.
 1회차 > 처음엔 단순히 2차원 행렬에 더하는 방식으로 풀어볼까했으나, 오히려 우선순위 큐를 이용하는것이 꼬리를 밟는것도 구현 가능하여 좋겠다 생각함.
 '''
 
-n = int(input())
+# n = int(input())
 
-k = int(input())
+# k = int(input())
 
-k_map = []
-for i in range(k):
-    a,b = map(int, input().split(' '))
-    k_map.append((a,b))
+# k_map = []
+# for i in range(k):
+#     a,b = map(int, input().split(' '))
+#     k_map.append((a,b))
 
-L = int(input())
+# L = int(input())
 
-L_Time = []
+# L_Time = []
 
-for i in range(L):
-    time,dis = input().split(' ')
-    L_Time.append((int(time),dis))
+# for i in range(L):
+#     time,dis = input().split(' ')
+#     L_Time.append((int(time),dis))
 
-time_count = 0
-snake = [0,0]
-queue = deque()
-queue.appendleft([0,0])
-time_queue = deque()
+# time_count = 0
+# snake = [0,0]
+# queue = deque()
+# queue.appendleft([0,0])
+# time_queue = deque()
 
-for i in L_Time:
-    time_queue.append(i)
+# for i in L_Time:
+#     time_queue.append(i)
 
-D = 1
-direction_y =  [-1,0,1,0]
-direction_x =  [0,1,0,-1]
+# D = 1
+# direction_y =  [-1,0,1,0]
+# direction_x =  [0,1,0,-1]
 
-table = [[0]*(n) for _ in range(n)]
+# table = [[0]*(n) for _ in range(n)]
 
-for i in k_map:
-    table[i[0]-1][i[1]-1] = 1
+# for i in k_map:
+#     table[i[0]-1][i[1]-1] = 1
 
-while True:
+# while True:
 
-    time_count +=1
+#     time_count +=1
 
 
-    snake[0] += direction_y[D]
-    snake[1] += direction_x[D]
-    new = [snake[0],snake[1]]
-    queue.appendleft(new)
+#     snake[0] += direction_y[D]
+#     snake[1] += direction_x[D]
+#     new = [snake[0],snake[1]]
+#     if (snake[0] == n or snake[0] < 0 or snake[1] == n or snake[1] < 0) or (snake in queue):
+#         break
+#     queue.appendleft(new)
 
-    if table[snake[0]][snake[1]] == 1:
-        table[snake[0]][snake[1]] = 0
-    else:
-        queue.pop()
 
-    if len(time_queue) > 0:
-        if time_queue[0][0] == time_count:
-            if time_queue[0][1] == 'D':
-                D += 1
-                if D == 4:
-                    D = 0
+#     if table[snake[0]][snake[1]] == 1:
+#         table[snake[0]][snake[1]] = 0
+#     else:
+#         queue.pop()
+
+#     if len(time_queue) > 0:
+#         if time_queue[0][0] == time_count:
+#             if time_queue[0][1] == 'D':
+#                 D += 1
+#                 if D == 4:
+#                     D = 0
+#             else:
+#                 D -= 1
+#                 if D == -1:
+#                     D = 3
+#             time_queue.popleft()
+
+# print(time_count)
+
+'''
+1회차 >> 우선순위 큐를 이용하여 정답판정을 받았다. line 240 의 break 처리 위치를 잘 생각하고 위치시켰으면 더 빨리 풀었을 것.
+'''
+
+
+
+###############################################################################################################
+############################################  Q12 _ 기둥과 보 설치  ###########################################
+###############################################################################################################
+'''
+Given ) 2차원 가상 벽면에 기둥과보를 이용한 구조물을 설치하고자 하며 기둥과 보는 길이가 1 인 선분으로 표현되며 다음과 같은 규칙을 따른다.
+        1. 기둥은 바닥 위에 있거나, 보의 한쪽끝, 혹은 다른 기둥 위에 있어야한다.
+        2. 보는 한쪽 끝이 기둥 위에 있거나, 양쪽 끝 부분이 다른 보와 동시에 연결되어야 한다.
+        여기서 벽면은 N*N 의 정사각 격자형태이며 맨 처음에는 비어있는 상태이다.
+
+Input ) N 은 5<= N <= 100 의 자연수 buildFrame 의 세로길이(주어지는 데이터 갯수) 는 1이상 1,000 이하이며 buildFrame 의 가로길이는 4 로
+        (x,y,a,b) 로 주어진다. 여기서 x,y 는 구조물을 설치할 좌표이며, a는 구조물의 종류( 0: 기둥, 1: 보 )이며, b는 설치(1) 혹은 삭제(1) 여부이다.
+        여기서 구조물은 무조건 보의 경우 기준점으로부터 오른쪽으로 기둥은 기준점으로부터 위로 설치 혹은 삭제한다.
+
+Output) Ourput 은 아래 규칙에 따른다.
+        return되는 배열은 다음과 같이 데이터를 담는다 (x,y,a) x,y좌표와 a: 기둥(0) 인지, 보(1) 인지
+        또한 Input과 같이 x,y 는 교차점의 위치이며, 기둥과 보는 교차점을 기준으로 위로 혹은 오른쪽으로 뻗는다.
+
+'''
+
+Given = [[0,0,0,1],[2,0,0,1],[4,0,0,1],[0,1,1,1],[1,1,1,1],[2,1,1,1],[3,1,1,1],[2,0,0,0],[1,1,1,0],[2,2,0,1]]
+Output = [[0,0,0],[0,1,1],[1,1,1],[2,1,1],[3,1,1],[4,0,0]]
+
+N = 10
+table = [[0]*N for _ in range(N)]
+
+# table[y][x] 값이 1 일경우 기둥 2 일경우 보 3 일경우 둘 다
+
+def check(table,x,y,a): #빼고자 하는 객체가 지지해주는 포인트에서 체크해보자
+
+    if a == 0: # 기둥은 바닥 위에 있거나, 보의 한쪽끝, 혹은 다른 기둥 위에 있어야한다.
+        if table[y+1][x] == 1: # 뺄 수 없음 1. 기둥 끝에 또다른 기둥이 있다
+            return False
+        else:
+            # 뺄 수 없음 2. 기둥위의 보 2-1) 보끼리 연결되어있지 않다면 false
+            if table[y+1][x-1] >=2 and table[y+1][x+1] >=2:
+                return True
+            return False
+    else: # 보는 한쪽 끝이 기둥 위에 있거나, 양쪽 끝 부분이 다른 보와 동시에 연결되어야 한다.
+        if table[y][x]%2 == 1:
+            
+
+            
+
+    
+    return True
+
+
+
+# print(table)
+
+for i in Given:
+    if i[3] == 1:
+        x,y = i[0],i[1]
+        if i[2] == 1:
+            if table[y-1][x]%2 == 1 or (table[y][x-1] >=2 and table[y][x+1] >= 2):
+                table[y][x] +=2
             else:
-                D -= 1
-                if D == -1:
-                    D = 3
-            time_queue.popleft()
+                continue
 
-    if (snake[0] == n or snake[0] < 0 or snake[1] == n or snake[1] < 0):
-        break
-
-
-
-print(time_count)
+        else:
+            if table[y-1][x] >= 1 or y == 0 or table[y][x-1] >=2:
+                table[y][x] +=1
+            else:
+                continue
+    
