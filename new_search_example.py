@@ -1,4 +1,3 @@
-from _typeshed import SupportsReadline
 from collections import deque
 import typing_extensions
 
@@ -271,6 +270,7 @@ Output) 게임이 몇초 뒤에 끝나는지 출력하라.
 ###############################################################################################################
 ############################################  Q12 _ 기둥과 보 설치  ###########################################
 ###############################################################################################################
+
 '''
 Given ) 2차원 가상 벽면에 기둥과보를 이용한 구조물을 설치하고자 하며 기둥과 보는 길이가 1 인 선분으로 표현되며 다음과 같은 규칙을 따른다.
         1. 기둥은 바닥 위에 있거나, 보의 한쪽끝, 혹은 다른 기둥 위에 있어야한다.
@@ -287,49 +287,127 @@ Output) Ourput 은 아래 규칙에 따른다.
 
 '''
 
-Given = [[0,0,0,1],[2,0,0,1],[4,0,0,1],[0,1,1,1],[1,1,1,1],[2,1,1,1],[3,1,1,1],[2,0,0,0],[1,1,1,0],[2,2,0,1]]
-Output = [[0,0,0],[0,1,1],[1,1,1],[2,1,1],[3,1,1],[4,0,0]]
+# # Given = [[0,0,0,1],[2,0,0,1],[4,0,0,1],[0,1,1,1],[1,1,1,1],[2,1,1,1],[3,1,1,1],[2,0,0,0],[1,1,1,0],[2,2,0,1]]
+# Given = [[1,0,0,1],[1,1,1,1],[2,1,0,1],[2,2,1,1],[5,0,0,1],[5,1,0,1],[4,2,1,1],[3,2,1,1]]
+# Output = [[0,0,0],[0,1,1],[1,1,1],[2,1,1],[3,1,1],[4,0,0]]
+# n = 5
+# N = n+1
+# table = [[0]*N for _ in range(N)]
 
-N = 10
-table = [[0]*N for _ in range(N)]
+# def check(table,x,y,a):
+#     beam = 0
 
-# table[y][x] 값이 1 일경우 기둥 2 일경우 보 3 일경우 둘 다
+#     if a == 0: 
+#         if table[y+1][x]%2 == 1: 
+#             if table[y+1][x-1] >= 2 and table[y+1][x+1] >= 2 :
+#                 return True
+#             return False
+#         elif table[y+1][x] == 2:
+#             if table[y+1][x-1] >= 2 and table[y+1][x+1] >= 2:
+#                 return True
+#             return False
 
-def check(table,x,y,a): #빼고자 하는 객체가 지지해주는 포인트에서 체크해보자
+#     elif a == 1:
+#         left,right = table[y][x-1],table[y][x+1]
+#         if left >= 2:
+#             if table[y-1][x-1]%2 == 1 and table[y-1][x]%2 == 1:
+#                 beam +=1
+#             return False
+#         elif right == 1:
+#             if table[y-1][x+1] ==1:
+#                 beam +=1
+#             return False
+        
+#         if beam == 2:
+#             return True
+#         else:
+#             return False
 
-    if a == 0: # 기둥은 바닥 위에 있거나, 보의 한쪽끝, 혹은 다른 기둥 위에 있어야한다.
-        if table[y+1][x] == 1: # 뺄 수 없음 1. 기둥 끝에 또다른 기둥이 있다
+#     return ValueError
+
+
+# for i in Given:
+#     x,y = i[0],i[1]
+#     if i[2] == 1 and i[3] == 1:
+#         if i[2] == 1: #보 조건
+#             if (table[y-1][x]%2 == 1 or table[y-1][x+1]%2 == 1) or (table[y][x-1] ==2 and table[y][x+1] == 2):
+#                 table[y][x] += 2
+#             else:
+#                 continue
+#     elif i[2] == 0 and i[3] == 1: #기둥 조건
+#             if table[y-1][x]%2 == 1 or y == 0 or table[y][x-1] ==2:
+#                 table[y][x] +=1
+#             else:
+#                 continue
+#     elif i[3] == 0:
+#         x,y,a = i[0],i[1],i[2]
+#         if check(table,x,y,a) ==True:
+#             table[y][x] -= a+1
+#         else:
+#             continue
+
+# result = [] 
+# for i in range(N):
+#     for j in range(N):
+#         if 0 < table[i][j] < 3:
+#             x,y,a = j,i,(table[i][j]-1)
+#             result.append([x,y,a])
+#         elif table[i][j] == 3:
+#             x,y,a,b = j,i,(table[i][j]-2),(table[i][j]-1)
+#             result.append([x,y,a])
+#             result.append([x,y,b])
+
+# result.sort()
+
+# print(result)
+'''
+1st )   나의 코드는 너무 조건문이 많이 붙었다. 그리고 단순히 매 입력마다 삭제의 경우 상하좌우만 살폈는데,
+        그렇게 하니 예시 코드는 맞더라도 채점 코드에서는 틀렸다. 아무래도 잘 못 하고있는 것 같아 정답을 보고 다시 코드를 짜보려한다.
+'''
+
+def check(result):
+    for x,y,a in result:
+        if a == 0:
+            if y == 0 or [x,y-1,0] in result or [x,y,1] in result or [x-1,y,1] in result:
+                continue
             return False
-        else:
-            # 뺄 수 없음 2. 기둥위의 보 2-1) 보끼리 연결되어있지 않다면 false
-            if table[y+1][x-1] >=2 and table[y+1][x+1] >=2:
-                return True
+        
+        elif a == 1:
+            if [x,y-1,0] in result or [x+1,y-1,0] in result or ([x+1,y,1] in result and [x-1,y,1] in result):
+                continue
             return False
-    else: # 보는 한쪽 끝이 기둥 위에 있거나, 양쪽 끝 부분이 다른 보와 동시에 연결되어야 한다.
-        if table[y][x]%2 == 1:
-            
 
-            
 
-    
     return True
 
-
-
-# print(table)
+Given = [[0,0,0,1],[2,0,0,1],[4,0,0,1],[0,1,1,1],[1,1,1,1],[2,1,1,1],[3,1,1,1],[2,0,0,0],[1,1,1,0],[2,2,0,1]]
+result = []
 
 for i in Given:
-    if i[3] == 1:
-        x,y = i[0],i[1]
-        if i[2] == 1:
-            if table[y-1][x]%2 == 1 or (table[y][x-1] >=2 and table[y][x+1] >= 2):
-                table[y][x] +=2
-            else:
-                continue
+    x,y,a,b = i
+    if b == 1:
+        result.append([x,y,a])
+        if not check(result):
+            result.remove([x,y,a])
+    if b == 0:
+        result.remove([x,y,a])
+        if not check(result):
+            result.append([x,y,a])
+            
+result.sort()
 
-        else:
-            if table[y-1][x] >= 1 or y == 0 or table[y][x-1] >=2:
-                table[y][x] +=1
-            else:
-                continue
-    
+print(result)
+
+
+'''
+2회차 ) 위의 방법대로 부분검사가 아닌 전체검사를 시행하니 간단하게 정답처리를 받을 수 있었다.
+        내가 처음 짠 코드보다 거의 1/3수준으로 짧은 코드지만 정답처리를 받았다. 다음에 다시풀 땐 더 간결하게 짜보자
+'''
+
+
+
+
+###############################################################################################################
+##############################################  Q12 _ 치킨 배달  ##############################################
+###############################################################################################################
+
