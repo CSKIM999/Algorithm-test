@@ -1,6 +1,6 @@
 from collections import deque
 from functools import partial
-
+from itertools import combinations
 # array = [5,7,9,0,3,1,6,2,4,8]
 # end = len(array)-1
 # right = end
@@ -85,5 +85,18 @@ Output) 요구 정답 출력
 #     k_map.append((a,b))
 # print(k_map)
 
+N,m = 5,3
+kfc,house = [],[]
+Input = [[0,0,1,0,0],[0,0,2,0,1],[0,1,2,0,0],[0,0,1,0,0],[0,0,0,0,2]]
+for i in range(N):
+    for j in range(N):
+        if Input[j] == 1:
+            house.append([i,j])
+        elif Input[j] == 2:
+            kfc.append([i,j])
 
-print(2%2)
+c = list(combinations(kfc,m))
+
+print(c)
+# for i,j in enumerate(range(3,-1,-1)):
+#     print(i,j)

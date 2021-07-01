@@ -365,38 +365,38 @@ Output) Ourput 은 아래 규칙에 따른다.
         그렇게 하니 예시 코드는 맞더라도 채점 코드에서는 틀렸다. 아무래도 잘 못 하고있는 것 같아 정답을 보고 다시 코드를 짜보려한다.
 '''
 
-def check(result):
-    for x,y,a in result:
-        if a == 0:
-            if y == 0 or [x,y-1,0] in result or [x,y,1] in result or [x-1,y,1] in result:
-                continue
-            return False
+# def check(result):
+#     for x,y,a in result:
+#         if a == 0:
+#             if y == 0 or [x,y-1,0] in result or [x,y,1] in result or [x-1,y,1] in result:
+#                 continue
+#             return False
         
-        elif a == 1:
-            if [x,y-1,0] in result or [x+1,y-1,0] in result or ([x+1,y,1] in result and [x-1,y,1] in result):
-                continue
-            return False
+#         elif a == 1:
+#             if [x,y-1,0] in result or [x+1,y-1,0] in result or ([x+1,y,1] in result and [x-1,y,1] in result):
+#                 continue
+#             return False
 
 
-    return True
+#     return True
 
-Given = [[0,0,0,1],[2,0,0,1],[4,0,0,1],[0,1,1,1],[1,1,1,1],[2,1,1,1],[3,1,1,1],[2,0,0,0],[1,1,1,0],[2,2,0,1]]
-result = []
+# Given = [[0,0,0,1],[2,0,0,1],[4,0,0,1],[0,1,1,1],[1,1,1,1],[2,1,1,1],[3,1,1,1],[2,0,0,0],[1,1,1,0],[2,2,0,1]]
+# result = []
 
-for i in Given:
-    x,y,a,b = i
-    if b == 1:
-        result.append([x,y,a])
-        if not check(result):
-            result.remove([x,y,a])
-    if b == 0:
-        result.remove([x,y,a])
-        if not check(result):
-            result.append([x,y,a])
+# for i in Given:
+#     x,y,a,b = i
+#     if b == 1:
+#         result.append([x,y,a])
+#         if not check(result):
+#             result.remove([x,y,a])
+#     if b == 0:
+#         result.remove([x,y,a])
+#         if not check(result):
+#             result.append([x,y,a])
             
-result.sort()
+# result.sort()
 
-print(result)
+# print(result)
 
 
 '''
@@ -410,4 +410,62 @@ print(result)
 ###############################################################################################################
 ##############################################  Q12 _ 치킨 배달  ##############################################
 ###############################################################################################################
+'''
+Given ) 도시의 크기 N*N 에서 각 1*1 크기의 칸으로 나누어져있다. 각 칸은 빈칸, 집 혹은 치킨집이다.
+        좌표는 (r,c) 로 주어지며 위에서 r번째 칸, 왼쪽에서 c 번째 칸을 의미한다.
+        ** 치킨거리 : 집과 가장 가까운 치킨집 사이의 거리.
+        각각의 집은 치킨거리를 가지며, 도시의 치킨거리는 모든 집의 치킨거리의 합이다.
+        도시의 치킨거리값이 최소가 되는 도시 내의 치킨집 중 최대 M 개를 고르고 나머지는 폐업시키고자 한다. 
 
+Input ) 첫째 줄에 N(2<= N <=50) 과 M(1<= M <= 13) 이 주어진다
+        둘째 줄 부터는 도시의 정보가 주어진다.
+        도시의 정보는 0,1,2 로 주어지고 0 은 빈칸 1 은 집 2 는 치킨집이다. 집의 개수는 2N 을 넘지 않고 최소 1개 이상 존재한다
+
+Output) 치킨집을 최대 M 개 골랐을 때 도시의 치킨거리 최솟값 출력
+
+'''
+N,M = map(int,input().split(' '))
+Input = []
+kfc,house = [],[]
+# Input = [[0,0,1,0,0],[0,0,2,0,1],[0,1,2,0,0],[0,0,1,0,0],[0,0,0,0,2]]
+
+# table = [[0]*N for _ in range(N)]
+# print(table)
+for i in range(N):
+    Input = list(map(int,input().split()))
+
+    for j in range(N):
+        if Input[j] == 1:
+            house.append([i,j])
+        elif Input[j] == 2:
+            kfc.append([i,j])
+index = 0
+result = 0
+print(kfc,house)
+while kfc != M:
+    index +=1
+
+    for x,y in kfc:
+        check_list = [] 
+
+        for i,j in enumerate(range(index,-1,-1)):
+            if i == 0:
+                check_list.append([x-i,y-j])
+                check_list.append([x-i,y+j])
+            elif j == 0:
+                check_list.append([x+i,y-j])
+                check_list.append([x-i,y+j])
+            else:
+                check_list.append([x-i,y-j])
+                check_list.append([x-i,y+j])
+                check_list.append([x+i,y-j])
+                check_list.append([x+i,y+j])
+
+        for i in check_list:
+            if i in house:
+                house.remove(i)
+                result += index
+    if len(house) == 0:
+        break
+
+print(result)
