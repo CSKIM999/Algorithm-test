@@ -424,48 +424,61 @@ Input ) 첫째 줄에 N(2<= N <=50) 과 M(1<= M <= 13) 이 주어진다
 Output) 치킨집을 최대 M 개 골랐을 때 도시의 치킨거리 최솟값 출력
 
 '''
+
+from itertools import combinations
+
+
 N,M = map(int,input().split(' '))
 Input = []
 kfc,house = [],[]
+# N,M = 5,3
 # Input = [[0,0,1,0,0],[0,0,2,0,1],[0,1,2,0,0],[0,0,1,0,0],[0,0,0,0,2]]
 
-# table = [[0]*N for _ in range(N)]
-# print(table)
 for i in range(N):
     Input = list(map(int,input().split()))
 
     for j in range(N):
         if Input[j] == 1:
+        # if Input[i][j] == 1:
             house.append([i,j])
         elif Input[j] == 2:
+        # elif Input[i][j] == 2:
             kfc.append([i,j])
-index = 0
-result = 0
-print(kfc,house)
-while kfc != M:
-    index +=1
 
-    for x,y in kfc:
-        check_list = [] 
+kfc = list(combinations(kfc,M))
+result = 1e9
+dif = 0
 
-        for i,j in enumerate(range(index,-1,-1)):
-            if i == 0:
-                check_list.append([x-i,y-j])
-                check_list.append([x-i,y+j])
-            elif j == 0:
-                check_list.append([x+i,y-j])
-                check_list.append([x-i,y+j])
-            else:
-                check_list.append([x-i,y-j])
-                check_list.append([x-i,y+j])
-                check_list.append([x+i,y-j])
-                check_list.append([x+i,y+j])
+for branch in kfc:        # 경우의 수 분배
+    dif = 0
+    check = []
+    index = 1
 
-        for i in check_list:
-            if i in house:
-                house.remove(i)
-                result += index
-    if len(house) == 0:
-        break
+    while len(check) != len(house):
+        index +=1
+        for x,y in branch:        #분배 된 경우의 수 내의 치킨집 좌표
+            check_list = [] 
+            for i in range(index):        #인덱스(치킨거리) 를 늘려가며 해당 경우의 수에서의 최소 치킨거리 반환
+                for j in range(-index+2,1):
+                    if i == 0 and j == 0:
+                        continue
+                    elif i == 0:
+                        check_list.append([index-1,x,y-j])
+                        check_list.append([index-1,x,y+j])
+                    elif j == 0:
+                        check_list.append([index-1,x+i,y])
+                        check_list.append([index-1,x-i,y])
+                    else:
+                        check_list.append([index-1,x-i,y-j])
+                        check_list.append([index-1,x-i,y+j])
+                        check_list.append([index-1,x+i,y-j])
+                        check_list.append([index-1,x+i,y+j])
+
+            for i,x,y in check_list:
+                if [x,y] in house and [x,y] not in check:
+                    check.append([x,y])
+                    dif += i
+        
+    result = min(result,dif)
 
 print(result)

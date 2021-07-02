@@ -90,13 +90,15 @@ kfc,house = [],[]
 Input = [[0,0,1,0,0],[0,0,2,0,1],[0,1,2,0,0],[0,0,1,0,0],[0,0,0,0,2]]
 for i in range(N):
     for j in range(N):
-        if Input[j] == 1:
+        if Input[i][j] == 1:
             house.append([i,j])
-        elif Input[j] == 2:
+        elif Input[i][j] == 2:
             kfc.append([i,j])
 
-c = list(combinations(kfc,m))
+print(kfc)
 
-print(c)
+c = list(combinations(kfc,1))
+
+print(1e9)
 # for i,j in enumerate(range(3,-1,-1)):
 #     print(i,j)
