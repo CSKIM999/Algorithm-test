@@ -85,20 +85,24 @@ Output) 요구 정답 출력
 #     k_map.append((a,b))
 # print(k_map)
 
-N,m = 5,3
-kfc,house = [],[]
-Input = [[0,0,1,0,0],[0,0,2,0,1],[0,1,2,0,0],[0,0,1,0,0],[0,0,0,0,2]]
-for i in range(N):
-    for j in range(N):
-        if Input[i][j] == 1:
-            house.append([i,j])
-        elif Input[i][j] == 2:
-            kfc.append([i,j])
+# N,m = 5,3
+# kfc,house = [],[]
+# Input = [[0,0,1,0,0],[0,0,2,0,1],[0,1,2,0,0],[0,0,1,0,0],[0,0,0,0,2]]
+# for i in range(N):
+#     for j in range(N):
+#         if Input[i][j] == 1:
+#             house.append([i,j])
+#         elif Input[i][j] == 2:
+#             kfc.append([i,j])
 
-print(kfc)
+# print(kfc)
 
-c = list(combinations(kfc,1))
+# c = list(combinations(kfc,1))
 
-print(1e9)
-# for i,j in enumerate(range(3,-1,-1)):
+# print(1e9)
+# # for i,j in enumerate(range(3,-1,-1)):
 #     print(i,j)
+index = 2
+for i in range(index):
+    for j in range(-index+1,0):
+        print(i,j)
