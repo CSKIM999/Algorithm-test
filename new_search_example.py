@@ -431,8 +431,6 @@ from itertools import combinations
 N,M = map(int,input().split(' '))
 Input = []
 kfc,house = [],[]
-# N,M = 5,3
-# Input = [[0,0,1,0,0],[0,0,2,0,1],[0,1,2,0,0],[0,0,1,0,0],[0,0,0,0,2]]
 
 for i in range(N):
     Input = list(map(int,input().split()))
@@ -444,41 +442,72 @@ for i in range(N):
         elif Input[j] == 2:
         # elif Input[i][j] == 2:
             kfc.append([i,j])
-
 kfc = list(combinations(kfc,M))
+
+def get_sum(chicken):
+    result = 0
+    for hx,hy in house:
+        temp = 1e9
+        for x,y in chicken:
+            temp = min(temp,abs(hx-x)+abs(hy-y))
+        result += temp
+    return result
 result = 1e9
 dif = 0
 
-for branch in kfc:        # 경우의 수 분배
-    dif = 0
-    check = []
-    index = 1
-
-    while len(check) != len(house):
-        index +=1
-        for x,y in branch:        #분배 된 경우의 수 내의 치킨집 좌표
-            check_list = [] 
-            for i in range(index):        #인덱스(치킨거리) 를 늘려가며 해당 경우의 수에서의 최소 치킨거리 반환
-                for j in range(-index+2,1):
-                    if i == 0 and j == 0:
-                        continue
-                    elif i == 0:
-                        check_list.append([index-1,x,y-j])
-                        check_list.append([index-1,x,y+j])
-                    elif j == 0:
-                        check_list.append([index-1,x+i,y])
-                        check_list.append([index-1,x-i,y])
-                    else:
-                        check_list.append([index-1,x-i,y-j])
-                        check_list.append([index-1,x-i,y+j])
-                        check_list.append([index-1,x+i,y-j])
-                        check_list.append([index-1,x+i,y+j])
-
-            for i,x,y in check_list:
-                if [x,y] in house and [x,y] not in check:
-                    check.append([x,y])
-                    dif += i
-        
-    result = min(result,dif)
+for chicken in kfc:
+    result = min(result,get_sum(chicken))
 
 print(result)
+
+# for branch in kfc:        # 경우의 수 분배
+#     dif = 0
+#     check = []
+#     index = 1
+
+#     while len(check) != len(house):
+#         index +=1
+#         for x,y in branch:        #분배 된 경우의 수 내의 치킨집 좌표
+#             check_list = [] 
+
+#             for i in range(index): #x
+#                 for j in range(-index+1,i): #y
+#                     if i == 0 and j == 0:
+#                         continue
+#                     elif i == index-1:
+#                         pass
+#                     elif i == 0:
+#                         check_list.append([index-1,x,y+j])
+#                         check_list.append([index-1,x,y-j])
+#                     elif j == 0:
+
+
+
+                        
+#             # for i in range(index):        #인덱스(치킨거리) 를 늘려가며 해당 경우의 수에서의 최소 치킨거리 반환
+#             #     for j in range(-index+2,1):
+#             #         if i == 0 and j == 0:
+#             #             continue
+#             #         elif i == 0:
+#             #             check_list.append([index-1,x,y-j])
+#             #             check_list.append([index-1,x,y+j])
+#             #         elif j == 0:
+#             #             check_list.append([index-1,x+i,y])
+#             #             check_list.append([index-1,x-i,y])
+#             #         else:
+#             #             check_list.append([index-1,x-i,y-j])
+#             #             check_list.append([index-1,x-i,y+j])
+#             #             check_list.append([index-1,x+i,y-j])
+#             #             check_list.append([index-1,x+i,y+j])
+
+#             for i,x,y in check_list:
+#                 if [x,y] in house and [x,y] not in check:
+#                     check.append([x,y])
+#                     dif += i
+        
+#     result = min(result,dif)
+
+# print(result)
+'''
+1회차 ) 실패. 이유는 좌표에 대한 이해부족. 두 좌표의 xy값을 뺀 뒤 더하면 거리가 나오는것인데 모든 좌표를 확인하려했음.
+'''

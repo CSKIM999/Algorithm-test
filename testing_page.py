@@ -103,6 +103,6 @@ Output) 요구 정답 출력
 # # for i,j in enumerate(range(3,-1,-1)):
 #     print(i,j)
 index = 2
-for i in range(index):
-    for j in range(-index+1,0):
+for i in range(index): #x
+    for j in range(-index+1,1):
         print(i,j)
