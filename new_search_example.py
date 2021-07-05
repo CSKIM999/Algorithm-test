@@ -408,7 +408,7 @@ Output) Ourput 은 아래 규칙에 따른다.
 
 
 ###############################################################################################################
-##############################################  Q12 _ 치킨 배달  ##############################################
+##############################################  Q13 _ 치킨 배달  ##############################################
 ###############################################################################################################
 '''
 Given ) 도시의 크기 N*N 에서 각 1*1 크기의 칸으로 나누어져있다. 각 칸은 빈칸, 집 혹은 치킨집이다.
@@ -425,40 +425,40 @@ Output) 치킨집을 최대 M 개 골랐을 때 도시의 치킨거리 최솟값
 
 '''
 
-from itertools import combinations
+# from itertools import combinations
 
 
-N,M = map(int,input().split(' '))
-Input = []
-kfc,house = [],[]
+# N,M = map(int,input().split(' '))
+# Input = []
+# kfc,house = [],[]
 
-for i in range(N):
-    Input = list(map(int,input().split()))
+# for i in range(N):
+#     Input = list(map(int,input().split()))
 
-    for j in range(N):
-        if Input[j] == 1:
-        # if Input[i][j] == 1:
-            house.append([i,j])
-        elif Input[j] == 2:
-        # elif Input[i][j] == 2:
-            kfc.append([i,j])
-kfc = list(combinations(kfc,M))
+#     for j in range(N):
+#         if Input[j] == 1:
+#         # if Input[i][j] == 1:
+#             house.append([i,j])
+#         elif Input[j] == 2:
+#         # elif Input[i][j] == 2:
+#             kfc.append([i,j])
+# kfc = list(combinations(kfc,M))
 
-def get_sum(chicken):
-    result = 0
-    for hx,hy in house:
-        temp = 1e9
-        for x,y in chicken:
-            temp = min(temp,abs(hx-x)+abs(hy-y))
-        result += temp
-    return result
-result = 1e9
-dif = 0
+# def get_sum(chicken):
+#     result = 0
+#     for hx,hy in house:
+#         temp = 1e9
+#         for x,y in chicken:
+#             temp = min(temp,abs(hx-x)+abs(hy-y))
+#         result += temp
+#     return result
+# result = 1e9
+# dif = 0
 
-for chicken in kfc:
-    result = min(result,get_sum(chicken))
+# for chicken in kfc:
+#     result = min(result,get_sum(chicken))
 
-print(result)
+# print(result)
 
 # for branch in kfc:        # 경우의 수 분배
 #     dif = 0
@@ -511,3 +511,31 @@ print(result)
 '''
 1회차 ) 실패. 이유는 좌표에 대한 이해부족. 두 좌표의 xy값을 뺀 뒤 더하면 거리가 나오는것인데 모든 좌표를 확인하려했음.
 '''
+
+
+###############################################################################################################
+##############################################  Q14 _ 외벽 점검  ##############################################
+###############################################################################################################
+
+'''
+Given ) 레스토랑의 취약 외벽을 점검하고자 한다. 점검 시간은 1시간으로 제한되며, 최소한의 친구를 보내 외벽을 점검하고
+        나머지는 공사를 돕는다. 레스토랑의 정북방향을 0 으로 두고 취약지점은 시계방향으로 떨어진 거리로 나타낸다
+        친구들은 외벽을 따라 시계, 또는 반시계 방향으로 외벽을 따라 움직인다.
+
+Input ) 외벽의 길이 n (1 <= n <= 200 의 자연수)
+        1<= len(weak) <=15
+        -> 취약점의 위치는 중복되지 않는다
+        -> 취약점의 위치는 오름차순으로 주어진다
+        -> weak 의 원소는 0 이상  n-1 이하의 정수다
+        
+        1<= len(dist) <= 8
+        ->dist의 원소는 1이상 100이하의 자연수이다.
+        
+        친구들을 모두 투입해도 점검할 수 없을 땐 -1 을 return 하라
+
+Output) 외벽점검을 위한 최소인원 return
+'''
+n = 12
+weak = [1,5,6,10]
+dist = [1,2,3,4]
+
