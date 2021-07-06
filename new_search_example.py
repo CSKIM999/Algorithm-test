@@ -535,7 +535,99 @@ Input ) 외벽의 길이 n (1 <= n <= 200 의 자연수)
 
 Output) 외벽점검을 위한 최소인원 return
 '''
-n = 12
-weak = [1,5,6,10]
-dist = [1,2,3,4]
 
+'''
+이 문제는 주어진 조건에서 weak, dist 리스트가 확실히 짧다는것을 알 수 있다. 이는 완전탐색으로 접근하기에 매우 유리하다
+문제에서 구하고자 하는 답은 '투입해야하는 친구의 수' 이다. 따라서 모든 친구를 무작위로 나열하는 모든 순열을 구하고(Permutations)
+각 리스트별로 비교하여 최소 몇명 배치 시 모두 확인할 수 있는지 구하면 된다.
+
+또한 이와같은 원형 배열문제는 해당 배열을 2배로 늘려 직선으로 만들면 더욱 쉽게 접근할 수 있다.
+'''
+
+# from itertools import permutations
+
+# n = 12
+# weak = [1,5,6,10]
+# dist = [1,2,3,4]
+
+# def solution(n,weak,dist):
+#     length = len(weak)
+
+#     for i in range(length):
+#         weak.append(weak[i] + n)  
+
+#     answer = len(dist) + 1
+
+#     for start in range(length): 
+#         for friends in list(permutations(dist, len(dist))): 
+#             count = 1 
+#             position = weak[start] + friends[count - 1] 
+
+#             for index in range(start, start + length):
+
+#                 if position < weak[index]:
+#                     count += 1
+#                     if count > len(dist):
+#                         break
+#                     position = weak[index] + friends[count-1]
+
+#             answer = min(answer,count)
+
+#     if answer > len(dist):
+#         return -1
+#     return answer
+
+# print(solution(n,weak,dist))
+
+
+'''
+1회차 > 아예 손도못댔다 구현 구상부터 구현까지 하다못해 있는 코드마저도 제대로 못써서 틀렸다.
+'''
+
+
+
+###############################################################################################################
+########################################  Q15 _ 특정 거리의 도시 찾기  ########################################
+###############################################################################################################
+'''
+Given ) 어느 나라에는 1~N 번까지의 도시와 M 개의 단방향 도로가 존재하며 각 도로의 거리는 1이다.
+        여기서 특정 도시 X 를 출발하여 도달할 수 있는 모든 도시중에서, 최단거리가 정확히 K인 모든 도시의 번호를
+        출력하는 프로그램을 작성하시오. 또한 출발도시 X 에서 다시 출발도시 X 로 가는 최단거리는 0 으로 가정한다.
+
+Input ) 첫째 줄에 도시의 개수 N, 도로의 개수 M, 거리 정보 K, 출발도시의 번호 X 가 주어진다.
+        둘째 줄 부터는 M 개의 줄에 걸쳐 두 개의 자연수 A,B 가 주어지며 A 도시에서 B 도시로 가는 단방향 도로가 존재한다는 의미
+        단 A 와 B 는 항상 다른 자연수이다.
+
+Output) X 로 부터 출발하여 도달할 수 있는 도시 중에서, 최단거리가 K 인 모든 도시의 번호를 한줄에 하나씩 오름차순으로 출력
+        만약 최단거리가 K 인 도시가 존재하지 않는다면 -1 반환출력
+
+
+1회차 ) 모든 노드에서 모든 노드까지의 거리를 구하는 플로이드 워셜 알고리즘은 O(N^3) 인데 N 의개수가 최대 300,000 이므로
+        900조에 가까운 데이터가 나올 수 있으므로 제외한다.
+        우선순위 큐를 이용한 경로탐색을 해보고자 한다.
+'''
+
+from collections import deque
+
+N = 4
+M = 4
+K = 2
+X = 1
+dist = [0]*N
+queue = deque([X])
+data = [(),(2,3),(3,4),(),()]
+count = 1
+D = []
+
+for i in data[X]:
+    queue.append(i)
+    D.append(i)
+dist[X] = D
+print(dist)
+# while len(queue) != 0:
+#     X = queue.popleft()
+#     count +=1
+
+#     for i in data[X]:
+#         queue.append(i)
+#         dist[i].append(i)
