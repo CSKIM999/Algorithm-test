@@ -1,4 +1,5 @@
 from collections import deque
+from functools import partial
 import typing_extensions
 
 ############################################  Q7 _ 럭키 스트레이트  ############################################
@@ -608,26 +609,33 @@ Output) X 로 부터 출발하여 도달할 수 있는 도시 중에서, 최단�
 '''
 
 from collections import deque
-
-N = 4
-M = 4
-K = 2
-X = 1
-dist = [0]*N
+N,M,K,X = map(int, input().split())
+data = [[] for _ in range(N+1)]
+dist = [1e9]*(N+1)
+dist[X] = 0
+hist,answer = [],[]
 queue = deque([X])
-data = [(),(2,3),(3,4),(),()]
-count = 1
-D = []
+for i in range(M):
+    a,b = list(map(int,input().split()))
+    data[a].append(b)
 
-for i in data[X]:
-    queue.append(i)
-    D.append(i)
-dist[X] = D
-print(dist)
-# while len(queue) != 0:
-#     X = queue.popleft()
-#     count +=1
+while len(queue) != 0:
+    X = queue.popleft()
+    for i in data[X]:
+        if i not in hist:
+            hist.append(i)
+            queue.append(i)
+            dist[i] = min(dist[i],dist[X]+1)
+            if dist[i] == K:
+                answer.append(i)
 
-#     for i in data[X]:
-#         queue.append(i)
-#         dist[i].append(i)
+if len(answer) == 0:
+    answer = -1
+
+for i in answer:
+    print(i)
+
+'''
+1회차 ) 풀어본 결과 답은 도출 되나, 시간초과 판정을 받았다. 아무래도 큰 N,M,K 에 맞춰서 코드를 짜지 않아서인 것 같다.
+        그리고 해답 확인결과, 우선순위큐를 사용하는것도 맞았고 나의 계획이 상당히 많이 맞았다.
+'''

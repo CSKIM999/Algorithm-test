@@ -103,6 +103,9 @@ Output) 요구 정답 출력
 # # for i,j in enumerate(range(3,-1,-1)):
 #     print(i,j)
 index = 2
-for i in range(index): #x
-    for j in range(-index+1,1):
-        print(i,j)
+M = 4
+data = [[] for _ in range(M)]
+print(data)
+data[1].append(2)
+data[1].append(3)
+print(data)
