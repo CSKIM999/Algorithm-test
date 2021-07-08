@@ -608,34 +608,65 @@ Output) X 로 부터 출발하여 도달할 수 있는 도시 중에서, 최단�
         우선순위 큐를 이용한 경로탐색을 해보고자 한다.
 '''
 
-from collections import deque
-N,M,K,X = map(int, input().split())
-data = [[] for _ in range(N+1)]
-dist = [1e9]*(N+1)
-dist[X] = 0
-hist,answer = [],[]
-queue = deque([X])
-for i in range(M):
-    a,b = list(map(int,input().split()))
-    data[a].append(b)
+# from collections import deque
+# import sys
+# input = sys.stdin.readline
 
-while len(queue) != 0:
-    X = queue.popleft()
-    for i in data[X]:
-        if i not in hist:
-            hist.append(i)
-            queue.append(i)
-            dist[i] = min(dist[i],dist[X]+1)
-            if dist[i] == K:
-                answer.append(i)
+# N,M,K,X = map(int, input().split())
+# data = [[] for _ in range(N+1)]
+# dist = [-1]*(N+1)
+# dist[X] = 0
+# queue = deque([X])
+# for i in range(M):
+#     a,b = list(map(int,input().split()))
+#     data[a].append(b)
+# check = False
+# while queue:
+#     X = queue.popleft()
+#     for i in data[X]:
+#         if dist[i] == -1:
+#             dist[i] = dist[X]+1
+#             queue.append(i)
+            
+# for i in range(1,N+1):
+#     if dist[i] == K:
+#         print(i)
+#         check = True
 
-if len(answer) == 0:
-    answer = -1
+# if check == False:
+#     print(-1)
 
-for i in answer:
-    print(i)
 
 '''
 1회차 ) 풀어본 결과 답은 도출 되나, 시간초과 판정을 받았다. 아무래도 큰 N,M,K 에 맞춰서 코드를 짜지 않아서인 것 같다.
         그리고 해답 확인결과, 우선순위큐를 사용하는것도 맞았고 나의 계획이 상당히 많이 맞았다.
+
+
+        07/08 ) 다시 해답을 확인해 본 결과 해답과는 큰 차이를 보이지 않았다. 그럼에도 시간초과가 나오고 하다하다 답답해서
+        해답을 그대로 작성했음에도 오답처리를 받았다. 따라서 그 이유를 찾아본 결과, Input의 사용때문이었다.
+
+        반복 입력이 굉장히 많기때문에 단순한 input 으로는 시간초과를 받을 수 밖에 없다. 그 이유는 input() 함수는 input 되는 string을
+        받고 \n 의 개행문자를 제거 한 뒤 return 해주기 때문에 input값이 많은 문제를 풀 땐 입력만으로 그만큼 많은 시간을 소모한다.
+        따라서 이와같이 아주 많은 input 을 가지는 문제는 sys 를 import 해 준 뒤,  input() 함수 대신 sys.stdin.readline() <<s.s.r 이라 칭하겠음>>
+        을 사용해주자 여기서 s.s.r 은 문자열을 개행문자까지 return 해주지만, 어차피 map(int,**)함수를 사용하므로 split() 을 통해
+        map 에 들어온 개행함수는 int 변환 시 사라지고 단순한 정수값만 return 되는 것.
+
+        이런 발견이 나로써는 기쁘다. 아주 작은 발견이지만 나로선 조금이라도 성장한 기분이 든다. 아무튼간에 내 코드는 맞았고 s.s.r의 사용법만
+        제대로 익히자
+'''
+
+
+
+
+###############################################################################################################
+###############################################  Q16 _ 연구소  ################################################
+###############################################################################################################
+'''
+Given ) 연구소의 크기 N*M 이 주어진다 행렬의 각 칸은 빈칸,바이러스 혹은 벽으로 이루어진다
+        바이러스는 상하좌우 인접 행렬로 퍼져나가며, 새로 세울 수 있는 벽의 개수는 3개이며, 꼭 3개롤 세워야한다.
+        0은 빈칸, 1은 벽, 2는 바이러스를 의미한다.
+        먼저 벽이 세워진 뒤 바이러스는 벽으로 격리되지 않은 모든 영역으로 퍼진다. 이후에 빈칸으로 격리되어 남아있는 영역을
+        안전구역으로 지칭하고 안전구역의 최댓값을 구하는 프로그램을 작성하라
+
+Input ) 
 '''
