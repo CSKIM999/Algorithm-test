@@ -673,15 +673,82 @@ Input ) 첫째 줄에는 지도의 세로 크기 N 과 가로 크기 M 이 주�
         빈칸의 개수는 3개 이상
 
 Output) 첫째 줄에 얻을 수 있는 안전구역의 최댓값 출력
+
+1회차 > 주어지는 지도의 크기가 크지 않고, 바이러스의 개수 또한 10개 이하이므로, 처음에는 모든 경우의 수에 벽을 하나씩 세워본 뒤
+        빈칸을 bfs 로 구하다가 2를 만나면 모두 2로 바꾸려고 했다.
+        하지만 다시 생각해보니, 같은 방식으로 2를 bfs 탐색으로 만나는 0 마다 모두 2로 바꿔주고 마지막에 테이블을 검사하여
+        0 의 개수를 세어주면 되는 것 아닌가? 싶어서 해당 방식을 사용해보고자 한다.
+
 '''
-n,m = 7,7
-data = [[2,0,0,0,1,1,0],[0,0,1,0,1,2,0],[0,1,1,0,1,0,0],[0,1,0,0,0,0,0],[0,0,0,0,0,1,1],[0,1,0,0,0,0,0],[0,1,0,0,0,0,0]]
-x = [-1,0,1,0]
-y = [0,1,0,-1]
-def bef(data,h,b):
-    q = deque()
-    for i in range(4):
-        X,Y = x[i],y[i]
-        if -1<b+Y<n and -1<h+X<m:
-            q.append([b+Y,h+X])
-    pass
+# from itertools import combinations
+# from collections import deque
+# import sys
+# input = sys.stdin.readline
+
+# n,m = map(int,input().split())
+# data = [[] for _ in range(n)]
+
+# for i in range(n):
+#     a= list(map(int,input().split()))
+#     data[i].append(a)
+# virus = []
+# empty = []
+# count = 0
+# for i in range(n):
+#     for j in range(m):
+#         if data[i][j] == 2:
+#             virus.append([i,j])
+#         elif data[i][j] == 0:
+#             empty.append([i,j])
+
+# def bfs(data,b,h):
+#     x = [-1,0,1,0]
+#     y = [0,1,0,-1]
+#     q = deque()
+#     q.append([b,h])
+#     while q:
+#         check = False
+#         b,h = q.pop()
+#         for i in range(4):
+#             X,Y = x[i],y[i]
+#             if -1<b+Y<n and -1<h+X<m and (data[b+Y][h+X] !=1 and data[b+Y][h+X] != 2):
+#                 if check == False:
+#                     q.append([b,h])
+#                     check = True
+#                 q.append([b+Y,h+X])
+#                 data[b+Y][h+X] = 2
+#     return data
+
+# options = list(combinations(empty,3))
+# option = [[0,1],[1,0],[3,5]]
+
+# def test(data,option):
+#     count = 0
+#     for i in range(3):
+#         data[option[i][0]][option[i][1]] = 1
+    
+#     for i in virus:
+#         x,y = i[0],i[1]
+#         data = bfs(data,x,y)
+    
+#     for i in range(n):
+#         for j in range(m):
+#             if data[i][j] == 0:
+#                 count+=1
+
+#     return count
+
+# for i in options:
+#     data_prime = [i[:] for i in data]
+#     count = max(count,test(data_prime,i))
+
+# print(count)
+
+'''
+1회차 ) 거의 순수하게 내 구상만으로 문제를 풀어냈다. 해답에서도 비슷한 방향으로 진행되었고
+        무엇보다도, bfs 를 사용한 점과 combination 을 이용한 점이 특별했다.
+        새롭게 배운것은 앞서 배운 sys.stdin.readline 을 이용해서 input 의 시간을 단축시키고
+        검색해서 알게 된 행렬의 전치 deepcopy 메서드를 사용하는것이며, 해당 메서드 사용시
+        약 7.6초가 걸려서 python 시간보정으로 인해 시간제한 8초에 거의 가깝게 해답이 나왔지만,
+        또 새롭게 알게 된 리스트 슬라이싱으로 행렬을 전치하는 방법으로 6초대까지 단축시켰다.
+'''
