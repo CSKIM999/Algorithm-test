@@ -770,10 +770,55 @@ Input ) 첫째 줄에는 자연수 N,K 가 주어지며, 공백으로 구분한�
         마지막줄에는 S,X,Y 가 주어지며, S 초 뒤에 (X,Y) 자리에 무엇이 위치하는지를 알아보는 입력이다.
 
 Output) S초 뒤에 (X,Y) 에 존재하는 바이러스의 종류를 출력하고 만약 없다면 0 을 출력하라.
+
+1회차 ) 큐 없이 단순한 for 문 반복으로 풀어보고자 했음.
+        바로 직전문제와 상당히 비슷해서 비슷한 구현방식을 채택
 '''
-n = 3
-k=3
-K = [i for i in range(1,k+1) ]
-data = [[1,0,2],[0,0,0],[3,0,0]]
-dx = [0,0,-1,1]
-dy = [1,-1,0,0]
+import sys
+input = sys.stdin.readline
+# n = 3
+# K=3
+n,K = map(int,input().split())
+virus = [[] for _ in range(K)]
+data = [[] for _ in range(n)]
+for i in range(n):
+    data[i] = list(map(int,input().split()))
+s,X,Y = map(int,input().split())
+# s = 1
+
+
+# data = [[1,0,2],[0,0,0],[3,0,0]]
+
+for i in range(n):
+    for j in range(n):
+        if data[i][j] != 0:
+            x = data[i][j]
+            virus[x-1] = [[i,j]]
+
+def expand(n,K,data,k):
+    dx = [0,0,-1,1]
+    dy = [1,-1,0,0]
+    for i in range(K):
+        num = len(k[i])
+        for l in range(num):
+            x,y = k[i][l]
+            for j in range(4):
+                nx = x+dx[j]
+                ny = y+dy[j]
+                if -1<nx<n and -1<ny<n:
+                    if data[nx][ny] ==0 and [nx,ny] not in k[i]:
+                        data[nx][ny] = i+1
+                        k[i].append([nx,ny])
+    
+    return data,k
+
+for _ in range(s):
+    data, k =expand(n,K,data,virus)
+print(data[X-1][Y-1])
+
+'''
+1회차 > 큐 없이 구현한 결과, 답은 도출되나 채점결과 시간초과판정을 받음.
+        흔히 이런 경우 시간 단축을 위해 큐를 쓰는데, 해답에서는 큐를 사용한 bfs 를 사용하라고 가이드해주고있음.
+        내일 한번 짜봐야할듯
+        
+'''
