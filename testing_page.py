@@ -1,33 +1,38 @@
-import sys
-from collections import deque
-input = sys.stdin.readline
-
-n,K = map(int,input().split())
-data = [[] for _ in range(n)]
-virus =[]
-for i in range(n):
-    data[i] = list(map(int,input().split()))
-    for j in range(n):
-        if data[i][j] !=0:
-            virus.append([data[i][j],0,i,j])
-s,X,Y = map(int,input().split())
-virus.sort()
-q = deque(virus)
+n = int(input())
+data =[0 for _ in range(n)]
+data = list(map(int,input().split()))
+add,sub,mul,div = list(map(int,input().split()))
 
 
-while q:
-    a,time,x,y = q.popleft()
-    if time == s:
-        break
-    dx = [0,0,-1,1]
-    dy = [1,-1,0,0]
-    for i in range(4):
-        nx = x+dx[i]
-        ny = y+dy[i]
-        if -1<nx<len(data) and -1<ny<len(data):
-            if data[nx][ny] == 0:
-                data[nx][ny] = a
-                q.append([a,time+1,nx,ny])
+min_val = 1e9
+max_val = -1e9
 
+def bfs(i,now):
+    global min_val,max_val,add,sub,mul,div
 
-print(data[X-1][Y-1])
+    if i == n:
+        min_val = min(min_val,now)
+        max_val = max(max_val,now)
+    else:
+        if add >0:
+            add -=1
+            bfs(i+1,now+data[i])
+            add +=1
+        if sub >0:
+            sub -=1
+            bfs(i+1,now-data[i])
+            sub +=1
+        if mul >0:
+            mul -=1
+            bfs(i+1,now*data[i])
+            mul +=1
+        if div >0:
+            div -=1
+            bfs(i+1,int(now/data[i]))
+            div +=1
+    
+    return max_val,min_val
+
+max_val,min_val = bfs(1,data[0])
+print(max_val)
+print(min_val)
