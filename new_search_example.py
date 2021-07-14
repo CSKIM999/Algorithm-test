@@ -1,6 +1,7 @@
+from abc import abstractproperty
 from collections import deque
 from functools import partial
-from typing import AnyStr
+from typing import AnyStr, SupportsRound
 import typing_extensions
 
 ############################################  Q7 _ 럭키 스트레이트  ############################################
@@ -970,42 +971,199 @@ Output) 첫째 줄에는 최댓값 출력
         해답의 알고리즘이 신기해서 이해하는데만 한참 걸렸다.
 '''
 
+# n = input()
+# data =[0 for _ in range(n)]
+# data = list(map(int,input().split()))
+# add,sub,mul,div = list(map(int,input().split))
+
+# min_val = 1e9
+# max_val = -1e9
+
+# def bfs(i,now):
+#     global min_val,max_val,add,sub,mul,div
+
+#     if i == n:
+#         min_val = min(min_val,now)
+#         max_val = max(max_val,now)
+#     else:
+#         if add >0:
+#             add -=1
+#             bfs(i+1,now+data[i])
+#             add +=1
+#         if sub >0:
+#             sub -=1
+#             bfs(i+1,now-data[i])
+#             sub +=1
+#         if mul >0:
+#             mul -=1
+#             bfs(i+1,now*data[i])
+#             mul +=1
+#         if div >0:
+#             div -=1
+#             bfs(i+1,int(now/data[i]))
+#             div +=1
+    
+#     return max_val,min_val
+
+# max_val,min_val = bfs(1,data[0])
+# print(max_val)
+# print(min_val)
+
+
+###############################################################################################################
+############################################   Q20 _ 감시 피하기   ############################################
+###############################################################################################################
+'''
+Given ) N*N행렬 크기의 복도가 주어진다. 각 특정위치에는 선생,학생,장애물이 위치한다.
+        복도에 나온 학생들이 선생의 감시에 들키지 않는것이 목표이다. 선생은 자신의 위치에서 상하좌우 4가지 방향으로 감시를 진행한다.
+        그러나, 만약 장애물로 가로막혀있다면, 그 너머의 학생은 보지 못한다. 우리는 정확히 3개의 장애물을 설치해서
+        선생님의 감시를 피할 수 있는지 출력하는 프로그램을 작성하라.
+
+Input ) 첫째 줄에는 자연수 N (3<= N <= 6) 이 주어진다.
+        둘째 줄에는 N 개의 줄에 걸쳐서 복도의 정보가 주어진다. 각 행에서는 N 개의 원소가 주어지며 각 공백으로 구분된다.
+        해당위치에 학생이 있다면 S, 선생이 있다면 T, 아무것도 존재하지 않으면 X 가 주어진다. 단, 빈칸의 개수는 항상 3 이상이다
+        
+Output) 장애물을 3개만 배치하여 모든 학생을 감시에서 피할 수 있는지 여부를 출력한다.
+
+1회차 > 선생과 학생 사이의 좌표값을 얻고 그 좌표값들로 만든 조합을 순회하며 놓았을때 매번 체크를 하는 방식을 채택함
+        하지만 오답판정을 받음. 조금 더 찬찬히 뜯어봐야할거같음
+
+'''
+
+# from itertools import combinations
+
+
+# available = []
+# n= int(input())
+# data = [[] for _ in range(n)]
+# s,t = [],[]
+# for i in range(n):
+#     data[i] = list(map(str,input().split(' ')))
+#     for j in range(n):
+#         if data[i][j] == 'S':
+#             data[i][j] = 1
+#             s.append([i,j])
+#         elif data[i][j] == 'T':
+#             data[i][j] = 2
+#             t.append([i,j])
+#         else:
+#             data[i][j] = 0
+
+# for i in range(n):
+#     x_true = False
+#     temp = []
+#     for j in range(n):
+#         if data[i][j] != 0 and x_true == False:
+#             x_true = True
+#         elif data[i][j] == 0 and x_true == True:
+#             if [i,j] not in available:
+#                 temp.append([i,j])
+#         elif data[i][j] != 0 and x_true == True:
+#             if len(temp) == 0:
+#                 x_true = False
+#                 continue
+#             available = available +temp
+#             temp = []
+#             x_true = False
+#     true = False
+#     temp = []
+#     for j in range(n):
+#         if data[j][i] != 0 and true == False:
+#             true = True
+#         elif data[j][i] == 0 and true == True:
+#             if [j,i] not in available:
+#                 temp.append([j,i])
+#         elif data[j][i] != 0 and true == True:
+#             if len(temp) == 0:
+#                 true = False
+#                 continue
+#             available = available +temp
+#             temp = []
+#             true = False      
+
+# pos = list(combinations(available,3))
+
+# def check(data,t):
+#     for i in t:
+#         up,down,left,right = True,True,True,True
+#         for j in range(1,n):
+#             x,y = i[0],i[1]
+#             # 상
+#             if -1<x+j<n and up == True:
+#                 if data[x+j][y] == 3:
+#                     up = False
+#                 elif data[x+j][y] == 1:
+#                     return False
+#             # 하
+#             if -1<x-j<n and down == True:
+#                 if data[x-j][y] == 3:
+#                     down = False
+#                 elif data[x-j][y] == 1:
+#                     return False
+#             # 좌
+#             if -1<y-j<n and left == True:
+#                 if data[x][y-j] == 3:
+#                     left = False
+#                 elif data[x][y-j] == 1:
+#                     return False
+#             # 우
+#             if -1<y+j<n and right == True:
+#                 if data[x][y+j] == 3:
+#                     right = False
+#                 elif data[x][y+j] == 1:
+#                     return False
+
+#     return True
+
+# def sol(pos,data,t):
+#     state = False
+#     for a,b,c in pos:
+#         data[a[0]][a[1]],data[b[0]][b[1]],data[c[0]][c[1]] = 3,3,3
+#         if check(data,t) == True:
+#             state = True
+#             print('YES')
+#             break
+#         data[a[0]][a[1]],data[b[0]][b[1]],data[c[0]][c[1]] = 0,0,0
+#     if state == False:
+#         print('NO')
+
+# sol(pos,data,t)
+
+# # # for i in s:
+# # #     x = i[0]
+# # #     y = i[1]
+# # #     for j in range(n):
+# # #         if data[x][j] == 0 and [x,j] not in available:
+# # #             available.append([x,j])
+# # #         if data[j][y] == 0 and [j,y] not in available:
+# # #             available.append([j,y])
+# # # available.sort()
+# # # n_a = list(combinations(available,3))
+# # # print(len(n_a))
+
+
+
+'''
+2회차 >> 
+'''
+
 from itertools import combinations
 
-n = input()
-data =[0 for _ in range(n)]
-data = list(map(int,input().split()))
-add,sub,mul,div = list(map(int,input().split))
 
-min_val = 1e9
-max_val = -1e9
+available = []
+n= int(input())
+data = [[] for _ in range(n)]
+s,t = [],[]
+for i in range(n):
+    data[i] = list(map(str,input().split(' ')))
+    for j in range(n):
+        if data[i][j] == 'S':
+            s.append([i,j])
+        elif data[i][j] == 'T':
+            t.append([i,j])
+        else:
+            data[i][j] = 'X'
 
-def bfs(i,now):
-    global min_val,max_val,add,sub,mul,div
-
-    if i == n:
-        min_val = min(min_val,now)
-        max_val = max(max_val,now)
-    else:
-        if add >0:
-            add -=1
-            bfs(i+1,now+data[i])
-            add +=1
-        if sub >0:
-            sub -=1
-            bfs(i+1,now-data[i])
-            sub +=1
-        if mul >0:
-            mul -=1
-            bfs(i+1,now*data[i])
-            mul +=1
-        if div >0:
-            div -=1
-            bfs(i+1,int(now/data[i]))
-            div +=1
-    
-    return max_val,min_val
-
-max_val,min_val = bfs(1,data[0])
-print(max_val)
-print(min_val)
+for i in range(n):
+    for j in range(n):
+        pass
