@@ -1144,16 +1144,18 @@ Output) 장애물을 3개만 배치하여 모든 학생을 감시에서 피할 �
 
 
 '''
-2회차 >> 
+2회차 > 1회차의 코드에서 해답의 코드 소스를 조금만 빌려와서 다시 작성해보았다. 시간단축을 위해 s 와 t 사이의 빈칸만 받으려했으나,
+        다 받아봐야 1,000 개 언저리이길래 그냥 다 받아서 모든 경우의수를 순회했다.
+        우선 정답판정을 받고 시간도 96ms 밖에 소요하지 않았다. 지금 짜놓고 봐도 왜 어제건 안되고 오늘건 되는지 모르겠다
+        
 '''
 
 from itertools import combinations
 
 
-available = []
 n= int(input())
 data = [[] for _ in range(n)]
-s,t = [],[]
+s,t,el = [],[],[]
 for i in range(n):
     data[i] = list(map(str,input().split(' ')))
     for j in range(n):
@@ -1162,8 +1164,64 @@ for i in range(n):
         elif data[i][j] == 'T':
             t.append([i,j])
         else:
+            el.append([i,j])
             data[i][j] = 'X'
+temp = list(combinations(el,3))
+# n = 3
+# data = [['S','X','X'],['O','X','X'],['T','X','X']]
+# for i in range(n):
+#     for j in range(n):
+#         if data[i][j] == 'S':
+#             s.append([i,j])
+#         elif data[i][j] == 'T':
+#             t.append([i,j])
+#         else:
+#             data[i][j] = 'X'
 
-for i in range(n):
-    for j in range(n):
-        pass
+def detect(data,t):
+    for x,y in t:
+        u,d,l,r = 0,0,0,0
+        while x-u >=0 :
+            if data[x-u][y] == 'S':
+                return False
+            elif data[x-u][y] == 'O':
+                break
+            else:
+                u += 1
+        
+        while x + d < n:
+            if data[x+d][y] == 'S':
+                return False
+            elif data[x+d][y] == 'O':
+                break
+            else:
+                d += 1
+        
+        while y - l >=0:
+            if data[x][y-l] == 'S':
+                return False
+            elif data[x][y-l] == 'O':
+                break
+            else:
+                l += 1
+
+        while y + r < n:
+            if data[x][y+r] == 'S':
+                return False
+            elif data[x][y+r] == 'O':
+                break
+            else:
+                r += 1
+        
+    return True
+ck = False
+for i in temp:
+    for j in range(3):
+        data[i[j][0]][i[j][1]] = 'O'
+    if detect(data,t) == True and ck == False:
+        print('Yes')
+        ck = True
+    for j in range(3):
+        data[i[j][0]][i[j][1]] = 'X'
+if ck == False:
+    print('No')

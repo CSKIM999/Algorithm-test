@@ -1,38 +1,66 @@
-n = int(input())
-data =[0 for _ in range(n)]
-data = list(map(int,input().split()))
-add,sub,mul,div = list(map(int,input().split()))
+from itertools import combinations
 
 
-min_val = 1e9
-max_val = -1e9
+n= int(input())
+data = [[] for _ in range(n)]
+s,t,el = [],[],[]
+for i in range(n):
+    data[i] = list(map(str,input().split(' ')))
+    for j in range(n):
+        if data[i][j] == 'S':
+            s.append([i,j])
+        elif data[i][j] == 'T':
+            t.append([i,j])
+        else:
+            el.append([i,j])
+            data[i][j] = 'X'
+temp = list(combinations(el,3))
 
-def bfs(i,now):
-    global min_val,max_val,add,sub,mul,div
+def detect(data,t):
+    for x,y in t:
+        u,d,l,r = 0,0,0,0
+        while x-u >=0 :
+            if data[x-u][y] == 'S':
+                return False
+            elif data[x-u][y] == 'O':
+                break
+            else:
+                u += 1
+        
+        while x + d < n:
+            if data[x+d][y] == 'S':
+                return False
+            elif data[x+d][y] == 'O':
+                break
+            else:
+                d += 1
+        
+        while y - l >=0:
+            if data[x][y-l] == 'S':
+                return False
+            elif data[x][y-l] == 'O':
+                break
+            else:
+                l += 1
 
-    if i == n:
-        min_val = min(min_val,now)
-        max_val = max(max_val,now)
-    else:
-        if add >0:
-            add -=1
-            bfs(i+1,now+data[i])
-            add +=1
-        if sub >0:
-            sub -=1
-            bfs(i+1,now-data[i])
-            sub +=1
-        if mul >0:
-            mul -=1
-            bfs(i+1,now*data[i])
-            mul +=1
-        if div >0:
-            div -=1
-            bfs(i+1,int(now/data[i]))
-            div +=1
-    
-    return max_val,min_val
+        while y + r < n:
+            if data[x][y+r] == 'S':
+                return False
+            elif data[x][y+r] == 'O':
+                break
+            else:
+                r += 1
+        
+    return True
 
-max_val,min_val = bfs(1,data[0])
-print(max_val)
-print(min_val)
+ck = False
+for i in temp:
+    for j in range(3):
+        data[i[j][0]][i[j][1]] = 'O'
+    if detect(data,t) == True and ck == False:
+        print('YES')
+        ck = True
+    for j in range(3):
+        data[i[j][0]][i[j][1]] = 'X'
+if ck == False:
+    print('NO')
