@@ -1150,78 +1150,111 @@ Output) 장애물을 3개만 배치하여 모든 학생을 감시에서 피할 �
         
 '''
 
-from itertools import combinations
+# from itertools import combinations
 
 
-n= int(input())
-data = [[] for _ in range(n)]
-s,t,el = [],[],[]
-for i in range(n):
-    data[i] = list(map(str,input().split(' ')))
-    for j in range(n):
-        if data[i][j] == 'S':
-            s.append([i,j])
-        elif data[i][j] == 'T':
-            t.append([i,j])
-        else:
-            el.append([i,j])
-            data[i][j] = 'X'
-temp = list(combinations(el,3))
-# n = 3
-# data = [['S','X','X'],['O','X','X'],['T','X','X']]
+# n= int(input())
+# data = [[] for _ in range(n)]
+# s,t,el = [],[],[]
 # for i in range(n):
+#     data[i] = list(map(str,input().split(' ')))
 #     for j in range(n):
 #         if data[i][j] == 'S':
 #             s.append([i,j])
 #         elif data[i][j] == 'T':
 #             t.append([i,j])
 #         else:
+#             el.append([i,j])
 #             data[i][j] = 'X'
+# temp = list(combinations(el,3))
+# # n = 3
+# # data = [['S','X','X'],['O','X','X'],['T','X','X']]
+# # for i in range(n):
+# #     for j in range(n):
+# #         if data[i][j] == 'S':
+# #             s.append([i,j])
+# #         elif data[i][j] == 'T':
+# #             t.append([i,j])
+# #         else:
+# #             data[i][j] = 'X'
 
-def detect(data,t):
-    for x,y in t:
-        u,d,l,r = 0,0,0,0
-        while x-u >=0 :
-            if data[x-u][y] == 'S':
-                return False
-            elif data[x-u][y] == 'O':
-                break
-            else:
-                u += 1
+# def detect(data,t):
+#     for x,y in t:
+#         u,d,l,r = 0,0,0,0
+#         while x-u >=0 :
+#             if data[x-u][y] == 'S':
+#                 return False
+#             elif data[x-u][y] == 'O':
+#                 break
+#             else:
+#                 u += 1
         
-        while x + d < n:
-            if data[x+d][y] == 'S':
-                return False
-            elif data[x+d][y] == 'O':
-                break
-            else:
-                d += 1
+#         while x + d < n:
+#             if data[x+d][y] == 'S':
+#                 return False
+#             elif data[x+d][y] == 'O':
+#                 break
+#             else:
+#                 d += 1
         
-        while y - l >=0:
-            if data[x][y-l] == 'S':
-                return False
-            elif data[x][y-l] == 'O':
-                break
-            else:
-                l += 1
+#         while y - l >=0:
+#             if data[x][y-l] == 'S':
+#                 return False
+#             elif data[x][y-l] == 'O':
+#                 break
+#             else:
+#                 l += 1
 
-        while y + r < n:
-            if data[x][y+r] == 'S':
-                return False
-            elif data[x][y+r] == 'O':
-                break
-            else:
-                r += 1
+#         while y + r < n:
+#             if data[x][y+r] == 'S':
+#                 return False
+#             elif data[x][y+r] == 'O':
+#                 break
+#             else:
+#                 r += 1
         
-    return True
-ck = False
-for i in temp:
-    for j in range(3):
-        data[i[j][0]][i[j][1]] = 'O'
-    if detect(data,t) == True and ck == False:
-        print('Yes')
-        ck = True
-    for j in range(3):
-        data[i[j][0]][i[j][1]] = 'X'
-if ck == False:
-    print('No')
+#     return True
+# ck = False
+# for i in temp:
+#     for j in range(3):
+#         data[i[j][0]][i[j][1]] = 'O'
+#     if detect(data,t) == True and ck == False:
+#         print('Yes')
+#         ck = True
+#     for j in range(3):
+#         data[i[j][0]][i[j][1]] = 'X'
+# if ck == False:
+#     print('No')
+
+
+###############################################################################################################
+#############################################   Q21 _ 인구 이동   #############################################
+###############################################################################################################
+'''
+Given ) 국경선을 공유하는 두 나라의 인구차이가 L 명이상, R 명 이하라면, 해당 국경선을 하루동안 열어준다
+        해당 조건에 의해 열려야 할 국경선이 모두 열린다면, 인구이동이 시작된다
+        국경선이 열려있어, 인접칸만을 이용해 이동이 가능하다면, 그 나라를 하루동안은 연합이라 칭한다.
+        연합을 이룬 각 칸의 인구수는 (연합 인구수) / (연합을 이루는 칸의 개수) 가 된다. 편의상 소수점은 버린다
+        연합을 해체하고, 모든 국경선을 닫는다.
+
+Input ) 첫째 줄에는 N,L,R 이 주어진다. (1 <= N <= 50 , 1 <= (L <= R) <= 100)
+        둘째 줄부터 N 개의 줄에 각 나라의 인구수가 주어진다. r행 c 열에 주어지는 정수는 A[r][C] 의 값입니다.( 0<= A[r][c] <= 100)
+        인구이동이 발생하는 횟수가 2,000보다 작거나 같은 입력만 주어진다.
+
+Output) 인구이동이 몇번 발생하는지 첫째줄에 출력하라
+'''
+
+from collections import deque
+n,l,r = 2,20,50
+data = [[50,30],[20,40]]
+union = []
+union_count = 0
+dx = [0,1,0,-1]
+dy = [1,0,-1,0]
+for i in range(n):
+    for j in range(n):
+        for k in range(4):
+            aa = data[i+dy[k]][j+dx[k]]
+            if l<= abs(data[i][j] - aa) <=r:
+                pass
+                
