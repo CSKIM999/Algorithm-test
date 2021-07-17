@@ -1,7 +1,7 @@
 from abc import abstractproperty
 from collections import deque
 from functools import partial
-from typing import AnyStr, SupportsRound
+from typing import AnyStr, SupportsRound, Union
 import typing_extensions
 
 ############################################  Q7 _ 럭키 스트레이트  ############################################
@@ -1247,14 +1247,39 @@ Output) 인구이동이 몇번 발생하는지 첫째줄에 출력하라
 from collections import deque
 n,l,r = 2,20,50
 data = [[50,30],[20,40]]
-union = []
+union = [[] for _ in range(n*n)]
 union_count = 0
 dx = [0,1,0,-1]
+
 dy = [1,0,-1,0]
+def bfs(data,node,q,temp):
+    temp = []
+    q = deque()
+    dx = [0,1,0,-1]
+    dy = [1,0,-1,0]
+    y,x = node[0],node[1]
+    q.append([y,x])
+    while q:
+        for i in range(4):
+            ny,nx = y+dy[i],x+dx[i]
+            if 0<=ny<=len(data) and 0 <= nx <= len(data):
+                if l <= abs(data[y][x]-data[ny][nx]) <= r:
+                    q.append([ny,nx])
+                pass
+        temp.append(q.popleft())
+
+    
+# data 를 순회
 for i in range(n):
     for j in range(n):
+        if [i,j] not in union[union_count]:
+            union.append([i,j])
+        
+        # 각 노드마다 4방향 확인
         for k in range(4):
-            aa = data[i+dy[k]][j+dx[k]]
-            if l<= abs(data[i][j] - aa) <=r:
-                pass
+            ny,nx = i+dy[k],j+dx[k]
+            if 0<=ny<=n and 0<=nx<=n:
+                aa = data[ny][nx]
+                if l<= abs(data[i][j] - aa) <=r:
+                    q.
                 
