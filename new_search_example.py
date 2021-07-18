@@ -1,6 +1,6 @@
 from abc import abstractproperty
 from collections import deque
-from functools import partial
+from functools import cmp_to_key, partial
 from typing import AnyStr, SupportsRound, Union
 import typing_extensions
 
@@ -1245,41 +1245,63 @@ Output) 인구이동이 몇번 발생하는지 첫째줄에 출력하라
 '''
 
 from collections import deque
-n,l,r = 2,20,50
-data = [[50,30],[20,40]]
+# n,l,r = 2,20,50
+# data = [[50,30],[30,40]]
+n,l,r = map(int,input().split())
+data = [[] for _ in range(n)]
+for i in range(n):
+    data[i] = list(map(int,input().split()))
 union = [[] for _ in range(n*n)]
+cs = []
 union_count = 0
 dx = [0,1,0,-1]
-
 dy = [1,0,-1,0]
-def bfs(data,node,q,temp):
+def bfs(data,node,cs):
     temp = []
-    q = deque()
     dx = [0,1,0,-1]
     dy = [1,0,-1,0]
     y,x = node[0],node[1]
-    q.append([y,x])
+    q = deque([[y,x]])
     while q:
+        [y,x] = q.popleft()
+        temp.append([y,x])
         for i in range(4):
             ny,nx = y+dy[i],x+dx[i]
-            if 0<=ny<=len(data) and 0 <= nx <= len(data):
-                if l <= abs(data[y][x]-data[ny][nx]) <= r:
-                    q.append([ny,nx])
-                pass
-        temp.append(q.popleft())
+            if [ny,nx] not in cs:
+                if 0<=ny<len(data) and 0 <= nx <len(data):
+                    if l <= abs(data[y][x]-data[ny][nx]) <= r:
+                        if [ny,nx] not in temp:
+                            q.append([ny,nx])
 
-    
+    return temp
+
+# print(len(bfs(data,[0,0])))
+
 # data 를 순회
-for i in range(n):
-    for j in range(n):
-        if [i,j] not in union[union_count]:
-            union.append([i,j])
+def openNmove(data,union,union_count):
+    for i in range(n):
+        for j in range(n):
+            if [i,j] not in cs:
+                if len(bfs(data,[i,j],cs)) > 1 :
+                    union[union_count] = bfs(data,[i,j],cs)
+                    for k in union[union_count]:
+                        cs.append(k)
+                    union_count +=1
+    
+    for i in union:
+        if len(i) >1:
+            add = 0
+            for j in i:
+                add += data[j[0]][j[1]]
+            add = int(add/(len(i)))
+            for j in i:
+                data[j[0]][j[1]] = add
+    union = []
+    return data,union,union_count
+
+data,union,union_count = openNmove(data,union,union_count)
+data,union,union_count = openNmove(data,union,union_count)
+# data,union,union_count = openNmove(data,union,union_count)
+# data,union,union_count = openNmove(data,union,union_count)
         
-        # 각 노드마다 4방향 확인
-        for k in range(4):
-            ny,nx = i+dy[k],j+dx[k]
-            if 0<=ny<=n and 0<=nx<=n:
-                aa = data[ny][nx]
-                if l<= abs(data[i][j] - aa) <=r:
-                    q.
-                
+print(data)
