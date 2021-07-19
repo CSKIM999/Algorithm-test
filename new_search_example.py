@@ -1,5 +1,6 @@
 from abc import abstractproperty
 from collections import deque
+import collections
 from functools import cmp_to_key, partial
 from typing import AnyStr, SupportsRound, Union
 import typing_extensions
@@ -1244,64 +1245,190 @@ Input ) 첫째 줄에는 N,L,R 이 주어진다. (1 <= N <= 50 , 1 <= (L <= R) <
 Output) 인구이동이 몇번 발생하는지 첫째줄에 출력하라
 '''
 
-from collections import deque
-# n,l,r = 2,20,50
-# data = [[50,30],[30,40]]
-n,l,r = map(int,input().split())
-data = [[] for _ in range(n)]
-for i in range(n):
-    data[i] = list(map(int,input().split()))
-union = [[] for _ in range(n*n)]
-cs = []
-union_count = 0
-dx = [0,1,0,-1]
-dy = [1,0,-1,0]
-def bfs(data,node,cs):
-    temp = []
-    dx = [0,1,0,-1]
-    dy = [1,0,-1,0]
-    y,x = node[0],node[1]
-    q = deque([[y,x]])
-    while q:
-        [y,x] = q.popleft()
-        temp.append([y,x])
-        for i in range(4):
-            ny,nx = y+dy[i],x+dx[i]
-            if [ny,nx] not in cs:
-                if 0<=ny<len(data) and 0 <= nx <len(data):
-                    if l <= abs(data[y][x]-data[ny][nx]) <= r:
-                        if [ny,nx] not in temp:
-                            q.append([ny,nx])
+# from collections import deque
+# # n,l,r = 2,20,50
+# # data = [[50,30],[30,40]]
+# n,l,r = map(int,input().split())
+# data = [[] for _ in range(n)]
+# for i in range(n):
+#     data[i] = list(map(int,input().split()))
+# union = [[] for _ in range(n*n)]
+# cs = []
+# union_count = 0
+# dx = [0,1,0,-1]
+# dy = [1,0,-1,0]
+# def bfs(data,node,cs):
+#     temp = []
+#     dx = [0,1,0,-1]
+#     dy = [1,0,-1,0]
+#     y,x = node[0],node[1]
+#     q = deque([[y,x]])
+#     while q:
+#         [y,x] = q.popleft()
+#         temp.append([y,x])
+#         for i in range(4):
+#             ny,nx = y+dy[i],x+dx[i]
+#             if [ny,nx] not in cs:
+#                 if 0<=ny<len(data) and 0 <= nx <len(data):
+#                     if l <= abs(data[y][x]-data[ny][nx]) <= r:
+#                         if [ny,nx] not in temp:
+#                             q.append([ny,nx])
 
-    return temp
+#     return temp
 
-# print(len(bfs(data,[0,0])))
+# # print(len(bfs(data,[0,0])))
 
-# data 를 순회
-def openNmove(data,union,union_count):
-    for i in range(n):
-        for j in range(n):
-            if [i,j] not in cs:
-                if len(bfs(data,[i,j],cs)) > 1 :
-                    union[union_count] = bfs(data,[i,j],cs)
-                    for k in union[union_count]:
-                        cs.append(k)
-                    union_count +=1
+# # data 를 순회
+# def openNmove(data,union,union_count):
+#     for i in range(n):
+#         for j in range(n):
+#             if [i,j] not in cs:
+#                 if len(bfs(data,[i,j],cs)) > 1 :
+#                     union[union_count] = bfs(data,[i,j],cs)
+#                     for k in union[union_count]:
+#                         cs.append(k)
+#                     union_count +=1
     
-    for i in union:
-        if len(i) >1:
-            add = 0
-            for j in i:
-                add += data[j[0]][j[1]]
-            add = int(add/(len(i)))
-            for j in i:
-                data[j[0]][j[1]] = add
-    union = []
-    return data,union,union_count
+#     for i in union:
+#         if len(i) >1:
+#             add = 0
+#             for j in i:
+#                 add += data[j[0]][j[1]]
+#             add = int(add/(len(i)))
+#             for j in i:
+#                 data[j[0]][j[1]] = add
+#     union = []
+#     return data,union,union_count
 
-data,union,union_count = openNmove(data,union,union_count)
-data,union,union_count = openNmove(data,union,union_count)
 # data,union,union_count = openNmove(data,union,union_count)
 # data,union,union_count = openNmove(data,union,union_count)
+# # data,union,union_count = openNmove(data,union,union_count)
+# # data,union,union_count = openNmove(data,union,union_count)
         
-print(data)
+# print(data)
+
+'''
+1회차 > 내가 생각해도 좆같이 공부 안했다 제대로좀 하자
+        근데 해답 확인해보니 내 구현방향이 아주 틀리진 않았다?
+'''
+
+# from collections import deque
+# import sys
+# input = sys.stdin.readline
+# n,l,r = map(int,input().split())
+
+# graph = []
+# for _ in range(n):
+#     graph.append(list(map(int,input().split())))
+
+# dx = [-1,0,1,0]
+# dy = [0,-1,0,1]
+
+# result = 0
+
+# def process(x,y,index):
+#     united = []
+#     united.append([x,y])
+#     q = deque()
+#     q.append((x,y))
+#     union[x][y] = index
+#     add = graph[x][y]
+#     union_count = 1
+
+#     while q:
+#         x,y = q.popleft()
+#         for i in range(4):
+#             nx = x+dx[i]
+#             ny = y+dy[i]
+#             if 0<= nx <n and 0 <= ny < n and union[nx][ny] == -1:
+#                 if l <= abs(graph[nx][ny] - graph[x][y]) <= r:
+#                     q.append((nx,ny))
+#                     union[nx][ny] = index
+#                     add += graph[nx][ny]
+#                     union_count +=1
+#                     united.append((nx,ny))
+
+#     for i,j in united:
+#         graph[i][j] = add//union_count
+    
+#     return union_count
+
+# total = 0
+
+# while True:
+#     union = [[-1]*n for _ in range(n)]
+#     index = 0
+#     for i in range(n):
+#         for j in range(n):
+#             if union[i][j] == -1:
+#                 process(i,j,index)
+#                 index +=1
+    
+#     if index == n*n:
+#         break
+#     total +=1
+
+# print(total)
+
+###############################################################################################################
+###########################################   Q22 _ 블록 이동하기  ############################################
+###############################################################################################################
+
+'''
+카카오 공채 LV 3의 문제. 조금 더 경험치를 쌓고 다시풀기로 했다.
+'''
+
+###############################################################################################################
+###############################################   Q23 _ 국영수  ###############################################
+###############################################################################################################
+'''
+Given ) N명의 이름/국어/영어/수학 점수가 주어진다. 주어지는 조건에 따라 성적을 정렬하는 프로그램을 작성하라
+        1. 국어점수가 감소하는 순서로
+        2. 국어점수가 같으면 영어점수가 증가하는 순서로
+        3. 국어와 영어점수가 같으면 수학점수가 감소하는 순서로
+        4. 모든 점수가 같다면, 이름이 사전순으로 증가사는 순서로( 단, 아스키코드에서 대문자는 소문자보다 작으므로 
+            소문자보다 앞으로 옵니다.)
+Input ) 첫째 줄에는 도현이네 반의 학생 수 N(1<= N <= 100,000) 이 주어집니다.
+        둘째 줄부터는 한줄에 하나씩 각 학생의 이름,국어/영어/수학 점수가 공백으로 구분해 주어진다.
+        점수는 1보다 크거나 같고 100보다 작거나 같은 자연수
+        이름은 알파벳 대소문자로 이루어진 문자열이고, 길이는 10자리를 넘지 않는다.
+Output) 문제에 나와있는 정렬기준으로 정렬한 후, 첫째 줄부터 N개의 줄에 걸쳐 학생의 이름 출력
+'''
+# n = 12
+# data = [['Junkyu',50,60,100],['Sangkeun', 80, 60, 50],['Sunyoung',80,70,100],['Soong',50,60,90],['Haebin',50,60,100],['Kangsoo',60,80,100],
+# ['Donghyuk',80,60,100],['Sei',70,70,70],['Wonseob',70,70,90],['Sanghyun',70,70,80],['nsj',80,80,80],['Taewhan',50,60,90]]
+# import sys
+# input = sys.stdin.readline
+# n = int(input())
+# data = [[] for _ in range(n)]
+# for i in range(n):
+#     data[i] = list(input().split())
+# data.sort(key=lambda x: (-int(x[1]),int(x[2]),-int(x[3]),x[0]))
+# print(data)
+# for i in range(n):
+#     print(data[i][0])
+
+'''
+1회차 > 이전에 한번 sort 의 lambda 함수 사용하는 방법을 봤었으나, 기억 못하고있었음.
+        x: (A,B,C,D) 에서 A의 조건을 만족하면 B조건으로 넘어가는 필터링에 대해서 다시한번 기억하게 됨
+        그리고 혹시나해서 sorted 와 sort의 시간차이를 확인해본결과 시간은 오히려 sort 가 4ms 만큼 미약하게나마 더 오래걸렸다. 하지만 800kb 가량 메모리를 적게 사용했다.
+        뭐 거의 사실상 비슷한 수준이라고 봐도 무방할 듯하다.
+'''
+
+###############################################################################################################
+###############################################   Q24 _ 안테나  ###############################################
+###############################################################################################################
+'''
+Given ) N 개의 집이 있는 마을에 안테나를 설치하고자 한다. 이 때, 효율성을 위해 안테나에서 모든 집까지의 거리를
+        최소로 하는 최적의 위치를 찾고자 한다. 여기서 안테나는 오로지 집에만 설치가 가능하다.
+        집들의 위치가 주어질 때, 최적의 위치를 선택하는 프로그램을 작성하라
+Input ) 첫째 줄에는 집의 수 N 이 주어진다 (1<= N <= 200,000)
+        둘째 줄에는 집의 위치가 공백으로 구분되어 1 이상 100,000 이하의 자연수로 주어진다.
+Output) 첫째 줄에 최적의 위치를 출력한다. 만약 여러개의값이 도출된다면 그 중 가장 작은 값을 출력한다.
+'''
+import sys
+input = sys.stdin.readline
+n = int(input())
+data = map(int,input().split())
+data.sort()
+print(data[(n-1)//2])
