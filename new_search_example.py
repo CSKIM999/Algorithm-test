@@ -1,10 +1,3 @@
-from abc import abstractproperty
-from collections import deque
-import collections
-from functools import cmp_to_key, partial
-from typing import AnyStr, SupportsRound, Union
-import typing_extensions
-
 ############################################  Q7 _ 럭키 스트레이트  ############################################
 '''
 Given ) 럭키 스트레이트는 특정 조건 만족할 경우만 발동한다
@@ -1426,9 +1419,56 @@ Input ) 첫째 줄에는 집의 수 N 이 주어진다 (1<= N <= 200,000)
         둘째 줄에는 집의 위치가 공백으로 구분되어 1 이상 100,000 이하의 자연수로 주어진다.
 Output) 첫째 줄에 최적의 위치를 출력한다. 만약 여러개의값이 도출된다면 그 중 가장 작은 값을 출력한다.
 '''
-import sys
-input = sys.stdin.readline
-n = int(input())
-data = map(int,input().split())
-data.sort()
-print(data[(n-1)//2])
+# import sys
+# input = sys.stdin.readline
+# n = int(input())
+# data = map(int,input().split())
+# data.sort()
+# print(data[(n-1)//2])
+
+
+
+###############################################################################################################
+###############################################   Q24 _ 실패율  ###############################################
+###############################################################################################################
+'''
+Given ) 게임에서 스테이지별 실패율을 구하고자 한다.
+        스테이지에 도달했으나 아직 클리어하지 못한 플레이어수 / 스테이지에 도달한 플레이어 수
+        전체 스테이지 개수 N , 게임을 이용하는 사용자가 현재 멈춰있는 스테이지의 번호가 담긴 배열 stage 가 매개변수로
+        주어질 때, 실패율이 높은  스테이지부터 내림차순으로 스테이지의 번호가 담긴 배열을 return 하도록 프로그램을 작성하라
+Input ) 1<= N <= 500 , 1<= len(stage) <= 200,000 , stage 에는 1 이상 N+1 이하의 자연수가 담겨있다.
+        (( 각 자연수는 사용자가 현재 도전중인 스테이지의 번호 // 단 N+1 은 마지막 스테이지(N번째 스테이지)까지 클리어한 사용자))
+        실패율이 같은 스테이지가 있다면 작은 번호의 스테이지가 먼저 오도록
+        스테이지에 도달한 유저가 없는 경우 해당 스테이지의 실패율은 0 이다.
+
+'''
+
+n = 5
+stage = [2,1,2,6,2,4,3,3]
+# n=4
+# stage = [4,4,4,4,4]
+stage.sort(reverse=True)
+count = 0
+stage_user = [0 for _ in range(n+2)]
+complete_user = [0 for _ in range(n+2)]
+suc = [[0] for _ in range(n)]
+for i in stage:
+    stage_user[i] += 1
+
+for i in range(n+1,0,-1):
+
+    count += stage_user[i]
+    complete_user[i] = count
+
+for i in range(n):
+    if complete_user[i+1] == 0 :
+        suc[i] = [0,i]
+    else:
+        suc[i] = [(complete_user[i+2] /complete_user[i+1] ),i+1]
+suc.sort()
+print(suc)
+print(complete_user)
+result = []
+for i,j in suc:
+    result.append(j)
+print(result)
