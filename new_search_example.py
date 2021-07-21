@@ -1429,7 +1429,7 @@ Output) 첫째 줄에 최적의 위치를 출력한다. 만약 여러개의값�
 
 
 ###############################################################################################################
-###############################################   Q24 _ 실패율  ###############################################
+###############################################   Q25 _ 실패율  ###############################################
 ###############################################################################################################
 '''
 Given ) 게임에서 스테이지별 실패율을 구하고자 한다.
@@ -1442,33 +1442,117 @@ Input ) 1<= N <= 500 , 1<= len(stage) <= 200,000 , stage 에는 1 이상 N+1 이
         스테이지에 도달한 유저가 없는 경우 해당 스테이지의 실패율은 0 이다.
 
 '''
-
-n = 5
-stage = [2,1,2,6,2,4,3,3]
 # n=4
-# stage = [4,4,4,4,4]
-stage.sort(reverse=True)
-count = 0
-stage_user = [0 for _ in range(n+2)]
-complete_user = [0 for _ in range(n+2)]
-suc = [[0] for _ in range(n)]
-for i in stage:
-    stage_user[i] += 1
+# stage = [1,1,1,1,1,1,1,1,1,1,1]
+# stage.sort(reverse=True)
+# count = 0
+# stage_state = [[0,0,i+1] for i in range(n+1)]
+# complete = [[0,i+1] for i in range(n)]
 
-for i in range(n+1,0,-1):
+# for i in stage:
+#     stage_state[i-1][1] += 1
 
-    count += stage_user[i]
-    complete_user[i] = count
+# for i in range(n,0,-1):
+#     count += stage_state[i][1]
+#     if i > 0:
+#         stage_state[i-1][0] = count
+# for i in range(n):
+#     if stage_state[i][1] == 0 or (stage_state[i][0]+stage_state[i][1]) == 0:
+#         complete[i][0] = 0
+#         continue
+#     complete[i][0] = (stage_state[i][1]/(stage_state[i][0]+stage_state[i][1]))
 
-for i in range(n):
-    if complete_user[i+1] == 0 :
-        suc[i] = [0,i]
-    else:
-        suc[i] = [(complete_user[i+2] /complete_user[i+1] ),i+1]
-suc.sort()
-print(suc)
-print(complete_user)
-result = []
-for i,j in suc:
-    result.append(j)
-print(result)
+# complete.sort(key= lambda x: (-float(x[0]),int(x[1])))
+
+# print(complete)
+
+'''
+1회차 > 상당히 쉬운 문제였으나, 내가 0/0 을 고려하지 않아서 오답판정을 받았었다.
+'''
+
+
+
+
+
+###############################################################################################################
+############################################   Q26 _ 카드 정렬하기  ###########################################
+###############################################################################################################
+'''
+Given ) 카드 묶음 A 와 B 를 비교후 합치는데에는 len(A) + len(B) 번의 비교가 필요하다.
+        10,20,40 의 묶음을 묶고자 할 때 만약 10,20 을 먼저 하고 30,40 을 합칠경우 30+70 이지만,
+        10,40 을 묶은 후 50,20 을 하면 120 이 되는, 비효율적인 방법인 것이다. 따라서 N 개의 카드묶음 크기가 각각 주어질 때
+        최적의 비교횟수를 구하는 프로그램을 작성하라.
+Input ) 첫째 줄에 N 이 주어진다. ( 1<= N <= 100,000 ) 이어서 N 개의 줄에 걸쳐 숫자카드 묶음의 각각의 크기가 주어진다.
+Output) 첫째 줄에 최소 비교 횟수를 출력한다.
+
+1회차 > 단순 리스트로 계산하고자 했으나, 시간초과판정을 받았다.
+        따라서 전에 배웠던 우선순위 큐 heapq 를 사용하여서 정답판정을 받았음.
+        우선순위큐는 가장 높은 우선순위(파이썬에서는 최소값) 이 가장 앞에 정렬되는 큐다.
+'''
+# import heapq
+# import sys
+# input = sys.stdin.readline
+# n = int(input())
+# heap = []
+# for i in range(n):
+#     data = int(input())
+#     heapq.heappush(heap, data)
+# result = 0
+# while len(heap) != 1:
+#     a,b = heapq.heappop(heap),heapq.heappop(heap)
+#     add = a+b
+#     result += add
+#     heapq.heappush(heap, add)
+
+# print(result)
+
+
+
+###############################################################################################################
+##################################   Q27 _ 정렬 배열에서 특정수의 개수 구하기  ################################
+###############################################################################################################
+'''
+Given ) N 개의 원소를 포한하는 오름차순 정렬 수열이 있다. 여기서 x 가 등장하는 횟수를 구하라
+        여기서 시간복잡도는 O(logN) 으로 설계하지 않는다면, 시간초과 판정을 받습니다.
+Input ) 첫째 줄에 N 과 x 가 정수형태로 공백으로 구분되어 입력 (1 <= N <= 1,000,000)
+        둘째 줄에는 N 개의 원소가 정수형태로 공백으로 구분되어 입력됨.
+Output) 수열에서 값이 x 인 원소의 개수 출력 하나도 없다면, -1 출력
+'''
+
+data = [1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,3,3,3,3,3,3]
+n,x = len(data),3
+def bisec_MtoE(data,x,start,end):
+    half =(start+end)// 2
+    if data[half] == x and data[half+1] > x :
+        return half
+    elif data[half] == x and data[half+1] == x :
+        return bisec_MtoE(data,x,half,end)
+    elif data[half] > x and data[half+1] > x :
+        return bisec_MtoE(data,x,start,half)
+
+def bisec_StoM(data,x,start,end):
+    half =(start+end)// 2
+    if data[half] == x and data[half-1] < x :
+        return half
+    elif data[half] == x and data[half-1] == x :
+        return bisec_StoM(data,x,start,half)
+    elif data[half] < x and data[half-1] < x :
+        return bisec_StoM(data,x,half,end)
+
+def main_bisec(data,x,start,end):
+    half =( start+end )// 2
+    if data[half] < x:
+        return main_bisec(data,x,half,end)
+    elif data[half] > x:
+        return main_bisec(data,x,start,half)
+    elif data[half] == x:
+        return half
+
+mid = main_bisec(data,x,0,n)
+MtoE = bisec_MtoE(data,x,mid,n)
+StoM = bisec_StoM(data,x,0,mid)
+print(MtoE)
+print(StoM)
+print(data[StoM-1:MtoE+2])
+
+    
