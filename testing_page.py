@@ -1,6 +1,4 @@
-import sys
-input = sys.stdin.readline
-n = int(input())
-data = list(map(int,input().split()))
-data.sort()
-print(data[(n-1)//2])
+lst = [[0]*5 for _ in range(5)]
+
+lst[0][2] = 999
+print(lst)

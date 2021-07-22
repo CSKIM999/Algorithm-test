@@ -1519,40 +1519,116 @@ Input ) 첫째 줄에 N 과 x 가 정수형태로 공백으로 구분되어 입�
 Output) 수열에서 값이 x 인 원소의 개수 출력 하나도 없다면, -1 출력
 '''
 
-data = [1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,3,3,3,3,3,3]
-n,x = len(data),3
-def bisec_MtoE(data,x,start,end):
-    half =(start+end)// 2
-    if data[half] == x and data[half+1] > x :
-        return half
-    elif data[half] == x and data[half+1] == x :
-        return bisec_MtoE(data,x,half,end)
-    elif data[half] > x and data[half+1] > x :
-        return bisec_MtoE(data,x,start,half)
+# data = [1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,3,3,3,3,3,3]
+# n,x = len(data),3
+# def bisec_MtoE(data,x,start,end):
+#     if  data[end-1] == x:
+#         return end
+#     half =(start+end)// 2
+#     if data[half] == x and data[half+1] > x :
+#         return half
+#     elif data[half] == x and data[half+1] == x :
+#         return bisec_MtoE(data,x,half,end)
+#     elif data[half] > x and data[half+1] > x :
+#         return bisec_MtoE(data,x,start,half)
 
-def bisec_StoM(data,x,start,end):
-    half =(start+end)// 2
-    if data[half] == x and data[half-1] < x :
-        return half
-    elif data[half] == x and data[half-1] == x :
-        return bisec_StoM(data,x,start,half)
-    elif data[half] < x and data[half-1] < x :
-        return bisec_StoM(data,x,half,end)
+# def bisec_StoM(data,x,start,end):
+#     if data[start] == x:
+#         return start
+#     half =(start+end)// 2
+#     if data[half] == x and data[half-1] < x :
+#         return half
+#     elif data[half] == x and data[half-1] == x :
+#         return bisec_StoM(data,x,start,half)
+#     elif data[half] < x and data[half-1] < x :
+#         return bisec_StoM(data,x,half,end)
 
-def main_bisec(data,x,start,end):
-    half =( start+end )// 2
-    if data[half] < x:
-        return main_bisec(data,x,half,end)
-    elif data[half] > x:
-        return main_bisec(data,x,start,half)
-    elif data[half] == x:
-        return half
+# def main_bisec(data,x,start,end):
+#     half =( start+end )// 2
+#     if data[half] < x:
+#         return main_bisec(data,x,half,end)
+#     elif data[half] > x:
+#         return main_bisec(data,x,start,half)
+#     elif data[half] == x:
+#         return half
 
-mid = main_bisec(data,x,0,n)
-MtoE = bisec_MtoE(data,x,mid,n)
-StoM = bisec_StoM(data,x,0,mid)
-print(MtoE)
-print(StoM)
-print(data[StoM-1:MtoE+2])
+# mid = main_bisec(data,x,0,n)
+# MtoE = bisec_MtoE(data,x,mid,n)
+# StoM = bisec_StoM(data,x,0,mid)
+# print(MtoE)
+# print(StoM)
+# print(data[StoM-1:MtoE+2])
 
-    
+
+'''
+1회차 > 직접 이분탐색 함수를 짜보려했으나, 귀찮아서 그냥 bisect라이브러리를 가져옴.
+        bisect 라이브러리 또한 O(logN)의 시간복잡도를 가지므로, 문제가 제시하는 제한사항을 만족하며
+        문제를 풀어낼 수있다.
+'''
+
+
+# import bisect
+# data = [1,1,2,2,2,2,3]
+# n,x = len(data),2
+# left,right = bisect.bisect_left(data,x),bisect.bisect_right(data,x)
+# if data[left] != x:
+#     print(-1)
+# else:
+#     print(right-left)
+
+
+
+###############################################################################################################
+#############################################   Q27 _ 고정점 찾기  ############################################
+###############################################################################################################
+'''
+Given ) 고정점이란 수열의 원소 중 그 값이 인덱스값과 같은 원소를 지칭한다.
+        하나의 수열이 N 개의 원소를 포함하며, 모든 원소가 오름차순으로 정렬되어있다. 이 때 수열에서 고정점이 있다면
+        고정점을, 없다면 -1 일 출력하는 프로그램을 작성하라. 시간복잡도가 O(logN) 으로 설계하지 않으면 시간 초과판정
+        을 받는다.
+
+Input ) 첫째 줄에 N 이 입력된다.(1 <= N <= 1,000,000)
+        둘째 줄에 N 개의 원소가 정수 형태로 공백으로 구분되어 입력된다. (-1e9 <= X <= 1e9)
+
+Output) 고정점이 있다면 고정점, 없다면 -1 출력
+'''
+
+'''
+1회차 > 고정점은 단 1개 존재한다. 또한 O(logN)의 시간복잡도와 이미 정렬되어있는 수열은 이분탐색을 의미한다고 생각한다.
+        절반지점이 인덱스값보다 큰 원소값을 가진다면 왼쪽으로 이분탐색 작다면 오른쪽으로 이분탐색 하는 알고리즘을 짜보자
+'''
+# n = 5
+# data = [-15,-6,1,3,7]
+
+# def binary_search(array,start,end):
+#     if start == end and array[start] != start:
+#         return -1
+#     half = (end+start)//2
+#     if array[half] == half:
+#         return half
+#     elif array[half] > half:
+#         return binary_search(array,start,half-1)
+#     elif array[half] < half:
+#         return binary_search(array,half+1,end)
+
+# print(binary_search(data,0,n-1))
+
+'''
+1회차 > 생각대로 잘 풀렸다. 하지만 이러문제는 채점해주는 사이트가 없어서 살짝 아쉽다.
+'''
+
+
+
+###############################################################################################################
+#############################################   Q27 _ 공유기 설치  ############################################
+###############################################################################################################
+'''
+Given ) 수직선 위에 N 개의 집이 있다. C 개의 공유기를 공유기간 거리를 최대로 하여 설치하고자 한다.
+        C개의 공유기를 설치하는 공유기간거리 최댓값은 얼마인가 구하는 프로그램을 작성하라
+Input ) 첫째 줄에 집의 개수 N(2<= N <= 200,000)과 공유기의 개수 C(2<= C <=N)가 하나의 빈칸으로 구분되어 주어짐
+        둘째 줄 부터는 N 개의 줄에 집의 촤표를 나타내는 Xi ( 1<= Xi <= 1e9) 가 한줄에 하나씩 주어짐
+        
+'''
+
+
+print(1e9)
