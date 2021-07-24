@@ -1627,8 +1627,41 @@ Given ) 수직선 위에 N 개의 집이 있다. C 개의 공유기를 공유기
         C개의 공유기를 설치하는 공유기간거리 최댓값은 얼마인가 구하는 프로그램을 작성하라
 Input ) 첫째 줄에 집의 개수 N(2<= N <= 200,000)과 공유기의 개수 C(2<= C <=N)가 하나의 빈칸으로 구분되어 주어짐
         둘째 줄 부터는 N 개의 줄에 집의 촤표를 나타내는 Xi ( 1<= Xi <= 1e9) 가 한줄에 하나씩 주어짐
-        
+Output) 가장 인접한 두 공유기 사이의 최대거리를 출력하라        
+
 '''
 
+'''
+1회차 > 보통 1 부터 순회하며, 해당 거리를 찾겠지만 해답에서는 우선 1/2거리부터 시작하여 이진탐색으로 최대거리를 찾고자한다
+        만약 작은 크기의 거리라면 내 처음생각대로 1부터 순회하는것이 맞겠지만, 이 문제에선 집의 좌표가 최대 1e9 이므로
+        이진탐색의 속도가 더 빠르기에 해당 방법을 사용한것이 아닌가 싶다.
+'''
+import sys
+input = sys.stdin.readline
+n,m = map(int,input().split())
+data = [0 for _ in range(n)]
+for i in range(n):
+    data[i] = int(input())
+data.sort()
 
-print(1e9)
+start = 1
+end = data[-1]- data[0] 
+result = 0
+
+while start <= end:
+    mid = (start+end) // 2
+    value = data[0]
+    count = 1
+    for i in range(1,n):
+        if data[i] >= value + mid:
+            value = data[i]
+            count +=1
+    
+    if count >= m:
+        start = mid+1
+        result = mid
+    else:
+        end = mid -1
+    
+print(result)
+print(data)

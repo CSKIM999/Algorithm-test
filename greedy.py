@@ -1,5 +1,4 @@
 from collections import deque
-from functools import partial
 
 ############################################ 동전 거슬러주기 ############################################
 
