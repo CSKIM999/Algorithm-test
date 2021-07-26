@@ -1685,7 +1685,101 @@ Input ) words 의 길이는 2 이상 100,000 이하이다.
 
 '''
 
-data = ['frodo','front','frost','frozen','frame','kakao','froco']
-n = 2
-data.sort(key= lambda x : (x[-i] for i in range(n)))
-print(data)
+'''
+1회차 > 매번 sort 를 통해서 해당 필터링을 만족하는 개수를 return 시키고자 하나, queries 의 길이가 최대 100,000 이므로
+        매번 100,000 의 길이의 words 를 순회하면 최대 10,000,000,000 의 연산이 필요함.
+        순회가 아닌 내장함수 sort 를 통해서 이진탐색으로 찾는다면 가능할지도?
+'''
+
+# import bisect
+# data = ['frodo','front','frost','frozen','frame','kakao','frod']
+
+# # for i in range(len(data)):
+# #     data[i] =(len(data[i]),data[i])
+
+# # n = 3
+# # data.sort(key= lambda x : (len(x),list(x[-i] for i in range(1,n))))
+# # print(data)
+# # print('fro' > 'fqo')
+# data.sort(key= lambda x : (len(x)))
+
+# queries = ['fro??','????o','fr???','fro???','pro?']
+# q = len(queries)
+# result = [0]*q
+# start,end = len(data[0]),len(data[-1])
+
+# def binary_left(data,x,start,end,index=False):
+#     mid = (start+end)//2
+#     if index==True:
+#         tempa,tempb = len(data[mid]),len(data[mid-1])
+#         if tempa == x and tempb != x:
+#             return mid
+#         elif tempa < x:
+#             return binary_left(data,x,mid+1,end,index=True)
+#         elif tempa == x and tempb == x:
+#             return binary_left(data,x,start,mid-1,index=True)
+#     else:
+#         tempa,tempb = data[mid],data[mid-1]
+#         if tempa == x and tempb != x:
+#             return mid
+#         elif tempa < x:
+#             return binary_left(data,x,mid+1,end)
+#         elif tempa == x and tempb == x:
+#             return binary_left(data,x,start,mid-1)
+
+# def binary_right(data,x,start,end,index=False,m=0):
+#     mid = (start+end)//2
+#     if index==True:
+#         tempa,tempb = len(data[mid]),len(data[mid+1])
+#         if tempa == x and tempb != x:
+#             return mid
+#         elif tempa > x:
+#             return binary_right(data,x,start,mid-1,index=True)
+#         elif tempa == x and tempb == x:
+#             return binary_right(data,x,mid+1,end,index=True)
+#     else:
+#         tempa,tempb = data[mid],data[mid+1]
+        
+#         n = len(x)
+#         if tempa == x and tempb < x:
+#             return mid
+#         elif tempa > x:
+#             return binary_right(data,x,start,mid-1)
+#         elif tempa == x and tempb == x:
+#             return binary_right(data,x,mid+1,end)
+
+# def binary_search(data,x,start,end,index=False):
+#     mid = (start+end)//2
+#     if index==True:
+#         temp = len(data[mid])
+#         if temp == x:
+#             left = binary_left(data,x,start,mid,index=True)
+#             right = binary_right(data,x,mid,end,index=True)-1
+#         elif temp < x:
+#             return binary_search(data,x,start,mid-1,index=True)
+#         elif temp > x:
+#             return binary_search(data,x,mid+1,end,index=True)
+#     else:
+#         temp = data[mid]
+#         if temp == x:
+#             left = binary_left(data,x,start,mid)
+#             right = binary_right(data,x,mid,end)
+#         elif temp < x:
+#             return binary_search(data,x,start,mid-1)
+#         elif temp > x:
+#             return binary_search(data,x,mid+1,end)
+
+#     return left,right
+        
+# print(binary_search(data,5,0,len(data)-1,index=True))
+# left,right = binary_search(data,5,0,len(data)-1,index=True)
+# print(binary_search(data,'fro',left,right))
+
+
+
+
+'''
+1회차 ) 약 4시간동안 index를 찾는 이진탐색은 구현했으나, 매번 조건에 맞춰서 가사의 인덱스값을 불러오려면
+        굉장히 복잡한 코드가 완성될 것 같아서 중도 포기함. 해답을 한번 봐봐야겠음.
+        키워드는 역슬라이싱[::-1]과 글자 최대길이 10,000 그리고 count_by_range() 였음. 나중에 한번 다시 풀어볼것
+'''

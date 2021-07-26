@@ -1,4 +1,5 @@
-lst = [[0]*5 for _ in range(5)]
-
-lst[0][2] = 999
-print(lst)
+n = 5
+a = 'fro'
+for i in range(len(a),n):
+    a+='z'
+print(a)
