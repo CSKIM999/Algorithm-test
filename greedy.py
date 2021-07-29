@@ -205,6 +205,8 @@ from collections import deque
 #         # 현재 위치에서 DFS 수행
 #         if dfs(i,j) ==True:
 #             result +=1
+
+
 """
 한번의 메서드 dfs 에서 True 가 몇번 return 되는지는 중요하지 않았다
 line 173 에서의 조건문은 메인 메서드 dfs 값이 True 인지 아닌지만 확인된다면
