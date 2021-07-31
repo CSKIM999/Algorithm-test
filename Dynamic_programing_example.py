@@ -101,20 +101,26 @@ Input ) 첫째 줄에 N ( 1<= N <= 15 )이 주어진다
 Output) 최대이익을 출력하라
 '''
 
-n = int(input())
-data = [[0,0] for _ in range(n)]
-for i in range(n):
-    a,b = map(int,(input().split()))
-    data[i][0],data[i][1] = a,b
-dp = [0]* (n+1)
-mval = 0
-for i in range(n-1,-1,-1):
-    index = data[i][0] + i
-    if index <= n:
-        mval = max(dp[index]+data[i][1],mval)
-        dp[i] = mval
-        pass
-    else:
-        dp[i] = mval
+# n = int(input())
+# data = [[0,0] for _ in range(n)]
+# for i in range(n):
+#     a,b = map(int,(input().split()))
+#     data[i][0],data[i][1] = a,b
+# dp = [0]* (n+1)
+# mval = 0
+# for i in range(n-1,-1,-1):
+#     index = data[i][0] + i
+#     if index <= n:
+#         mval = max(dp[index]+data[i][1],mval)
+#         dp[i] = mval
+#         pass
+#     else:
+#         dp[i] = mval
 
-print(max(dp))
+# print(max(dp))
+
+
+
+###############################################################################################################
+###########################################   Q33 _ 병사 배치하기   ###########################################
+###############################################################################################################
