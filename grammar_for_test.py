@@ -241,7 +241,7 @@ Breadth First Search [[ 너비 우선 탐색 ]]
 #     left = [x for x in lst if x <=pivot]
 #     right = [x for x in lst if x >pivot]
 
-#     return quick_sort(left) + [pivot] + quick_sort(right)
+#     return quick_sort(left) + [pivot] + quick_sort(right)````````````````
 
 # print(quick_sort(array))
 
