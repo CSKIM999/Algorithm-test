@@ -18,28 +18,80 @@ Output) n개의 줄을 출력해야한다. i번째 줄에 출력하는 j번째 �
         플로이드 워셜 알고리즘을 사용하라는 문제이다.
 '''
 
-inf = 1e9
-N = 5
-m = 14
-A = [[ 1, 2, 2],[ 1, 3, 3],[ 1, 4, 1],[ 1, 5, 10],[ 2, 4, 2],[ 3, 4, 1],[ 3, 5, 1],[ 4, 5, 3],[ 3, 5, 10],[ 3, 1, 8],[ 1, 4, 2],[ 5, 1, 7],[ 3, 4, 2],[ 5, 2, 4]]
-data = [[inf]*N for _ in range(N)]
-for x,y,z in A:
-    if data[x-1][y-1] == inf:
-        data[x-1][y-1] = z
-    else:
-        data[x-1][y-1] = min(data[x-1][y-1],z)
+# inf = 1e9
+# N = 5
+# m = 14
+# A = [[ 1, 2, 2],[ 1, 3, 3],[ 1, 4, 1],[ 1, 5, 10],[ 2, 4, 2],[ 3, 4, 1],[ 3, 5, 1],[ 4, 5, 3],[ 3, 5, 10],[ 3, 1, 8],[ 1, 4, 2],[ 5, 1, 7],[ 3, 4, 2],[ 5, 2, 4]]
+# data = [[inf]*N for _ in range(N)]
+# for x,y,z in A:
+#     if data[x-1][y-1] == inf:
+#         data[x-1][y-1] = z
+#     else:
+#         data[x-1][y-1] = min(data[x-1][y-1],z)
 
-for i in range(N):
-    for j in range(N):
-            for k in range(N):
-                if k == j:
-                    data[j][k] = 0
-                else:
-                    data[j][k] = min(data[j][k],data[j][i]+data[i][k])
+# for i in range(N):
+#     for j in range(N):
+#             for k in range(N):
+#                 if k == j:
+#                     data[j][k] = 0
+#                 else:
+#                     data[j][k] = min(data[j][k],data[j][i]+data[i][k])
 
-print(data)
+# print(data)
             
 '''
 1회차 > 대표적이란 말도 창피할정도로 그냥 플로이드워셜 알고리즘 문제다. 플로이드워셜 알고리즘은 구현이 매우 쉽다 32-38 line 만 기억하고 있다면
         어떤 문제에서든지 구현이 가능하다. 하지만 나는 ijk 의 순서와 왜 그런지 다시 생각해내느라 시간이 꽤나 걸렸다.
+'''
+
+
+
+###############################################################################################################
+###########################################   Q38 _ 정확한 순위     ###########################################
+###############################################################################################################
+'''
+Given ) 학생 N 명의 성적데이터를 분실하고 비교결과만을 보유중이다. 비교결과를 토대로 성적순위를 유추할 수 있는 학생의 수를 return하라
+Input ) 첫째 줄에 학생들의 수 N (2<= N <= 500)과 두 학생의 성적을 비교한 횟수 M( 2<= M <= 10,000 ) 이 주어진다.
+        다음 M 개의 줄에는 두 양의 정수 A,B 가 주어지는데, A 가 B 보다 성적이 낮다는것을 의미한다.
+Output) 순위를 정확히 유추할 수 있는 학생수를 출력하라
+'''
+
+# n,m = map(int,input().split())
+n = 6
+data = [[] for _ in range(n+1)]
+dp = [[set(),set()] for _ in range(n+1)]
+give = [[1,5],[3,4],[4,2],[4,6],[5,2],[5,4]]
+for a,b in give:
+    dp[b][0].add(a)
+    dp[a][1].add(b)
+
+def AddAll(number,ud):
+    result = set()
+    for i in dp[number][ud]:
+        result.add(i)
+        if len(dp[i][ud]) != 0:
+            return result.union(AddAll(i,ud))
+
+    return result
+
+for i in range(n+1):
+    if dp[i][0] != 0:
+        for j in dp[i][0]:
+            rt = AddAll(j,0)
+            dp[i][0] = dp[i][0].union(rt)
+    if dp[i][1] != 0:
+        for j in dp[i][1]:
+            rt = AddAll(j,1)
+            dp[i][1] = dp[i][1].union(rt)
+            
+# dp[4][0] = dp[4][0].union(AddAll(4,0))
+for i in range(n+1):
+    data[i] = len(dp[i][0]) + len(dp[i][1])
+
+print(dp)
+print(data.count(5))
+
+
+'''
+해답에서는 크루스칼 알고리즘을 추천했다. 하지만 집합 자료형을 통해서 풀어서 정답을 찾았는데, 채점 할 길이 없네
 '''
