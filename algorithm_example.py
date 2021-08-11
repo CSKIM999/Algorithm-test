@@ -169,39 +169,136 @@ Output) 첫번째 숫자는 숨어야하는 헛간번호를 ( 여러개라면 �
 1회차 > 우선 N 이 최대 20,000이므로, 플로이드 워셜 알고리즘은 불가하다. 따라서 다익스트라 알고리즘을 사용해보자
 '''
 
-import heapq
-inf = int(1e9)
-n,m = 6,7
-give = [[3,6],[4,3],[3,2],[1,3],[1,2],[2,4],[5,2]]
-data = [[] for _ in range(n+1)]
-table = [[inf,i] for i in range(n+1)]
-for i,j in give:
-    if j not in data[i]:
-        data[i].append(j)
-        data[i].sort()
-    if i not in data[j]:
-        data[j].append(i)
-        data[j].sort()
-q = [(0,1)]
-table[1][0] = 0
-table[0][0] = 0
-Max = 0
-while q:
-    dist, node = heapq.heappop(q)
-    if table[node][0] < dist:
-        continue
+# import heapq
+# inf = int(1e9)
+# n,m = 6,7
+# give = [[3,6],[4,3],[3,2],[1,3],[1,2],[2,4],[5,2]]
+# data = [[] for _ in range(n+1)]
+# table = [[inf,i] for i in range(n+1)]
+# for i,j in give:
+#     if j not in data[i]:
+#         data[i].append(j)
+#         data[i].sort()
+#     if i not in data[j]:
+#         data[j].append(i)
+#         data[j].sort()
+# q = [(0,1)]
+# table[1][0] = 0
+# table[0][0] = 0
+# Max = 0
+# while q:
+#     dist, node = heapq.heappop(q)
+#     if table[node][0] < dist:
+#         continue
 
-    for i in data[node]:
-        cost = dist + 1
-        if cost < table[i][0]:
-            table[i][0] = cost
-            heapq.heappush(q,(cost,i))
-            Max = max(Max,cost)
+#     for i in data[node]:
+#         cost = dist + 1
+#         if cost < table[i][0]:
+#             table[i][0] = cost
+#             heapq.heappush(q,(cost,i))
+#             Max = max(Max,cost)
 
-result = [ j for i,j in table if i == Max]
-print(f'{result[0]} {Max} {len(result)}')
+# result = [ j for i,j in table if i == Max]
+# print(f'{result[0]} {Max} {len(result)}')
 
 '''
 간단한 다익스트라 알고리즘으로 풀어보았다. 그 중 그나마 기억에 남는 새로운 방법은 마지막에 Max index 를 찾기 위해서 list comprehension 을
 사용한 for-if 조건문을 사용한 것과, Python 3.6 부터 적용된 f-string 의 사용이다.
+'''
+
+
+
+###############################################################################################################
+#############################################     Q41 _ 여행계획     ##########################################
+###############################################################################################################
+'''
+Given ) N 개의 여행지 사이에는 도로가 존재할 수 있으며, 존재한다면 두 여행지는 양방향 통행이 가능하다.
+        이 때, 하나의 여행계획을 세우고, 해당 여행지를 모두 방문할 수 있는지 여부를 판단하는 프로그램을 작성하라
+Input ) 첫째 줄에 여행지의 수 N 과 계획에 속한 도시의 수 M 이 주어진다. ( 1 <= N,M <= 500 )
+        다음 N 개의 줄에 걸쳐 N*N 행렬을 통해 임의의 두 여행지의 서로 연결 여부가 입력된다.
+        마지막 줄에 여행계획에 포함된 여행지가 입력된다
+Output) 모두 방문이 가능하다면 "YES" 를 불가능하다면 "NO" 를 출력하라
+'''
+# n,m  = 5,4
+
+# data = [[0,1,0,1,1],[1,0,1,1,0],[0,1,0,0,0],[1,1,0,0,0],[1,0,0,0,0]]
+
+# node = [[] for _ in range(n+1)]
+# parent = [[i] for i in range(n+1)]
+# for i in range(n):
+#     for j in range(n):
+#         if data[i][j] == 1:
+#             node[i+1].append(j+1)
+
+# for i in range(1,n+1):
+#     if len(node[i]) != 0:
+#         for j in node[i]:
+#             if parent[i] == parent[j]:
+#                 continue
+#             parent[j],parent[i] = min(parent[i],parent[j]),min(parent[i],parent[j])
+#     else:
+#         continue
+
+# print(parent)
+
+
+# Q = [2,3,4,3]
+# for i in range(len(Q)):
+#     Q[i] = parent[i+1]
+# if Q.count(Q[0]) == len(Q):
+#     print('YES')
+# else:
+#     print('NO')
+#     print(Q)
+
+'''
+서로소 집합 알고리즘을 사용해서 dp_parent 리스트를 만들고 매번 dp 값을 확인하여 가장 작은 루트노드에 연결되는 하나의 집합으로
+만들었다. 제대로 풀었는지는 모르겠다
+'''
+
+
+
+###############################################################################################################
+#############################################     Q41 _ 여행계획     ##########################################
+###############################################################################################################
+'''
+Given ) 공항에 G 개의 탑승구가 있으며, P 개의 비행기가 들어올 예정이다. P개의 비행기를 도킹하다가 도킹이 불가능한 비행기가
+        나올 경우 공항의 운행이 중단된다. 최대한 많은 비행기를 도킹하고자 할 때, 비행기의 최대 도킹수를 구하는 프로그램을 작성하라
+Input ) 첫째 줄에는 탑승구의 수 G ( 1<= G <= 100,000 ) 가 주어진다
+        둘째 줄에는 비행기의 수 P ( 1<= P <= 100,000 ) 가 주어진다
+        그 다음 P 개의 줄에 각각의 비행기가 도킹할 수 있는 탑승구의 정보 A 가 주어진다.  A 이하의 탑승구에 도킹할 수 있다는 뜻이다.
+        (1<= A <=G)
+Output) 최대 도킹수를 구하라
+'''
+'''
+1회차 > 우선 G*P 가 100억을 넘어가므로, O(N^2) 이상의 알고리즘을 사용해선 안된다.
+'''
+
+
+G,P = 4,6
+data = [2,2,3,3,4,4]
+dp = [i for i in range(G+1)]
+
+def union_pa(pa,b):
+    if pa[b] != b:
+        return union_pa(pa,pa[b])
+    elif pa[b] == 0:
+        return False
+    else:
+        pa[b] = pa[b-1]
+        return pa
+
+count = 0
+for i in range(P):
+    if not union_pa(dp,data[i]):
+        print(count)
+        break
+    # union_pa(dp,data[i])
+    count +=1
+
+'''
+1회차 > 해답의 서로소집합 알고리즘의 아이디어를 조금 따와서 풀어보았다. dp와 상당히 유사하게 풀어냈다.
+        새롭게 사용하고 알게된 것은 line 293 의 if 문 안에 함수를 사용했을 때 만약 False 가 return 되지 않더라도, 가지고있던
+        dp 는 새롭게 갱신된다는 사실이었다. 따라서 line 296 에서 한번 더 함수를 실행시키면 한 루프에 두번 함수가 실행되는것.
+        bool 형태의 return 을 받아서 if 문에 사용하니 생각보다 더 간결한 코드 작성이 가능했다.
 '''
