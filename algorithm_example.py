@@ -319,11 +319,81 @@ Output) 첫째 줄에 일부 가로등을 비활성화 했을 때, 절약 가능
 '''
 1회차 > 풀기도 전에 최소신장 알고리즘 (크루스칼) 이라는걸 알아봤다. 
         총 도로의 거리 Max 에서 최소신장 알고리즘값 Min 을 빼서 result 를 return 하자
+        크루스칼 알고리즘은 서로소 집합 알고리즘과 같이 parents 집합을 사용한다. ( find, union 도 사용한다는 얘기 )
 '''
-n,m = 7,11
-data = [[0,1,7],[0,3,5],[1,2,8],[1,3,9],[1,4,7],[2,4,5],[3,4,15],[3,5,6],[4,5,8],[4,6,9],[5,6,11]]
-mapping = []
-for x,y,z in data:
-    mapping.append((z,x,y))
-mapping.sort(key= lambda x : -int(x[0]))
-print(mapping)
+# n,m = 7,11
+# data = [[0,1,7],[0,3,5],[1,2,8],[1,3,9],[1,4,7],[2,4,5],[3,4,15],[3,5,6],[4,5,8],[4,6,9],[5,6,11]]
+# mapping = []
+# parent = [i for i in range(n+1)]
+# for x,y,z in data:
+#     mapping.append((z,x,y))
+# mapping.sort()
+
+
+
+# def find_parent(parent,x):
+#     if parent[x] != x:
+#         return find_parent(parent,parent[x])
+#     else:
+#         return parent[x]
+
+# def union_parent(parent,x,y):
+#     a = find_parent(parent,x)
+#     b = find_parent(parent,y)
+#     if a<b:
+#         parent[b] = a
+#     else:
+#         parent[a] = b
+# total,result = 0,0
+# for cost,x,y in mapping:
+#     total += cost
+#     if find_parent(parent,x) != find_parent(parent,y):
+#         union_parent(parent,x,y)
+#         result += cost
+
+
+
+# print(mapping)
+# print(total - result)
+
+'''
+1회차 > 정답 // line 357 에서 total - result 가 아닌 자꾸 cost 로 해서 이상한 값이 나왔지만, 코드 자체는 틀리지 않았었음
+        크루스칼 알고리즘 전에 서로소집합 알고리즘을 잘 숙지해놓아야 할 듯
+'''
+
+
+
+###############################################################################################################
+#############################################     Q44 _ 행성터널     ##########################################
+###############################################################################################################
+'''
+Given ) 행성은 3차원 좌표로 x,y,z 값이 주어진다. 또한 행성간 연결비용은 델타x,y,z 중 최솟값으로
+        각 행성을 잇는 최소비용을 구하는 프로그램을 작성하라
+Input ) 첫째 줄에 행성의 개수 N 이 주어짐 ( 1 <= N <= 100,000 )
+        다음 N 개 줄에 좌표 x,y,z 가 주어짐
+        모든 좌표값은 -1e9 보다 크거나 같고 1e9 보다 작거나 같다.
+        좌표값이 겹치는 경우는 없음
+Output) 첫째줄에 모든 행성을 터널로 연결하는데 필요한 최소비용을 출력하라
+'''
+
+'''
+1회차 > 바로 행성의 수가 최대 100,000개 이므로 아마도 시간복잡도에서 문제가 생길것이라고 판단했음
+        기본적인 해답에서의 팁은 일반적 크루스칼알고리즘으로는 최대 행성의 개수가 십만개이므로, 최대 100억개까지 계산을 해야할 수도 있단
+        점이다. 따라서 몇가지 필터링을 걸쳐 크루스칼알고리즘을 사용할 것을 추천하고있다.
+'''
+
+def find_parent(parent,x):
+    if parent[x] != x:
+        return find_parent(parent,parent[x])
+    else:
+        return parent[x]
+
+def union_parent(parent,x,y):
+    a = find_parent(parent,x)
+    b = find_parent(parent,y)
+    if a<b:
+        parent[b] = a
+    else:
+        parent[a] = b
+
+

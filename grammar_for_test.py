@@ -585,10 +585,10 @@ Breadth First Search [[ 너비 우선 탐색 ]]
 **** 여기서 최소 신장 트리의 간선의 개수는 N-1 개 이다
 '''
 # n = 7
-data = [(29,1,2),(75,1,5),(35,2,3),(34,2,6),(7,3,4),(23,4,6),(13,4,7),(53,5,6),(25,6,7)]
-total_value = 0
+# data = [(29,1,2),(75,1,5),(35,2,3),(34,2,6),(7,3,4),(23,4,6),(13,4,7),(53,5,6),(25,6,7)]
+# total_value = 0
 
-print(sorted(data,key=lambda data : data[0]))
+# print(sorted(data,key=lambda data : data[0]))
 # # data.sort()
 # # print(data)
 
