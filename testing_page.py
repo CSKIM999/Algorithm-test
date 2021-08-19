@@ -1,7 +1,7 @@
-a = set()
-a.add(2)
-print(a)
-b = set()
-# b.add(3)
-a = a.union(b)
-print(a)
+al_1 = 1
+al_2 = 2
+
+def alprint(num):
+    alpha = al_+num
+    return alpha
+    print()

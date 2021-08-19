@@ -381,19 +381,76 @@ Output) 첫째줄에 모든 행성을 터널로 연결하는데 필요한 최소
         기본적인 해답에서의 팁은 일반적 크루스칼알고리즘으로는 최대 행성의 개수가 십만개이므로, 최대 100억개까지 계산을 해야할 수도 있단
         점이다. 따라서 몇가지 필터링을 걸쳐 크루스칼알고리즘을 사용할 것을 추천하고있다.
 '''
+# import sys
+# input = sys.stdin.readline
+# def find_parent(parent,x):
+#     if parent[x] != x:
+#         return find_parent(parent,parent[x])
+#     else:
+#         return parent[x]
 
-def find_parent(parent,x):
-    if parent[x] != x:
-        return find_parent(parent,parent[x])
-    else:
-        return parent[x]
+# def union_parent(parent,x,y):
+#     a = find_parent(parent,x)
+#     b = find_parent(parent,y)
+#     if a<b:
+#         parent[b] = a
+#     else:
+#         parent[a] = b
+# road = []
+# result = 0
+# n = int(input())
+# data = []
+# for i in range(n):
+#     dt = list(map(int,input().split()))
+#     data.append(dt)
 
-def union_parent(parent,x,y):
-    a = find_parent(parent,x)
-    b = find_parent(parent,y)
-    if a<b:
-        parent[b] = a
-    else:
-        parent[a] = b
+# x_d = []
+# y_d = []
+# z_d = []
+# parents = [ i for i in range(n+1)]
+# for i in range(1,n+1):
+#     x_d.append((data[i-1][0],i))
+#     y_d.append((data[i-1][1],i))
+#     z_d.append((data[i-1][2],i))
+# x_d.sort()
+# y_d.sort()
+# z_d.sort()
 
+# for i in range(n-1):
+#     road.append((x_d[i+1][0]-x_d[i][0],x_d[i][1],x_d[i+1][1]))
+#     road.append((y_d[i+1][0]-y_d[i][0],y_d[i][1],y_d[i+1][1]))
+#     road.append((z_d[i+1][0]-z_d[i][0],z_d[i][1],z_d[i+1][1]))
+# road.sort()
+
+# for cost,x,y in road:
+#     if find_parent(parents,x) != find_parent(parents,y):
+#         union_parent(parents,x,y)
+#         result += cost
+# print(result)
+
+'''
+1회차 > 거의 내가 풀지 못했다. 크루스칼알고리즘이 살짝 헷갈리니 해결방향이 잡혀도 구현을 못했다.
+        일단 풀고나서의 리뷰를 하자면, 크루스칼알고리즘을 위해서는 cost , x , y 가 필요하나 문제에선
+        좌표가 주어지고 좌표가 곧 cost였다. 따라서 x축에서의 최소거리 y축에서의 최소거리 z 축에서의 최소거리를
+        전처리로 sort 한 후에 크루스칼 알고리즘을 사용했음.
+'''
+
+
+
+###############################################################################################################
+#############################################     Q45 _ 최종 순위     #########################################
+###############################################################################################################
+'''
+Given ) 상당히 불친절한 대회주최측에서 지난 해까지 최종순위를 발표하다가 올해부터는 변동사항만 발표하기로 했습니다
+        작년에 팀 13이 팀 6 보다 높았는데 올 해 팀 6이 팀 13보다 순위가 높다면 (6,13) 을 발표한다
+        작년 순위와 상대적 순위가 모두 바뀐 모든 팀 목록이 주어질 때 올해 순위를 만드는 프로그램을 작성하라
+Input ) 첫 줄에는 테스트케이스의 개수가 주어진다. 테스트케이스는 100개를 넘지 않는다. 각 테스트케이스는 다음과 같이 이루어진다
+        >>> 팀의 수 n 을 포함하는 한 줄 ( 2<= n <= 500)
+        >>> n개의 정수 t 를 포함하는 한 줄 (1 <= t <= n), t는 작년에 i등을 한 팀의 번호입니다. 1등이 가장 높은등수이며 모든 t 는 다르다
+        >>> 상대적인 등수가 바뀐 쌍의 수 m( 0<= m <= 25,000)
+        >>> 두 정수 a 와 b 를 포함하고있는 m 줄 ( 1<= a<b <= n )에 걸쳐 상대적 등수바 바뀐 두 팀이 주어진다
+Output) 각 테스트케이스에 대해 다음을 출력하라
+        >>> n개의 정수를 한 줄에 출력하라. 출력하는 숫자는 올해 순위이며, 1등부터 순서대로 출력하라.
+        >>> 만약 확실한 순위를 알 수 없다면, '?' 를 출력하라. 데이터에 일관성이 없어 불가능하다면 'IMPOSSIBLE' 을 출력하라
+'''
 
