@@ -463,5 +463,40 @@ Output) 각 테스트케이스에 대해 다음을 출력하라
         2. 꺼낸 노드와 연결된 간선을 제거한다. 그에 따라 진입차수가 0 이 되는 노드를 다시 큐에 넣는다.
         2를 완료했을 때 큐가 빌 때 까지 1과 2를 반복한다.
 '''
+from collections import deque
+n = 5
+array = [ [] for _ in range(n+1)]
 data = [5,4,3,2,1]
 change = [[2,4],[3,4]]
+
+
+for i in range(n):
+    num = data[i]
+    array[num] = array[num] + data[i+1:]
+
+for a,b in change:
+    if a in array[b]:
+        array[a].append(b)
+        array[b].remove(a)
+    else:
+        array[b].append(a)
+        array[a].remove(b)
+
+degree = [[i,0] for i in range(n+1)]
+for i in range(n+1):
+    degree[i][1] = (n-1)-len(array[i])
+
+q=deque()
+for i,j in degree:
+    if j == 0:
+        q.append(i)
+
+if len(q) > 1:
+    print('?')
+while q:
+    node = q.popleft()
+    if degree[node][1] == 0:
+        for i in array[node]:
+            q.append(i)
+            degree[i][1] -= 1
+    print(degree)
