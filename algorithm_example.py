@@ -464,39 +464,84 @@ Output) 각 테스트케이스에 대해 다음을 출력하라
         2를 완료했을 때 큐가 빌 때 까지 1과 2를 반복한다.
 '''
 from collections import deque
-n = 5
-array = [ [] for _ in range(n+1)]
-data = [5,4,3,2,1]
-change = [[2,4],[3,4]]
+import sys
+input = sys.stdin.readline
+case = int(input())
+N = []
+give = []
+move = []
+move_data = [[] for _ in range(case)]
+for i in range(case):
+    N.append(int(input()))
+    give.append(list(map(int,input().split())))
+    move.append(int(input()))
+    for j in range(move[i]):
+        move_data[i].append(list(map(int,input().split())))
 
+for i in range(case):
+    n,data,change = N[i],give[i],move_data[i]
+    cycle = False
+    unknown = False
+    array = [ [] for _ in range(n+1)]
+    for i in range(n):
+        num = data[i]
+        array[num] = array[num] + data[i+1:]
 
-for i in range(n):
-    num = data[i]
-    array[num] = array[num] + data[i+1:]
+    for a,b in change:
+        if a in array[b]:
+            array[a].append(b)
+            array[b].remove(a)
+        else:
+            array[b].append(a)
+            array[a].remove(b)
 
-for a,b in change:
-    if a in array[b]:
-        array[a].append(b)
-        array[b].remove(a)
-    else:
-        array[b].append(a)
-        array[a].remove(b)
-
-degree = [[i,0] for i in range(n+1)]
-for i in range(n+1):
-    degree[i][1] = (n-1)-len(array[i])
-
-q=deque()
-for i,j in degree:
-    if j == 0:
-        q.append(i)
-
-if len(q) > 1:
-    print('?')
-while q:
-    node = q.popleft()
-    if degree[node][1] == 0:
-        for i in array[node]:
+    degree = [[i,0,False] for i in range(n+1)]
+    for i in range(n+1):
+        degree[i][1] = (n-1)-len(array[i])
+    q=deque()
+    result = []
+    for i,j,k in degree:
+        if j == 0:
             q.append(i)
-            degree[i][1] -= 1
-    print(degree)
+            result.append(i)
+            
+
+
+    for i in range(n):
+        if len(q) >= 2:
+            unknown = True
+            break
+        elif len(q) == 0:
+            cycle = True
+            break
+
+        node = q.popleft()
+        
+        degree[node][2] = True
+
+        if degree[node][1] == 0:
+            for i in array[node]:
+                degree[i][1] -= 1
+                if degree[i][1] == 0:
+                    q.append(i)
+                    result.append(i)
+        # for i in degree:
+        #     if i[1] == 0 and i[2] == False:
+        #         q.append(i[0])
+        #         i[2] = True
+        #         result.append(i[0])
+
+    if cycle:
+        print('IMPOSSIBLE')
+    elif unknown:
+        print('?')
+    else:
+        for i in result:
+            print(i,end=' ')
+        print()
+
+'''
+1회차 > 상당히 오래걸렸다. 하지만 나름 나의 코드로 짜내서 풀었다. 마지막에 자잘한 오류들이 있긴 했지만, 결국은
+        내가 푼 3단계 문제라는것에 상당히 의의를 둔다. 그러나 degree 상태를 bool 형태로 굳이 두지 않았어도 되었었다.
+
+'''

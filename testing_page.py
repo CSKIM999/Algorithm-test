@@ -1,7 +1,14 @@
-al_1 = 1
-al_2 = 2
+case = int(input())
+n = []
+data = []
+move = []
+move_data = [[] for _ in range(case)]
+for i in range(case):
+    n.append(int(input()))
+    data.append(list(map(int,input().split())))
+    move.append(int(input()))
+    for j in range(move[i]):
+        move_data[i].append(list(map(int,input().split())))
 
-def alprint(num):
-    alpha = al_+num
-    return alpha
-    print()
+print(data)
+print(move_data)
