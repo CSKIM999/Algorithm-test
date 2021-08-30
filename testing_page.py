@@ -1,14 +1,9 @@
-case = int(input())
-n = []
-data = []
-move = []
-move_data = [[] for _ in range(case)]
-for i in range(case):
-    n.append(int(input()))
-    data.append(list(map(int,input().split())))
-    move.append(int(input()))
-    for j in range(move[i]):
-        move_data[i].append(list(map(int,input().split())))
-
-print(data)
-print(move_data)
+a = True
+b = 0
+while a:
+    b+=1
+    if b == 50:
+        a = False
+    if b==100:
+        break
+print(b)

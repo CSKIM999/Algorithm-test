@@ -463,85 +463,180 @@ Output) 각 테스트케이스에 대해 다음을 출력하라
         2. 꺼낸 노드와 연결된 간선을 제거한다. 그에 따라 진입차수가 0 이 되는 노드를 다시 큐에 넣는다.
         2를 완료했을 때 큐가 빌 때 까지 1과 2를 반복한다.
 '''
-from collections import deque
-import sys
-input = sys.stdin.readline
-case = int(input())
-N = []
-give = []
-move = []
-move_data = [[] for _ in range(case)]
-for i in range(case):
-    N.append(int(input()))
-    give.append(list(map(int,input().split())))
-    move.append(int(input()))
-    for j in range(move[i]):
-        move_data[i].append(list(map(int,input().split())))
+# from collections import deque
+# import sys
+# input = sys.stdin.readline
+# case = int(input())
+# N = []
+# give = []
+# move = []
+# move_data = [[] for _ in range(case)]
+# for i in range(case):
+#     N.append(int(input()))
+#     give.append(list(map(int,input().split())))
+#     move.append(int(input()))
+#     for j in range(move[i]):
+#         move_data[i].append(list(map(int,input().split())))
 
-for i in range(case):
-    n,data,change = N[i],give[i],move_data[i]
-    cycle = False
-    unknown = False
-    array = [ [] for _ in range(n+1)]
-    for i in range(n):
-        num = data[i]
-        array[num] = array[num] + data[i+1:]
+# for i in range(case):
+#     n,data,change = N[i],give[i],move_data[i]
+#     cycle = False
+#     unknown = False
+#     array = [ [] for _ in range(n+1)]
+#     for i in range(n):
+#         num = data[i]
+#         array[num] = array[num] + data[i+1:]
 
-    for a,b in change:
-        if a in array[b]:
-            array[a].append(b)
-            array[b].remove(a)
-        else:
-            array[b].append(a)
-            array[a].remove(b)
+#     for a,b in change:
+#         if a in array[b]:
+#             array[a].append(b)
+#             array[b].remove(a)
+#         else:
+#             array[b].append(a)
+#             array[a].remove(b)
 
-    degree = [[i,0,False] for i in range(n+1)]
-    for i in range(n+1):
-        degree[i][1] = (n-1)-len(array[i])
-    q=deque()
-    result = []
-    for i,j,k in degree:
-        if j == 0:
-            q.append(i)
-            result.append(i)
+#     degree = [[i,0,False] for i in range(n+1)]
+#     for i in range(n+1):
+#         degree[i][1] = (n-1)-len(array[i])
+#     q=deque()
+#     result = []
+#     for i,j,k in degree:
+#         if j == 0:
+#             q.append(i)
+#             result.append(i)
             
 
 
-    for i in range(n):
-        if len(q) >= 2:
-            unknown = True
-            break
-        elif len(q) == 0:
-            cycle = True
-            break
+#     for i in range(n):
+#         if len(q) >= 2:
+#             unknown = True
+#             break
+#         elif len(q) == 0:
+#             cycle = True
+#             break
 
-        node = q.popleft()
+#         node = q.popleft()
         
-        degree[node][2] = True
+#         degree[node][2] = True
 
-        if degree[node][1] == 0:
-            for i in array[node]:
-                degree[i][1] -= 1
-                if degree[i][1] == 0:
-                    q.append(i)
-                    result.append(i)
-        # for i in degree:
-        #     if i[1] == 0 and i[2] == False:
-        #         q.append(i[0])
-        #         i[2] = True
-        #         result.append(i[0])
+#         if degree[node][1] == 0:
+#             for i in array[node]:
+#                 degree[i][1] -= 1
+#                 if degree[i][1] == 0:
+#                     q.append(i)
+#                     result.append(i)
+#         # for i in degree:
+#         #     if i[1] == 0 and i[2] == False:
+#         #         q.append(i[0])
+#         #         i[2] = True
+#         #         result.append(i[0])
 
-    if cycle:
-        print('IMPOSSIBLE')
-    elif unknown:
-        print('?')
-    else:
-        for i in result:
-            print(i,end=' ')
-        print()
+#     if cycle:
+#         print('IMPOSSIBLE')
+#     elif unknown:
+#         print('?')
+#     else:
+#         for i in result:
+#             print(i,end=' ')
+#         print()
 
 '''
 1회차 > 상당히 오래걸렸다. 하지만 나름 나의 코드로 짜내서 풀었다. 마지막에 자잘한 오류들이 있긴 했지만, 결국은
         내가 푼 3단계 문제라는것에 상당히 의의를 둔다. 그러나 degree 상태를 bool 형태로 굳이 두지 않았어도 되었었다.
 
 '''
+
+###############################################################################################################
+#############################################     Q46 _ 아기 상어     #########################################
+###############################################################################################################
+'''
+Given ) N*N 의 공간에 M 마리의 물고기와 한 마리의 아기상어가 존재한다. 한칸에는 물고기가 최대 1 마리 존재하며
+        아기상어와 물고기의 크기는 자연수로 주어진다. 아기상어의 처음 크기는 2 이고 1초에 상하좌우 인접 1칸 이동할 수 있다.
+        아기상어는 자신의 크기보다 크기가 큰 물고기가 있는 칸은 지나가지 못하고, 크기가 같은 물고기가 있는 칸은
+        지나갈 수만 있으며, 작은 물고기가 있는 칸은 지나감과 동시에 먹는다. 만약 물고기가 먹히면 그 칸은 빈칸이 된다.
+        아기상어의 이동규칙은 다음과 같다.
+        >>> 먹을 수 있는 물고기가 1마리라면 그 물고기를 먹으러 간다
+        >>> 먹을 수 있는 물고기가 2마리 이상이라면 거리가 가장 가까운 물고기를 먹으러 간다
+            >>> 거리는 아기상어가 있는 칸에서 해당 물고기가 있는 칸까지의 칸의 최솟값
+            >>> 거리가 같다면, y 값이 작은 물고기를 (위에 있는 물고기) y값마저 같다면 x값이 작은 물고기를 (왼쪽에 있는 물고기) 먹는다
+        아기상어는 자신의 크기와 같은 수의 물고기를 먹으면 성장한다. 만약 더이상 먹을 수 있는 물고기가 없다면
+        프로그램은 종료된다. 프로그램은 몇초 뒤에 종료될것인가?
+Input ) 첫째 줄에 N 이 주어진다 ( 2<= N <= 20 )
+        둘째 줄 부터 N 개의 줄에 공간의 상태가 주어진다. 공간의 상태는 0,1,2,3,4,5,6,9 로 주어지며 그 의미는 다음과 같다
+        >>> 0 : 빈칸
+        >>> 1~6 : 물고기의 크기
+        >>> 9 : 아기상어의 위치
+Output) 프로그램이 종료되는 시간을 출력하라
+'''
+'''
+1회차 > 물고기의 크기별 위치정보를 리스트로 정리하고 
+        case 1 : 먹을 수 있는 물고기가 없을 때
+        case 2 : 먹을 수 있는 물고기가 한 마리 일 때
+        case 3 : 먹을 수 있는 물고기가 여러마리 일 때
+        case 4 : 먹을 수 있는 물고기가 있으나, 큰 물고기로인해 가로막힌 경우
+        네가지 케이스를 상정하고, 필요한 기능들을 나열해보자면
+        >>> 다음 이동해야 할 위치 선정
+        >>> 다음 지점까지 이동할 경로 설정
+'''
+
+n = 4
+data = [
+    [4,3,2,1],
+    [0,0,0,0],
+    [0,0,9,0],
+    [1,2,3,4]
+    ]
+feed = [[] for _ in range(7)]
+shark = [2]
+for i in range(n): #n 은 최대 20 이므로 모두 순회하더라도 400에 불과
+    for j in range(n):
+        if data[i][j] != 0 and data[i][j] != 9:
+            x = data[i][j]
+            feed[x].append((i,j))
+        elif data[i][j] == 9:
+            shark.append([i,j])
+check = True
+
+
+ans = [[1e9]*n for _ in range(n)]
+ans[2][2] = 0
+def dfs(data,now):
+    x,y = now
+    dx,dy = [0,0,-1,1],[-1,1,0,0]
+    for i in range(4):
+        nx,ny = x+dx[i],y+dy[i]
+        if 0<= nx <n and 0<= ny < n:
+            if data[nx][ny] <= shark[0]:
+                cal = min(ans[nx][ny],(ans[x][y]+1))
+                if ans[nx][ny] > cal:
+                    ans[nx][ny] = cal
+                    dfs(data,[nx,ny])
+    
+    return ans ## [[1000000000.0, 1000000000.0, 2, 3], [3, 2, 1, 2], [2, 1, 0, 1], [3, 2, 1000000000.0, 1000000000.0]]
+
+
+
+
+def find_next(now):
+    temp = 0
+    target = []
+    for i in feed[1:shark[0]]:
+        temp += len(i)
+        for j in i:
+            target.append([0,j])
+    if temp == 0:
+        return False
+
+    x,y = now
+    for i in range(len(target)):
+        nx,ny = target[i][1]
+        ndist = abs(x-nx) + abs(y-ny)
+        target[i][0] = ndist
+    target.sort()
+    return target ## [[3, (0, 3)], [3, (3, 0)]]
+
+while True:
+    
+
+print(dfs(data,shark[1]))
+print(find_next(shark[1]))
