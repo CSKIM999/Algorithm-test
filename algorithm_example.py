@@ -568,6 +568,7 @@ Input ) 첫째 줄에 N 이 주어진다 ( 2<= N <= 20 )
         >>> 9 : 아기상어의 위치
 Output) 프로그램이 종료되는 시간을 출력하라
 '''
+
 '''
 1회차 > 물고기의 크기별 위치정보를 리스트로 정리하고 
         case 1 : 먹을 수 있는 물고기가 없을 때
@@ -586,57 +587,85 @@ data = [
     [0,0,9,0],
     [1,2,3,4]
     ]
+import sys
+input = sys.stdin.readline
+from collections import deque
+
+n = int(input())
+data = []
+for i in range(n):
+    data.append(list(map(int,input().split())))
 feed = [[] for _ in range(7)]
 shark = [2]
-for i in range(n): #n 은 최대 20 이므로 모두 순회하더라도 400에 불과
+shark_size = 2
+result = 0
+
+for i in range(n):
     for j in range(n):
         if data[i][j] != 0 and data[i][j] != 9:
             x = data[i][j]
             feed[x].append((i,j))
         elif data[i][j] == 9:
             shark.append([i,j])
-check = True
 
 
-ans = [[1e9]*n for _ in range(n)]
-ans[2][2] = 0
-def dfs(data,now):
+def dfs(now):
+    q = deque()
+    dist = [[-1]*n for _ in range(n)]
     x,y = now
+    dist[x][y] = 0
     dx,dy = [0,0,-1,1],[-1,1,0,0]
-    for i in range(4):
-        nx,ny = x+dx[i],y+dy[i]
-        if 0<= nx <n and 0<= ny < n:
-            if data[nx][ny] <= shark[0]:
-                cal = min(ans[nx][ny],(ans[x][y]+1))
-                if ans[nx][ny] > cal:
-                    ans[nx][ny] = cal
-                    dfs(data,[nx,ny])
-    
-    return ans ## [[1000000000.0, 1000000000.0, 2, 3], [3, 2, 1, 2], [2, 1, 0, 1], [3, 2, 1000000000.0, 1000000000.0]]
+    q.append([x,y])
+    while q:
+        x,y = q.popleft()
+        for i in range(4):
+            nx,ny = x+dx[i],y+dy[i]
+            if 0<= nx and nx <n and 0<= ny and ny < n:
+                if (dist[nx][ny] > (dist[x][y]+1) or dist[nx][ny] == -1) and shark[0] >= data[nx][ny]:
+                    dist[nx][ny] = dist[x][y]+1
+                    q.append([nx,ny])
+
+    return dist
 
 
-
-
-def find_next(now):
+def find_next(dist):
     temp = 0
     target = []
     for i in feed[1:shark[0]]:
         temp += len(i)
         for j in i:
-            target.append([0,j])
+            target.append(j)
     if temp == 0:
         return False
+    result = []
+    for x,y in target:
+        if dist[x][y] != -1:
+            result.append([dist[x][y],(x,y)])
+    result.sort()
 
-    x,y = now
-    for i in range(len(target)):
-        nx,ny = target[i][1]
-        ndist = abs(x-nx) + abs(y-ny)
-        target[i][0] = ndist
-    target.sort()
-    return target ## [[3, (0, 3)], [3, (3, 0)]]
+    return result 
 
 while True:
-    
+    temp = find_next(dfs(shark[1]))
+    if temp == False:
+        break
+    for i in range(7):
+        if temp[0][1] in feed[i]:
+            feed[i].remove(temp[0][1])
+            break
+    data[shark[1][0]][shark[1][1]] = 0
+    result += temp[0][0]
+    shark[1] = temp[0][1]
+    data[shark[1][0]][shark[1][1]] = 9
+    shark_size -=1
+    if shark_size == 0:
+        shark[0] +=1
+        shark_size = shark[0]
 
-print(dfs(data,shark[1]))
-print(find_next(shark[1]))
+print(result)
+
+'''
+1회차 > 나는 dfs 를 사용해서 풀어서 시간초과판정을 받았다. 해답에서는 큐를 이용한 bfs 를 추천한다.
+        다음에 다시한번 풀어봐야겠다.
+        
+'''
