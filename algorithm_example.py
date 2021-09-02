@@ -580,92 +580,213 @@ Output) 프로그램이 종료되는 시간을 출력하라
         >>> 다음 지점까지 이동할 경로 설정
 '''
 
-n = 4
-data = [
-    [4,3,2,1],
-    [0,0,0,0],
-    [0,0,9,0],
-    [1,2,3,4]
-    ]
-import sys
-input = sys.stdin.readline
-from collections import deque
+# n = 20
+# data = [
+#     [4,3,2,1,4,3,2,1,4,3,2,1,4,3,2,1,4,3,2,1],
+#     [0,0,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+#     [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+#     [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+#     [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+#     [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+#     [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+#     [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+#     [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+#     [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+#     [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+#     [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+#     [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+#     [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+#     [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+#     [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+#     [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+#     [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+#     [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+#     [1,2,3,4,1,2,3,4,1,2,3,4,1,2,3,4,1,2,3,4]
+#     ]
+# import sys
+# input = sys.stdin.readline
+# from collections import deque
 
-n = int(input())
-data = []
-for i in range(n):
-    data.append(list(map(int,input().split())))
-feed = [[] for _ in range(7)]
-shark = [2]
-shark_size = 2
-result = 0
+# n = int(input())
+# data = []
+# for i in range(n):
+#     data.append(list(map(int,input().split())))
 
-for i in range(n):
-    for j in range(n):
-        if data[i][j] != 0 and data[i][j] != 9:
-            x = data[i][j]
-            feed[x].append((i,j))
-        elif data[i][j] == 9:
-            shark.append([i,j])
+# feed = [[] for _ in range(7)]
+# shark = [2]
+# shark_size = 2
+# result = 0
 
-
-def dfs(now):
-    q = deque()
-    dist = [[-1]*n for _ in range(n)]
-    x,y = now
-    dist[x][y] = 0
-    dx,dy = [0,0,-1,1],[-1,1,0,0]
-    q.append([x,y])
-    while q:
-        x,y = q.popleft()
-        for i in range(4):
-            nx,ny = x+dx[i],y+dy[i]
-            if 0<= nx and nx <n and 0<= ny and ny < n:
-                if (dist[nx][ny] > (dist[x][y]+1) or dist[nx][ny] == -1) and shark[0] >= data[nx][ny]:
-                    dist[nx][ny] = dist[x][y]+1
-                    q.append([nx,ny])
-
-    return dist
+# for i in range(n):
+#     for j in range(n):
+#         if data[i][j] != 0 and data[i][j] != 9:
+#             x = data[i][j]
+#             feed[x].append((i,j))
+#         elif data[i][j] == 9:
+#             shark.append([i,j])
 
 
-def find_next(dist):
-    temp = 0
-    target = []
-    for i in feed[1:shark[0]]:
-        temp += len(i)
-        for j in i:
-            target.append(j)
-    if temp == 0:
-        return False
-    result = []
-    for x,y in target:
-        if dist[x][y] != -1:
-            result.append([dist[x][y],(x,y)])
-    result.sort()
+# def dfs(now):
+#     q = deque()
+#     dist = [[-1]*n for _ in range(n)]
+#     x,y = now
+#     dist[x][y] = 0
+#     dx,dy = [0,0,-1,1],[-1,1,0,0]
+#     q.append([x,y])
+#     while q:
+#         x,y = q.popleft()
+#         for i in range(4):
+#             nx,ny = x+dx[i],y+dy[i]
+#             if 0<= nx and nx <n and 0<= ny and ny < n:
+#                 if (dist[nx][ny] > (dist[x][y]+1) or dist[nx][ny] == -1) and shark[0] >= data[nx][ny]:
+#                     dist[nx][ny] = dist[x][y]+1
+#                     q.append([nx,ny])
 
-    return result 
+#     return dist
 
-while True:
-    temp = find_next(dfs(shark[1]))
-    if temp == False:
-        break
-    for i in range(7):
-        if temp[0][1] in feed[i]:
-            feed[i].remove(temp[0][1])
-            break
-    data[shark[1][0]][shark[1][1]] = 0
-    result += temp[0][0]
-    shark[1] = temp[0][1]
-    data[shark[1][0]][shark[1][1]] = 9
-    shark_size -=1
-    if shark_size == 0:
-        shark[0] +=1
-        shark_size = shark[0]
 
-print(result)
+# def find_next(dist):
+#     temp = 0
+#     target = []
+#     for i in feed[1:shark[0]]:
+#         temp += len(i)
+#         for j in i:
+#             target.append(j)
+#     if temp == 0:
+#         return False
+
+#     to_go = []
+#     for x,y in target:
+#         if dist[x][y] != -1:
+#             to_go.append([dist[x][y],(x,y)])
+#     to_go.sort()
+
+#     return to_go 
+
+# while True:
+#     temp = find_next(dfs(shark[1]))
+#     # if temp == False  """""or len(temp) == 0""""": << 이부분이 인덱스에러의 문제였음
+#     if temp == False or len(temp) == 0:
+
+#         break
+#     for i in range(7):
+#         if temp[0][1] in feed[i]:
+#             feed[i].remove(temp[0][1])
+#             break
+#     data[shark[1][0]][shark[1][1]] = 0
+#     result += temp[0][0]
+#     shark[1] = temp[0][1]
+#     data[shark[1][0]][shark[1][1]] = 9
+#     shark_size -=1
+#     if shark_size == 0:
+#         shark[0] +=1
+#         shark_size = shark[0]
+
+# print(result)
 
 '''
 1회차 > 나는 dfs 를 사용해서 풀어서 시간초과판정을 받았다. 해답에서는 큐를 이용한 bfs 를 추천한다.
         다음에 다시한번 풀어봐야겠다.
         
+'''
+
+# import sys
+# input = sys.stdin.readline
+# from collections import deque
+
+# n = int(input())
+# data = []
+# for i in range(n):
+#     data.append(list(map(int,input().split())))
+
+# shark = [2]
+# result = 0
+# shark_size = 2
+# for i in range(n):
+#     for j in range(n):
+#         if data[i][j] == 9:
+#             shark.append((i,j))
+#             data[i][j] = 0
+
+            
+
+# def find(array,shark):
+#     x,y=0,0
+#     min_val = 500
+#     for i in range(n):
+#         for j in range(n):
+#             if array[i][j] != -1 and 1<=data[i][j]<shark[0]:
+#                 if array[i][j] < min_val:
+#                     x,y = i,j
+#                     min_val = array[i][j]
+    
+#     if min_val == 500:
+#         return False
+#     return [min_val,[x,y]]
+
+# def bfs(data,shark):
+#     n = len(data)
+#     dist = [[-1]*n for _ in range(n)]
+#     q = deque()
+#     q.append(shark[1])
+#     dist[shark[1][0]][shark[1][1]] = 0
+#     dx,dy = [0,0,-1,1],[-1,1,0,0]
+#     while q:
+#         x,y = q.popleft()
+#         for i in range(4):
+#             nx,ny = x+dx[i] , y+dy[i]
+#             if 0<=nx and nx<n and 0<=ny and ny<n and data[nx][ny] <= shark[0]:
+#                 if dist[nx][ny] > (dist[x][y]+1) or dist[nx][ny] == -1:
+#                     dist[nx][ny] = dist[x][y]+1
+#                     q.append([nx,ny])
+
+#     return dist
+
+# while True:
+#     ans = find(bfs(data,shark),shark) 
+#     # 움직일 때 바뀌어야 할 것
+#     # 1. 먹이리스트 갱신 2. 상어위치 갱신 3. 상어있던자리 비우기 4.현재시간 5.상어크기카운트
+#     if ans == False:
+#         break
+#     result += ans[0] # 4
+#     nx,ny = ans[1]
+#     data[nx][ny] = 0 # 2
+#     shark_size -=1
+#     shark[1] = (nx,ny)
+#     if shark_size == 0:
+#         shark[0] +=1
+#         shark_size = shark[0]
+
+# print(result)
+
+'''
+2회차 > 엄청 많이 시도했지만 Index에러를 받고 아무리봐도 feed리스트 때문인것같아서 feed리스트를 사용하는 방식에서 find 에서 매번 가장 최소거리 먹이를 매번 찾아다니는 방식으로
+        바꿔주었다. 역시나 feed 리스트가 문제였다. 하지만 feed 자체는 생각보다 참신한 아이디어같으니 다음에 한번 다시 feed리스트의 인덱스에러를 해결해서 풀어보자
+'''
+
+
+###############################################################################################################
+###########################################     Q46 _ 청소년 상어     #########################################
+###############################################################################################################
+'''
+Given ) 4*4 공간에 물고기가 16마리 존재라며 각 물고기는 1 이상 16 이하의 번호를 가지며 8가지 방향을 갖고있다.
+        청소년 상어는 주어진 4*4 공간의 (0,0) 에 위치한 물고기를 먹으며 등장하며 상어의 방향은 잡아먹은 물고기의 방향이 된다.
+        이후 물고기가 이동하며 물고기의 이동 알고리즘은 다음과 같다.
+        >>> 물고기는 번호가 작은 물고기부터 오름차순으로 이동한다. 물고기는 한 칸 이동할 수 있고 상어나 공간을 넘어가지 않는 방향으로 움직일 수 있다.
+        >>> 물고기가 이동하려는 칸이 이동이 불가능하다면 반시계방향으로 45' 회전하며 이동 가능한 방향을 찾는다. 만약 없다면 이동하지 않는다.
+        >>> 물고기가 다른 물고기가 있는 칸으로 이동할 땐 서로의 위치를 바꾸는 식으로 이동한다.
+        
+        물고기가 모두 이동하고나서 상어가 이동하며 상어는 현재 방향으로 한번에 여러칸 이동할 수 있다. 상어가 물고기가 있는 칸으로 이동했다면, 그 칸에 있는 물고기를 먹고 방향성을 얻는다
+        이동하는 중간에 지나는 칸에 위치한 물고기는 먹지 않는다. 물고기가 없는 칸으로는 이동이 불가하며, 더 이상 이동할 칸이 없다면 집으로 간다.
+        상어가 이동한 후에는 다시 물고기가 이동하며 이후 이 과정이 반복된다.
+
+Input ) 첫째 줄부터 4개의 줄에 각 칸에 들어있는 물고기의 정보가 1번 행부터 주어진다. 물고기의 정보는 두 정수 a,b 로 이루어지며, 
+        a는 물고기의 번호 b는 방향을 의미한다. 방향 b 는 1에서 8까지의 자연수이며 각 순서대로 12시방향에서 반시계방향(↑, ↖, ←, ↙, ↓, ↘, →, ↗ )을 의미한다.
+
+Output) 상어가 먹을 수 있는 물고기 번호 합의 최댓값을 출력하라
+'''
+
+'''
+1회차 > 우선적으로 물고기의 이동규칙은 크게 어렵지 않아 move 함수로 작성하고 각 칸으로 이동할 때 마다 최댓값의 경우의 수가 달라지므로, dfs로 구성해보자
+        move함수는 어차피 순서대로 이동해야하니 큐를 이용해서 (number,(x,y),rotate)로 움직여보자
 '''
