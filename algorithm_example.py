@@ -797,10 +797,11 @@ Give = [
     [6,1,13,6,4,3,11,4],
     [16,1,8,7,5,2,12,2]
 ]
-
+num_list = [i for i in range(1,17)]
 rx = [0,-1,-1,0,1,1,1,0,-1]
 ry = [0,0,-1,-1,-1,0,1,1,1]
-
+num_list.remove(Give[0][0])
+Give[0][0] = -1
 data = [[] for _ in range(4)]
 rotate = [[] for _ in range(4)]
 for i in range(4):
@@ -808,14 +809,49 @@ for i in range(4):
         data[i].append(Give[i][j])
         rotate[i].append(Give[i][j+1])
 
-use = []
-for i in range(4):
-    for j in range(4):
-        num = Give[i][j*2]
-        rot = Give[i][(j*2)+1]
-        use.append([num,rot,i,j])
-use.sort()
-print(use)
-nx = use[1][2] + rx[use[1][1]]
-ny = use[1][3] + ry[use[1][1]]
-print(data[nx][ny])
+def move_fish(rot,x,y,count):
+    nx,ny = x + rx[rot], y + ry[rot]
+    if 0<= nx < n and 0<= ny <n and data[nx][ny] != -1:
+        data[x][y],data[nx][ny] = data[nx][ny],data[x][y]
+        rotate[x][y],rotate[nx][ny] = rotate[nx][ny],rotate[x][y]
+    else:
+        rot += 1
+        if rot == 9:
+            rot = 1
+        count +=1
+        if count == 8:
+            return None
+        return move_fish(rot,x,y,count)
+
+
+#물고기 움직이기
+for num in num_list:
+    count = 0
+    check = False
+    for i in range(4):
+        for j in range(4):
+            if data[i][j] == num:
+                rot = rotate[i][j]
+                move_fish(rot,i,j,count)
+                check = True
+                break
+        if check == True:
+            break
+
+print(data)
+def getlist():
+    lst =[]
+    for i in range(4):
+            for j in range(4):  
+                if data[i][j] == -1:
+                    rot = rotate[i][j]
+                    x,y = i,j
+    
+    for i in range(1,4):
+        nx,ny = x + (rx[rot])*i , y + (ry[rot])*i
+        if 0<= nx <n and 0<=ny<n:
+            lst.append([data[nx][ny],rotate[nx][ny],nx,ny])
+    lst.sort()
+    return lst
+
+print(getlist())
