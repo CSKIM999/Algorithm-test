@@ -103,18 +103,18 @@ for i in range(10):
 따라서 위의 코드를 flag 를 사용하여 다시 작성한다면
 '''
 
-flag = True
+flag = False
 for i in range(10):
     for j in range(10):
         for k in range(10):
             if i+j+k > 15:
                 print('YES')
                 print(i,j,k)
-                flag = False
+                flag = True
                 break
-        if flag == False:
+        if flag:
             break
-    if flag == False:
+    if flag:
         break
 
 '''

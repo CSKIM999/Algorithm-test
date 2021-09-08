@@ -1,16 +1,4 @@
-tt = 0
-def test(tt,flag):
-    
-    
-    flag = False
-    return flag
-
-
-count = 0
-flag = True
-while flag:
-    tt = test(tt,flag)
-    print(count) 
-    count+=1
-    if count == 15:
-        break
+12,6,14,5,4,5,6,7
+15,1,11,7,3,7,7,5
+10,3,8,3,16,6,1,1
+5,8,2,7,13,6,9,2

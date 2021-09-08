@@ -791,67 +791,121 @@ Output) 상어가 먹을 수 있는 물고기 번호 합의 최댓값을 출력�
         move함수는 어차피 순서대로 이동해야하니 큐를 이용해서 (number,(x,y),rotate)로 움직여보자
 '''
 n =4
+# Give = [
+#     [7,6,2,3,15,6,9,8],
+#     [3,1,1,8,14,7,10,1],
+#     [6,1,13,6,4,3,11,4],
+#     [16,1,8,7,5,2,12,2]
+# ]
+# Give = [
+#     [16,7,1,4,4,3,12,8],
+#     [14,7,7,6,3,4,10,2],
+#     [5,2,15,2,8,3,6,4],
+#     [11,8,2,4,13,5,9,4]
+# ]
 Give = [
-    [7,6,2,3,15,6,9,8],
-    [3,1,1,8,14,7,10,1],
-    [6,1,13,6,4,3,11,4],
-    [16,1,8,7,5,2,12,2]
+    [12,6,14,5,4,5,6,7],
+    [15,1,11,7,3,7,7,5],
+    [10,3,8,3,16,6,1,1],
+    [5,8,2,7,13,6,9,2]
 ]
+
 num_list = [i for i in range(1,17)]
 rx = [0,-1,-1,0,1,1,1,0,-1]
 ry = [0,0,-1,-1,-1,0,1,1,1]
+
+start = Give[0][0]
 num_list.remove(Give[0][0])
+result = 0
+result += Give[0][0]
 Give[0][0] = -1
 data = [[] for _ in range(4)]
 rotate = [[] for _ in range(4)]
+
 for i in range(4):
     for j in range(0,n*2,2):
         data[i].append(Give[i][j])
         rotate[i].append(Give[i][j+1])
+shark = [rotate[0][0],0,0]
 
-def move_fish(rot,x,y,count):
+def move_fish(rot,x,y,count,data,rotate):
     nx,ny = x + rx[rot], y + ry[rot]
     if 0<= nx < n and 0<= ny <n and data[nx][ny] != -1:
         data[x][y],data[nx][ny] = data[nx][ny],data[x][y]
         rotate[x][y],rotate[nx][ny] = rotate[nx][ny],rotate[x][y]
     else:
         rot += 1
+        rotate[x][y] += 1
         if rot == 9:
             rot = 1
+            rotate[x][y] = 1
         count +=1
         if count == 8:
-            return None
-        return move_fish(rot,x,y,count)
+            rotate[x][y] -=8
+            return 
+        return move_fish(rot,x,y,count,data,rotate)
 
-
+def move_fish2(num_list,data,rotate):
 #물고기 움직이기
-for num in num_list:
-    count = 0
-    check = False
-    for i in range(4):
-        for j in range(4):
-            if data[i][j] == num:
-                rot = rotate[i][j]
-                move_fish(rot,i,j,count)
-                check = True
-                break
-        if check == True:
-            break
-
-print(data)
-def getlist():
-    lst =[]
-    for i in range(4):
-            for j in range(4):  
-                if data[i][j] == -1:
+    for num in num_list:
+        count = 0
+        check = False
+        for i in range(4):
+            for j in range(4):
+                if data[i][j] == num:
                     rot = rotate[i][j]
-                    x,y = i,j
+                    move_fish(rot,i,j,count,data,rotate)
+                    check = True
+                    break
+            if check:
+                break
+
+move_fish2(num_list,data,rotate)
+print(data)
+
+def getlist(shark,data,rotate): #현재의 상어 위치에서 보고있는 방향에 있는 물고기들의 숫자,방향,좌표
+    lst =[]
+    rot,x,y = shark
     
     for i in range(1,4):
         nx,ny = x + (rx[rot])*i , y + (ry[rot])*i
         if 0<= nx <n and 0<=ny<n:
-            lst.append([data[nx][ny],rotate[nx][ny],nx,ny])
+            if data[nx][ny] != 0:
+                lst.append([data[nx][ny],rotate[nx][ny],nx,ny])
     lst.sort()
     return lst
 
-print(getlist())
+
+ans = result
+temp_data = [i[:] for i in data]
+temp_numlist = num_list[:]
+temp_shark = shark[:]
+temp_rotate = [i[:] for i in rotate]
+
+def move_shark(shark,data,rotate,num_list,result):
+    global ans
+    srot,x,y = shark
+    lst = getlist(shark,data,rotate)
+
+    if len(lst) == 0:
+        ans = max(ans,result)
+    else:
+        for i in range(len(lst)):
+            nnum,nrot,nx,ny=lst[i]
+            num_list.remove(nnum)
+            data[x][y] = 0
+            rotate[x][y] = 0
+            result += nnum
+            data[nx][ny] = -1
+            shark = [nrot,nx,ny]
+            move_fish2(num_list,data,rotate)
+            move_shark(shark,data,rotate,num_list,result)
+            data = [i[:] for i in temp_data]
+            rotate = [i[:] for i in temp_rotate]
+            num_list = temp_numlist[:]
+            shark = temp_shark[:]
+            result = start
+    return ans 
+
+
+print(move_shark(shark,data,rotate,num_list,result))
