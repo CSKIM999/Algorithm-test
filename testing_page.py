@@ -1,4 +1,8 @@
-12,6,14,5,4,5,6,7
-15,1,11,7,3,7,7,5
-10,3,8,3,16,6,1,1
-5,8,2,7,13,6,9,2
+n = int(input())
+data = []
+for i in range(n*n):
+    delta = (list(map(int,input().split())))
+    data.append([delta[0],tuple(delta[1:5])])
+    
+
+print(data)
