@@ -133,86 +133,204 @@ Given ) 2048 게임을 하려고 한다. n*n 의 보드에서 주어진 데이�
 
 n = 4
 data = [
-    [2,2,2,0],
-    [2,4,0,4],
-    [8,4,4,8],
-    [16,8,4,4]
+    [4,4,2,8],
+    [4,0,4,8],
+    [8,0,4,8],
+    [8,4,4,4]
 ]
 count = 0
 ans = 0
 result = []
-def move_right(data,ans,count):
-
-    count +=1
+for i in data:
+    print(f'NOMAL {i}')
+max_val = 0
+def move_right(data,count):
+    global max_val
+    # if count >=5:
+    #     return data
+    # count += 1
+    lst = []
+    ck = False
     for i in range(n):
         h_count = 1
-        for j in range(1,n+1):
-            if j < n:
-                if data[i][-j] == data[i][-j-1]:
-                    data[i][-h_count] = data[i][-j]*2
-                    data[i][-j-1] = 0
-                    h_count += 1
-                elif data[i][-j] == 0:
+        lst = [j for j in data[i] if j >0]
+        m = len(lst)
+        for j in range(1,m+1): #[2,2,2]
+            if j != m:
+                if ck:
+                    ck = False
+                    continue
+                if lst[-j] != lst[-j-1]:
+                    data[i][-h_count] = lst[-j]
+                    h_count+=1
+                    continue
+                elif lst[-j] == lst[-j-1]:
+                    max_val = max(max_val,lst[-j]*2)
+                    data[i][-h_count] = lst[-j]*2
+                    ck = True
+                    h_count+=1
+            else:
+                if ck:
+                    ck=False
+                    data[i][-h_count] = 0
                     continue
                 else:
-                    data[i][-h_count] = data[i][-j]
-                    h_count += 1
-            else:
-                data[i][-h_count] = data[i][0]
-                if n-h_count !=0:
-                    data[i][0] = 0
-    if count == 5:
-        for i in range(n):
-            for j in range(n):
-                ans = max(ans,data[i][j])
-        result.append(ans)
+                    data[i][-h_count] = lst[-j]
+        if n!=h_count:
+            while True:
+                h_count+=1
+                data[i][-h_count] = 0
+                if n == h_count:
+                    break
+        lst = []
 
-def move_right(data):
-    temp = []
-    for i in range(n): #행
-        for j in range(1,n+1): #열
-            h_count = 1
-            if j<n:
-                if data[i][-j] == 0:
-                    continue
-                else:
-                    if len(temp) == 0:
-                        temp.append(data[i][-j])
-                    else:
-                        if temp[0] == data[i][-j]
-            else:
-                data[i][-h_count] = data[i][0]
-                if n-h_count !=0:
-                    data[i][0] = 0
-            if len(temp) == 2:
-                pass
-
-
-
-def move_left(data,ans,count):
-    count +=1
+def move_left(data,count):
+    global max_val
+    # count += 1
+    lst = []
+    ck = False
     for i in range(n):
         h_count = 0
-        for j in range(n):
-            if j < n-1:
-                if data[i][j] == data[i][j+1]:
-                    data[i][h_count] = data[i][j]*2
-                    data[i][j+1] = 0
-                    h_count += 1
-                elif data[i][j] == 0:
+        lst = [j for j in data[i] if j >0]
+        m = len(lst)
+        for j in range(m): #[2,2,2]
+            if j != m-1:
+                if ck:
+                    ck = False
+                    continue
+                if lst[j] != lst[j+1]:
+                    data[i][h_count] = lst[j]
+                    h_count+=1
+                    continue
+                elif lst[j] == lst[j+1]:
+                    max_val = max(max_val,lst[j]*2)
+                    data[i][h_count] = lst[j]*2
+                    ck = True
+                    h_count+=1
+            else:
+                if ck:
+                    ck=False
+                    data[i][h_count] = 0
                     continue
                 else:
-                    data[i][h_count] = data[i][j]
-                    h_count += 1
-            else:
-                data[i][h_count] = data[i][j]
-                if h_count != n:
-                    data[i][j] = 0
-    if count == 5:
-        for i in range(n):
-            for j in range(n):
-                ans = max(ans,data[i][j])
-        result.append(ans)
+                    data[i][h_count] = lst[j]
+        if n-1!=h_count:
+            while True:
+                h_count+=1
+                data[i][h_count] = 0
+                if n-1 == h_count:
+                    break
+        lst = []
 
-move_right(data,ans,count)
+def move_down(data,count):
+    global max_val
+    # count +=1
+    lst = []
+    ck = False
+    for i in range(n):
+        v_count = 1
+        lst = [ j[i] for j in data[0:n] if j[i] > 0]
+        m = len(lst)
+        for j in range(1,m+1):
+            if j != m:
+                if ck:
+                    ck = False
+                    continue
+                if lst[-j] != lst[-j-1]:
+                    data[-v_count][i] = lst[-j]
+                    v_count+=1
+                    continue
+                elif lst[-j] == lst[-j-1]:
+                    max_val = max(max_val,lst[-j]*2)
+                    data[-v_count][i] = lst[-j]*2
+                    ck = True
+                    v_count+=1
+            else:
+                if ck:
+                    ck=False
+                    data[-v_count][i] = 0
+                    continue
+                else:
+                    data[-v_count][i] = lst[-j]
+        if n!=v_count:
+            while True:
+                v_count+=1
+                data[-v_count][i] = 0
+                if n == v_count:
+                    break
+        lst = []
+
+def move_up(data,count):
+    global max_val
+    # count +=1
+    lst = []
+    ck = False
+    for i in range(n):
+        v_count = 0
+        lst = [ j[i] for j in data[0:n] if j[i] > 0]
+        m = len(lst)
+        for j in range(m):
+            if j != m-1:
+                if ck:
+                    ck = False
+                    continue
+                if lst[j] != lst[j+1]:
+                    data[v_count][i] = lst[j]
+                    v_count+=1
+                    continue
+                elif lst[j] == lst[j+1]:
+                    max_val = max(max_val,lst[j]*2)
+                    data[v_count][i] = lst[j]*2
+                    ck = True
+                    v_count+=1
+            else:
+                if ck:
+                    ck=False
+                    data[v_count][i] = 0
+                    continue
+                else:
+                    data[v_count][i] = lst[j]
+        if n-1!=v_count:
+            while True:
+                v_count+=1
+                data[v_count][i] = 0
+                if n-1 == v_count:
+                    break
+        lst = []
+time = 2
+def test(data,count):
+    for i in range(4):
+        data,count = data,count
+        if i ==0:
+            if count >= time:
+                break
+            count +=1
+            move_right(data,count)
+            print(data)
+            test(data,count)
+        elif i == 1:
+            if count >= time:
+                break
+            count += 1
+            move_left(data,count)
+            print(data)
+            test(data,count)
+        elif i == 2:
+            if count >= time:
+                break
+            count += 1
+            move_up(data,count)
+            print(data)
+            test(data,count)
+        elif i == 3:
+            if count >= time:
+                break
+            count += 1
+            move_down(data,count)
+            print(data)
+            test(data,count)
+
+move_down(data,count)
 print(data)
+print(count)
+test(data,count)
