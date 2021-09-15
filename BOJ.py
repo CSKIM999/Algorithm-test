@@ -131,24 +131,22 @@ Given ) 2048 게임을 하려고 한다. n*n 의 보드에서 주어진 데이�
 1회차 > 각 방향으로의 이동함수를 작성하고 해당 함수들을 dfs 로 순회시켜서 max 값을 가져오고자 함.
 '''
 
-n = 4
-data = [
-    [4,4,2,8],
-    [4,0,4,8],
-    [8,0,4,8],
-    [8,4,4,4]
-]
+# n = 3
+# give = [
+#     [2,2,2],
+#     [4,4,4],
+#     [8,8,8]
+# ]
+n = int(input())
+give = []
+for i in range(n):
+    give.append(list(map(int,input().split(' '))))
+
 count = 0
-ans = 0
-result = []
-for i in data:
-    print(f'NOMAL {i}')
-max_val = 0
-def move_right(data,count):
-    global max_val
-    # if count >=5:
-    #     return data
-    # count += 1
+table_ = [[] for _ in range(6)]
+table_[0] = [i[:] for i in give]
+
+def move_right(data):
     lst = []
     ck = False
     for i in range(n):
@@ -165,7 +163,6 @@ def move_right(data,count):
                     h_count+=1
                     continue
                 elif lst[-j] == lst[-j-1]:
-                    max_val = max(max_val,lst[-j]*2)
                     data[i][-h_count] = lst[-j]*2
                     ck = True
                     h_count+=1
@@ -183,10 +180,10 @@ def move_right(data,count):
                 if n == h_count:
                     break
         lst = []
+    return data
 
-def move_left(data,count):
-    global max_val
-    # count += 1
+
+def move_left(data):
     lst = []
     ck = False
     for i in range(n):
@@ -203,7 +200,6 @@ def move_left(data,count):
                     h_count+=1
                     continue
                 elif lst[j] == lst[j+1]:
-                    max_val = max(max_val,lst[j]*2)
                     data[i][h_count] = lst[j]*2
                     ck = True
                     h_count+=1
@@ -221,10 +217,10 @@ def move_left(data,count):
                 if n-1 == h_count:
                     break
         lst = []
+    return data
 
-def move_down(data,count):
-    global max_val
-    # count +=1
+
+def move_down(data):
     lst = []
     ck = False
     for i in range(n):
@@ -241,7 +237,6 @@ def move_down(data,count):
                     v_count+=1
                     continue
                 elif lst[-j] == lst[-j-1]:
-                    max_val = max(max_val,lst[-j]*2)
                     data[-v_count][i] = lst[-j]*2
                     ck = True
                     v_count+=1
@@ -259,10 +254,9 @@ def move_down(data,count):
                 if n == v_count:
                     break
         lst = []
+    return data
 
-def move_up(data,count):
-    global max_val
-    # count +=1
+def move_up(data):
     lst = []
     ck = False
     for i in range(n):
@@ -279,7 +273,6 @@ def move_up(data,count):
                     v_count+=1
                     continue
                 elif lst[j] == lst[j+1]:
-                    max_val = max(max_val,lst[j]*2)
                     data[v_count][i] = lst[j]*2
                     ck = True
                     v_count+=1
@@ -297,40 +290,20 @@ def move_up(data,count):
                 if n-1 == v_count:
                     break
         lst = []
-time = 2
-def test(data,count):
-    for i in range(4):
-        data,count = data,count
-        if i ==0:
-            if count >= time:
-                break
-            count +=1
-            move_right(data,count)
-            print(data)
-            test(data,count)
-        elif i == 1:
-            if count >= time:
-                break
-            count += 1
-            move_left(data,count)
-            print(data)
-            test(data,count)
-        elif i == 2:
-            if count >= time:
-                break
-            count += 1
-            move_up(data,count)
-            print(data)
-            test(data,count)
-        elif i == 3:
-            if count >= time:
-                break
-            count += 1
-            move_down(data,count)
-            print(data)
-            test(data,count)
+    return data
+ans = 0
+def dfs(data,count):
+    global ans
+    if count >= 5:
+        for i in range(n):
+            for j in range(n):
+                ans = max(ans,data[i][j])
+        return
+    dfs(move_right([i[:] for i in data]),count +1)
+    dfs(move_left([i[:] for i in data]),count +1)
+    dfs(move_down([i[:] for i in data]),count +1)
+    dfs(move_up([i[:] for i in data]),count +1)
 
-move_down(data,count)
-print(data)
-print(count)
-test(data,count)
+dfs(give,count)
+print(ans)
+
