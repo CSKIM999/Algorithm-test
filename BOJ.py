@@ -131,179 +131,334 @@ Given ) 2048 게임을 하려고 한다. n*n 의 보드에서 주어진 데이�
 1회차 > 각 방향으로의 이동함수를 작성하고 해당 함수들을 dfs 로 순회시켜서 max 값을 가져오고자 함.
 '''
 
-# n = 3
-# give = [
-#     [2,2,2],
-#     [4,4,4],
-#     [8,8,8]
+# # n = 3
+# # give = [
+# #     [2,2,2],
+# #     [4,4,4],
+# #     [8,8,8]
+# # ]
+# n = int(input())
+# give = []
+# for i in range(n):
+#     give.append(list(map(int,input().split(' '))))
+# count = 0
+
+# def move_right(data):
+#     lst = []
+#     ck = False
+#     for i in range(n):
+#         h_count = 1
+#         lst = [j for j in data[i] if j >0]
+#         m = len(lst)
+#         for j in range(1,m+1): #[2,2,2]
+#             if j != m:
+#                 if ck:
+#                     ck = False
+#                     continue
+#                 if lst[-j] != lst[-j-1]:
+#                     data[i][-h_count] = lst[-j]
+#                     h_count+=1
+#                     continue
+#                 elif lst[-j] == lst[-j-1]:
+#                     data[i][-h_count] = lst[-j]*2
+#                     ck = True
+#                     h_count+=1
+#             else:
+#                 if ck:
+#                     ck=False
+#                     data[i][-h_count] = 0
+#                     continue
+#                 else:
+#                     data[i][-h_count] = lst[-j]
+#         if n!=h_count:
+#             while True:
+#                 h_count+=1
+#                 data[i][-h_count] = 0
+#                 if n == h_count:
+#                     break
+#         lst = []
+#     return data
+
+
+# def move_left(data):
+#     lst = []
+#     ck = False
+#     for i in range(n):
+#         h_count = 0
+#         lst = [j for j in data[i] if j >0]
+#         m = len(lst)
+#         for j in range(m): #[2,2,2]
+#             if j != m-1:
+#                 if ck:
+#                     ck = False
+#                     continue
+#                 if lst[j] != lst[j+1]:
+#                     data[i][h_count] = lst[j]
+#                     h_count+=1
+#                     continue
+#                 elif lst[j] == lst[j+1]:
+#                     data[i][h_count] = lst[j]*2
+#                     ck = True
+#                     h_count+=1
+#             else:
+#                 if ck:
+#                     ck=False
+#                     data[i][h_count] = 0
+#                     continue
+#                 else:
+#                     data[i][h_count] = lst[j]
+#         if n-1!=h_count:
+#             while True:
+#                 h_count+=1
+#                 data[i][h_count] = 0
+#                 if n-1 == h_count:
+#                     break
+#         lst = []
+#     return data
+
+
+# def move_down(data):
+#     lst = []
+#     ck = False
+#     for i in range(n):
+#         v_count = 1
+#         lst = [ j[i] for j in data[0:n] if j[i] > 0]
+#         m = len(lst)
+#         for j in range(1,m+1):
+#             if j != m:
+#                 if ck:
+#                     ck = False
+#                     continue
+#                 if lst[-j] != lst[-j-1]:
+#                     data[-v_count][i] = lst[-j]
+#                     v_count+=1
+#                     continue
+#                 elif lst[-j] == lst[-j-1]:
+#                     data[-v_count][i] = lst[-j]*2
+#                     ck = True
+#                     v_count+=1
+#             else:
+#                 if ck:
+#                     ck=False
+#                     data[-v_count][i] = 0
+#                     continue
+#                 else:
+#                     data[-v_count][i] = lst[-j]
+#         if n!=v_count:
+#             while True:
+#                 v_count+=1
+#                 data[-v_count][i] = 0
+#                 if n == v_count:
+#                     break
+#         lst = []
+#     return data
+
+# def move_up(data):
+#     lst = []
+#     ck = False
+#     for i in range(n):
+#         v_count = 0
+#         lst = [ j[i] for j in data[0:n] if j[i] > 0]
+#         m = len(lst)
+#         for j in range(m):
+#             if j != m-1:
+#                 if ck:
+#                     ck = False
+#                     continue
+#                 if lst[j] != lst[j+1]:
+#                     data[v_count][i] = lst[j]
+#                     v_count+=1
+#                     continue
+#                 elif lst[j] == lst[j+1]:
+#                     data[v_count][i] = lst[j]*2
+#                     ck = True
+#                     v_count+=1
+#             else:
+#                 if ck:
+#                     ck=False
+#                     data[v_count][i] = 0
+#                     continue
+#                 else:
+#                     data[v_count][i] = lst[j]
+#         if n-1!=v_count:
+#             while True:
+#                 v_count+=1
+#                 data[v_count][i] = 0
+#                 if n-1 == v_count:
+#                     break
+#         lst = []
+#     return data
+
+# ans = 0
+# def dfs(data,count):
+#     global ans
+#     if count >= 5:
+#         for i in range(n):
+#             for j in range(n):
+#                 ans = max(ans,data[i][j])
+#         return
+#     dfs(move_right([i[:] for i in data]),count +1)
+#     dfs(move_left([i[:] for i in data]),count +1)
+#     dfs(move_down([i[:] for i in data]),count +1)
+#     dfs(move_up([i[:] for i in data]),count +1)
+
+# # time = 5
+# # def test(data,count):
+# #     for i in range(4):
+# #         data,count = data,count
+# #         if i ==0:
+# #             if count >= time:
+# #                 break
+# #             count +=1
+# #             move_right(data,count)
+# #             print(data)
+# #             test(data,count)
+# #         elif i == 1:
+# #             if count >= time:
+# #                 break
+# #             count += 1
+# #             move_left(data,count)
+# #             print(data)
+# #             test(data,count)
+# #         elif i == 2:
+# #             if count >= time:
+# #                 break
+# #             count += 1
+# #             move_up(data,count)
+# #             print(data)
+# #             test(data,count)
+# #         elif i == 3:
+# #             if count >= time:
+# #                 break
+# #             count += 1
+# #             move_down(data,count)
+# #             print(data)
+# #             test(data,count)
+# # test(give,count)
+
+# dfs(give,count)
+# print(ans)
+
+
+'''
+1회차 > 5번째 카운트일때만 해당 데이터를 순회하여 최댓값을 탐색하는 방향으로 선회했다.
+        그것보다도 dfs알고리즘에서 재귀함수를 사용하고싶은데 어떻게 해야하나 많이 고민했다. 하지만 나는 이미 
+        move 함수를 만들어놓아서 이것을 사용하는 재귀함수로서 for 문을 이용하여 각 i 값마다 상하좌우 움직임 함수를
+        호출하고자 했으나, 이와같은 방법은 전역변수 data 에 영향을 주므로 문제가 생겼던 것 같다. <<< 이부분은 아직 제대로 이해하지 못함
+        아무튼 다시 지금 확인해보니 
+        line 315 ) move_right(data,count)
+        line 316 ) print(data)
+        line 317 ) test(data,count)
+        위의 내용을
+        test(move_right(data,count),count+1) 이런식으로 구성했으면 아마도 성공하지않았을까 싶다.
+        물론 지금 완성시킨 dfs 안에 4개의 dfs 안에 지역변수 move함수데이터를 주는 방법이 더욱 깔끔할 듯 하다.
+'''
+
+
+###############################################################################################################
+#########################################     Q13458 _ 시험 감독     ##########################################
+###############################################################################################################
+
+
+# result = 0
+
+# n = int(input())
+# give = list(map(int,input().split()))
+# b,c = map(int,input().split())
+
+# for i in give:
+#     if i<=b:
+#         result +=1
+#         continue
+#     if (i-b)%c != 0:
+#         result += ((i-b)//c )+2
+#     else:
+#         result += ((i-b)//c )+1
+
+# print(result)
+
+'''
+1회차 > 상당히 쉬워보이길래 그자리에서 가볍게 코딩해보았다. 하지만 i<=b 의 경우를 생각하지 않아 오답판정을 받았다. 
+        이와같이 정확한 필터링을 해내는 연습을 해봐야겠다.
+'''
+
+
+###############################################################################################################
+#######################################     Q14499 _ 주사위 굴리기     ########################################
+###############################################################################################################
+
+'''
+Given ) N*M 크기의 지도 위에 주사위가 놓여진다. 가장 처음 주사위는 모든 면이 0 이 적혀있다.
+        만약 지도와 맞닿는 주사위의 면이 0 이라면 지도에 적혀있는 숫자가 주사위로 복사되며 지도에는 0이 적힌다.
+        반대로 주사위와 맞닿은 지도의 숫자가 0 이라면 주사위의 숫자가 지도에 복사되며 주사위의 해당 면의 숫자가 0이 된다.
+        주사위를 굴리는 이동명령이 주어질 때 주사위 상단에 쓰여있는 값을 출력하는 프로그램을 작성하라.
+        만약 주사위를 지도 밖으로 이동시키려는 명령은 무시하고 출력도 하지 않아야한다.
+Input ) 첫째 줄에 N과 M 이 주어지고 ( 1<= N,M <=20 ) 주사위를 놓는 좌표 x,y 그리고 명령의 개수 K 가 주어진다(1<= K <= 1,000)
+        둘째 줄부터 N 개의 줄에 지도 데이터가 주어지며 각 칸은 10 미만의 자연수 혹은 0 이 주어진다.
+        마지막 줄에는 이동명령이 순서대로 주어진다. 동쪽은 1 서쪽은 2 북쪽은 3 남쪽은 4 로 주어진다.
+Output) 매 이동마다 주사위의 윗면에 쓰인 수를 출력한다. 만약 지도밖으로 나가려한다면 해당 명령을 무시하며 출력또한 하지 않는다.
+'''
+
+# tb = [1,6]
+# side = [3,4,2,5]
+'''
+1회차 > 주사위를 구현하는것이 어려웠다. 문제를 풀기 전에 주사위 구현방법을 먼저 생각했는데 현재 생각한 방법은 위 아래면과 옆면을 나누는
+        방식이다. 이 외에는 지도를 이동하는것은 어렵지 않으니 구현해보려 한다.
+'''
+# x,y = 0,0
+# n,m = 4,2
+# data = [
+#     [0,2],
+#     [3,4],
+#     [5,6],
+#     [7,8]
 # ]
-n = int(input())
-give = []
-for i in range(n):
-    give.append(list(map(int,input().split(' '))))
+# order = [4,4,4,1,3,3,3,2] #동 북 서 서 남 남 동 동 북
 
-count = 0
-table_ = [[] for _ in range(6)]
-table_[0] = [i[:] for i in give]
+n,m,x,y,i = map(int,input().split())
+data = []
+for _ in range(n):
+    data.append(list(map(int,input().split())))
+order = list(map(int,input().split()))
 
-def move_right(data):
-    lst = []
-    ck = False
-    for i in range(n):
-        h_count = 1
-        lst = [j for j in data[i] if j >0]
-        m = len(lst)
-        for j in range(1,m+1): #[2,2,2]
-            if j != m:
-                if ck:
-                    ck = False
-                    continue
-                if lst[-j] != lst[-j-1]:
-                    data[i][-h_count] = lst[-j]
-                    h_count+=1
-                    continue
-                elif lst[-j] == lst[-j-1]:
-                    data[i][-h_count] = lst[-j]*2
-                    ck = True
-                    h_count+=1
-            else:
-                if ck:
-                    ck=False
-                    data[i][-h_count] = 0
-                    continue
-                else:
-                    data[i][-h_count] = lst[-j]
-        if n!=h_count:
-            while True:
-                h_count+=1
-                data[i][-h_count] = 0
-                if n == h_count:
-                    break
-        lst = []
-    return data
+dx = [0,0,0,-1,1]
+dy = [0,1,-1,0,0]
+dice_tb = [0,0]
+dice_side=[0,0,0,0]
+
+def roll(orde,x,y):
+    if orde == 2: #서
+        t,b,r,l = dice_tb[0],dice_tb[1],dice_side[0],dice_side[1]
+        dice_tb[0],dice_tb[1] = r,l
+        dice_side[0],dice_side[1] = b,t
+    elif orde == 1: #동
+        t,b,r,l = dice_tb[0],dice_tb[1],dice_side[0],dice_side[1]
+        dice_tb[0],dice_tb[1] = l,r
+        dice_side[0],dice_side[1] = t,b
+    elif orde == 3: #북
+        t,b,s,n = dice_tb[0],dice_tb[1],dice_side[3],dice_side[2]
+        dice_tb[0],dice_tb[1] = s,n
+        dice_side[3],dice_side[2] = b,t
+    else: #남
+        t,b,s,n = dice_tb[0],dice_tb[1],dice_side[3],dice_side[2]
+        dice_tb[0],dice_tb[1] = n,s
+        dice_side[3],dice_side[2] = t,b
 
 
-def move_left(data):
-    lst = []
-    ck = False
-    for i in range(n):
-        h_count = 0
-        lst = [j for j in data[i] if j >0]
-        m = len(lst)
-        for j in range(m): #[2,2,2]
-            if j != m-1:
-                if ck:
-                    ck = False
-                    continue
-                if lst[j] != lst[j+1]:
-                    data[i][h_count] = lst[j]
-                    h_count+=1
-                    continue
-                elif lst[j] == lst[j+1]:
-                    data[i][h_count] = lst[j]*2
-                    ck = True
-                    h_count+=1
-            else:
-                if ck:
-                    ck=False
-                    data[i][h_count] = 0
-                    continue
-                else:
-                    data[i][h_count] = lst[j]
-        if n-1!=h_count:
-            while True:
-                h_count+=1
-                data[i][h_count] = 0
-                if n-1 == h_count:
-                    break
-        lst = []
-    return data
+    if data[x][y] != 0:
+        dice_tb[1],data[x][y] = data[x][y],0
+    elif data[x][y] == 0:
+        data[x][y]= dice_tb[1]
+    print(dice_tb[0])
 
-
-def move_down(data):
-    lst = []
-    ck = False
-    for i in range(n):
-        v_count = 1
-        lst = [ j[i] for j in data[0:n] if j[i] > 0]
-        m = len(lst)
-        for j in range(1,m+1):
-            if j != m:
-                if ck:
-                    ck = False
-                    continue
-                if lst[-j] != lst[-j-1]:
-                    data[-v_count][i] = lst[-j]
-                    v_count+=1
-                    continue
-                elif lst[-j] == lst[-j-1]:
-                    data[-v_count][i] = lst[-j]*2
-                    ck = True
-                    v_count+=1
-            else:
-                if ck:
-                    ck=False
-                    data[-v_count][i] = 0
-                    continue
-                else:
-                    data[-v_count][i] = lst[-j]
-        if n!=v_count:
-            while True:
-                v_count+=1
-                data[-v_count][i] = 0
-                if n == v_count:
-                    break
-        lst = []
-    return data
-
-def move_up(data):
-    lst = []
-    ck = False
-    for i in range(n):
-        v_count = 0
-        lst = [ j[i] for j in data[0:n] if j[i] > 0]
-        m = len(lst)
-        for j in range(m):
-            if j != m-1:
-                if ck:
-                    ck = False
-                    continue
-                if lst[j] != lst[j+1]:
-                    data[v_count][i] = lst[j]
-                    v_count+=1
-                    continue
-                elif lst[j] == lst[j+1]:
-                    data[v_count][i] = lst[j]*2
-                    ck = True
-                    v_count+=1
-            else:
-                if ck:
-                    ck=False
-                    data[v_count][i] = 0
-                    continue
-                else:
-                    data[v_count][i] = lst[j]
-        if n-1!=v_count:
-            while True:
-                v_count+=1
-                data[v_count][i] = 0
-                if n-1 == v_count:
-                    break
-        lst = []
-    return data
-ans = 0
-def dfs(data,count):
-    global ans
-    if count >= 5:
-        for i in range(n):
-            for j in range(n):
-                ans = max(ans,data[i][j])
-        return
-    dfs(move_right([i[:] for i in data]),count +1)
-    dfs(move_left([i[:] for i in data]),count +1)
-    dfs(move_down([i[:] for i in data]),count +1)
-    dfs(move_up([i[:] for i in data]),count +1)
-
-dfs(give,count)
-print(ans)
-
+for i in order:
+    nx,ny = x+dx[i],y+dy[i]
+    if 0<=nx<n and 0<=ny<m:
+        x,y = nx,ny
+        roll(i,x,y)
+    
+    
+'''
+1회차 > 참 지저분했던 문제. 출력부도 상당히 지저분하고 입력도 상당히 지저분함
+        주사위 모델링이 계속 헷갈리고 제일 먼저 문제를 잘못읽어서 시간이 너무너무 많이 걸림 여러모로 징그러운 문제
+'''
