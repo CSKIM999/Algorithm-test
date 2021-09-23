@@ -486,41 +486,98 @@ Output) 두 팀의 능력치 차이 최솟값을 출력하라
 1회차 > 팀원이 절반으로 나누어져야한다. 즉 depth 가 절반이 되었을 때의 현재 home 팀 능력치를 계산하고 home 팀에 들어가지 못한 나머지 수의
         능력치를 계산하면 away 팀의 능력치가 계산된다. 능력치 테이블에서 값을 가져오는것이므로 away 팀의 능력치 계산은 그닥 오래걸리지 않을것
 '''
-n = 8
-data = [
-    [0,5,4,5,4,5,4,5],
-    [4,0,5,1,2,3,4,5],
-    [9,8,0,1,2,3,1,2],
-    [9,9,9,0,9,9,9,9],
-    [1,1,1,1,0,1,1,1],
-    [8,7,6,5,4,0,3,2],
-    [9,1,9,1,9,1,0,9],
-    [6,5,4,3,2,1,9,0]]
-half = int(n/2)
-lst = []
-print(half)
-ans = 1e9
-def dfs(curr):
-    global ans
-    if len(curr) >= half:
-        home = 0
-        away = 0
-        for i in range(n):
-            for j in range(n):
-                if i == j:
-                    continue
-                elif i in curr and j in curr:
-                    home += data[i][j]
-                else:
-                    away += data[i][j]
-        temp = abs(home-away)
-        ans = min(ans,temp)
-        return
+# # n = 6
+# # data = [
+# #     [0,1,2,3,4,5],
+# #     [1,0,2,3,4,5],
+# #     [1,2,0,3,4,5],
+# #     [1,2,3,0,4,5],
+# #     [1,2,3,4,0,5],
+# #     [1,2,3,4,5,0]
+# # ]
 
-    for i in range(n):
-        if i not in curr:
-            curr.append(i)
-            dfs(curr)
+# n = int(input())
+# data = []
+# for i in range(n):
+#     data.append(list(map(int,input().split())))
 
-dfs(lst)
-print(ans)
+# half = int(n/2)
+# lst = []
+# ans = 1e9
+
+# def dfs(curr,last=-1):
+#     global ans
+#     if len(curr) >= half:
+#         home = 0
+#         away = 0
+#         for i in range(n):
+#             for j in range(n):
+#                 if i == j:
+#                     continue
+#                 elif i in curr and j in curr:
+#                     home += data[i][j]
+#                 elif i not in curr and j not in curr:
+#                     away += data[i][j]
+#         temp = abs(home-away)
+#         if ans>temp:
+#             ans = min(ans,temp)
+#         return
+
+#     for i in range(last+1,n):
+#         if i not in curr and len(curr)<half:
+#             last = i
+#             curr.append(i)
+#             dfs(curr[:],last)
+#             curr.pop()
+#             if len(curr) == 0:
+#                 last = -1
+#             else:
+#                 last = curr[(len(curr)-1)]
+
+# dfs(lst)
+# print(ans)
+'''
+1회차 > Pyhton 3 로는 시간초과판정을 받아서 Pypy 로 정답판정을 받았다.
+        나는 combination 을 사용하지 않고 그냥 모든 경우의수를 모두 순회했다. [0,1,2,3] 과 [3,2,1,0] 이 다르단것을 알고있어서
+        last 값을 넣어주고 현재 가장 마지막에 들어간 수 보다 무조건 큰 수가 다음에 들어가도록 코딩했다.그정도라면 아마 충분히 통과할 줄 알았으나
+        결과는 그렇지 않았던 듯 하다. 다른사람들의 제출결과를 확인해보니 대다수가 combination 라이브러리를 사용했다.
+        기본으로 제공되는 라이브러리를 잘 사용하는것도 실력이다. dfs 는 잘 사용했지만 지금 돌아보면 combination 을 사용하기에 아주 적합한 문제였음에도
+        생각해내지 못한 점이 문제라고 할 수 있지 싶다.
+'''
+'''
+import sys
+from itertools import combinations
+
+N = int(sys.stdin.readline())
+list_N = list(range(N))
+data_list = [list(map(int, sys.stdin.readline().split())) for __ in range(N)]
+
+sum_list = [sum(i) + sum(j) for i, j in zip(data_list, zip(*data_list))]
+answer = min([abs(sum(sum_list) // 2 - sum(team)) for team in combinations(sum_list, N // 2)])
+
+print(answer)
+
+204 ms 가 걸린 다른사람의 코드. line 555 의 zip(*data) 까지는 이해했으나 그 이후로는 이해 못함. 나중에 내공이 쌓이면 다시 이 코드를 이해해보자
+'''
+
+
+
+
+###############################################################################################################
+#########################################     Q14891 _ 톱니바퀴     ###########################################
+###############################################################################################################
+'''
+Given ) 특수한 룰에 의해서 톱니바퀴는 회전할 때 9시와 3시에 맞닿은 톱니바퀴를 회전시킨다.
+        특수한 룰은 다음과 같다. 만약 회전시키려는 톱니바퀴와 맞닿은 톱니바퀴의 극이 서로 다르다면 맞닿은 톱니바퀴는
+        반대방향으로 회전한다. 이 룰은 9시와 3시 양쪽에 모두 적용되며, 또한 전파된다.
+        즉, 같은 극으로 맞닿아있는 톱니바퀴를 만날 때 까지 톱니바퀴의 회전영역이 된다.
+        초기 톱니바퀴상태와 톱니바퀴를 회전시키는 순서가 주어질 때 최종 톱니바퀴의 상태를 구하는 프로그램을 작성하라
+Input ) 첫째 ~ 넷째 줄에 걸쳐 1 ~ 4 번 톱니바퀴의 상태가 주어진다.
+        상태는 8개의 정수로 이루어져있고, 12시 방향부터 시계방향 순서로 주어진다. N 극은 0, S 극은 1로 나타낸다.
+        다섯째 줄에는 회전 횟수 K (1 <= K <= 100 )이 주어지고 다음 K개의 줄에는 회전 방법이 순서대로 주어진다.
+        각 방법은 두 개의 정수로 이루어져 있고, 첫 번째 정수는 회전시키는 톱니바퀴의 번호,
+        두 번째 정수는 회전시키는 방향으로 1은 시계방향, -1 은 반시계방향을 나타낸다.
+Output) 총 K 번 회전시킨 후, 네 톱니바퀴의 점수의 합을 출력하라. 점수 계산방법은 다음과 같다.
+        12시 방향의 극으로 점수를 계산하며 N 극이라면 0 점 S 극이라면 1,2,4,8 점을 부여한다.
+'''
+
