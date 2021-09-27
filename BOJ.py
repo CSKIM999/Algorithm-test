@@ -580,4 +580,54 @@ Input ) 첫째 ~ 넷째 줄에 걸쳐 1 ~ 4 번 톱니바퀴의 상태가 주어
 Output) 총 K 번 회전시킨 후, 네 톱니바퀴의 점수의 합을 출력하라. 점수 계산방법은 다음과 같다.
         12시 방향의 극으로 점수를 계산하며 N 극이라면 0 점 S 극이라면 1,2,4,8 점을 부여한다.
 '''
+'''
+1회차 > 톱니바퀴의 갯수가 4개뿐이므로 매 번 현재 톱니상태에서 움직여야하는 하나의 집합을 찾아내고 각각 회전방향을 부여하면 될 듯 하다.
+'''
+# data = [[1,0,1,0,1,1,1,1],[0,1,1,1,1,1,0,1],[1,1,0,0,1,1,1,0],[0,0,0,0,0,0,1,0]]
+# moves = [[3,-1],[1,1]]
 
+data = []
+moves = []
+for i in range(4):
+    data.append(list(map(int,input())))
+n = int(input())
+for i in range(n):
+    moves.append(map(int,input().split()))
+
+def roll(rotate,data):
+    if rotate == 1:
+        data[0],data[1:] = data[-1],data[:-1]
+    elif rotate == -1:
+        data[-1],data[:-1] = data[0],data[1:]
+    return data
+
+group = [[i,0] for i in range(4)]
+reset = [i[:] for i in group]
+
+def check(g_node,rot):
+    global group
+    group[g_node][1] = rot
+    if g_node-1 >= 0 and group[g_node-1][1] == 0 and data[g_node-1][2] != data[g_node][6]:
+        group[g_node-1][1] = -rot
+        check(g_node-1,-rot)
+    if g_node+1 <= 3 and group[g_node+1][1] == 0 and data[g_node+1][6] != data[g_node][2]:
+        group[g_node+1][1] = -rot
+        check(g_node+1,-rot)
+
+for node,rotate in moves:
+    node = node-1
+    check(node,rotate)
+    for n_node,n_rot in group:
+        if n_rot != 0:
+            data[n_node] = roll(n_rot,data[n_node])
+    group = [i[:] for i in reset]
+result = 0
+for i in range(4):
+    if data[i][0] == 1:
+        result += 2**i
+print(result)
+
+'''
+1회차 > roll 함수와 현재 움직여야 할 group 을 생성해서 check 함수로 group 을 갱신해주고 각각 움직여주었다.
+        인덱스값이 조금 헷갈리지만 쉽게 정답판정을 받았다.
+'''
