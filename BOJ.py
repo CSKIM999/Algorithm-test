@@ -583,51 +583,150 @@ Output) 총 K 번 회전시킨 후, 네 톱니바퀴의 점수의 합을 출력�
 '''
 1회차 > 톱니바퀴의 갯수가 4개뿐이므로 매 번 현재 톱니상태에서 움직여야하는 하나의 집합을 찾아내고 각각 회전방향을 부여하면 될 듯 하다.
 '''
-# data = [[1,0,1,0,1,1,1,1],[0,1,1,1,1,1,0,1],[1,1,0,0,1,1,1,0],[0,0,0,0,0,0,1,0]]
-# moves = [[3,-1],[1,1]]
+# # data = [[1,0,1,0,1,1,1,1],[0,1,1,1,1,1,0,1],[1,1,0,0,1,1,1,0],[0,0,0,0,0,0,1,0]]
+# # moves = [[3,-1],[1,1]]
 
-data = []
-moves = []
-for i in range(4):
-    data.append(list(map(int,input())))
-n = int(input())
-for i in range(n):
-    moves.append(map(int,input().split()))
+# data = []
+# moves = []
+# for i in range(4):
+#     data.append(list(map(int,input())))
+# n = int(input())
+# for i in range(n):
+#     moves.append(map(int,input().split()))
 
-def roll(rotate,data):
-    if rotate == 1:
-        data[0],data[1:] = data[-1],data[:-1]
-    elif rotate == -1:
-        data[-1],data[:-1] = data[0],data[1:]
-    return data
+# def roll(rotate,data):
+#     if rotate == 1:
+#         data[0],data[1:] = data[-1],data[:-1]
+#     elif rotate == -1:
+#         data[-1],data[:-1] = data[0],data[1:]
+#     return data
 
-group = [[i,0] for i in range(4)]
-reset = [i[:] for i in group]
+# group = [[i,0] for i in range(4)]
+# reset = [i[:] for i in group]
 
-def check(g_node,rot):
-    global group
-    group[g_node][1] = rot
-    if g_node-1 >= 0 and group[g_node-1][1] == 0 and data[g_node-1][2] != data[g_node][6]:
-        group[g_node-1][1] = -rot
-        check(g_node-1,-rot)
-    if g_node+1 <= 3 and group[g_node+1][1] == 0 and data[g_node+1][6] != data[g_node][2]:
-        group[g_node+1][1] = -rot
-        check(g_node+1,-rot)
+# def check(g_node,rot):
+#     global group
+#     group[g_node][1] = rot
+#     if g_node-1 >= 0 and group[g_node-1][1] == 0 and data[g_node-1][2] != data[g_node][6]:
+#         group[g_node-1][1] = -rot
+#         check(g_node-1,-rot)
+#     if g_node+1 <= 3 and group[g_node+1][1] == 0 and data[g_node+1][6] != data[g_node][2]:
+#         group[g_node+1][1] = -rot
+#         check(g_node+1,-rot)
 
-for node,rotate in moves:
-    node = node-1
-    check(node,rotate)
-    for n_node,n_rot in group:
-        if n_rot != 0:
-            data[n_node] = roll(n_rot,data[n_node])
-    group = [i[:] for i in reset]
-result = 0
-for i in range(4):
-    if data[i][0] == 1:
-        result += 2**i
-print(result)
+# for node,rotate in moves:
+#     node = node-1
+#     check(node,rotate)
+#     for n_node,n_rot in group:
+#         if n_rot != 0:
+#             data[n_node] = roll(n_rot,data[n_node])
+#     group = [i[:] for i in reset]
+# result = 0
+# for i in range(4):
+#     if data[i][0] == 1:
+#         result += 2**i
+# print(result)
 
 '''
 1회차 > roll 함수와 현재 움직여야 할 group 을 생성해서 check 함수로 group 을 갱신해주고 각각 움직여주었다.
         인덱스값이 조금 헷갈리지만 쉽게 정답판정을 받았다.
 '''
+
+
+
+
+
+###############################################################################################################################################################################################
+################################################################################     Q13460 _ 구슬 탈출 2    ##################################################################################
+###############################################################################################################################################################################################
+'''
+Given ) N*M 크기의 보드가 1x1 칸으로 나누어져 가장 바깥 행과 열은 벽으로 막혀있다. 보드에는 구멍이 하나 있고 임의의 공간에 빨간 구슬과 파란 구슬이 각각 들어가있다.
+        게임의 목표는 파란 구슬이 구멍으로 들어가기 전에 빨간 구슬을 꺼내는 것이다. 구슬은 중력을 이용하여 이리 저리 굴린다.
+        각각의 동작에서 공은 동시에 움직이며 빨간 구슬과 파란 구슬이 동시에 구멍에 빠져도 실패이다. 구슬은 각각 한칸을 차지하여 동시에 같은 칸에 있을 수없다.
+        기울이는 동작을 그만하는것은 더이상 구슬이 움직이지 않을 때 까지이다. 최소 몇번 움직여서 구슬을 뺄 수 있는지 프로그램을 작성하라.
+Input ) 첫째 줄에는 가로 세로 N과 M 이 주어진다.
+        그 이후 N개의 줄에 걸쳐 M 개의 문자열이 주어진다. '.','#','O','R','B' 에서 . 은 빈칸을 의미하고, #은 벽, O 는 구멍, R 은 빨간 구슬 B 는 파란 구슬을 의미한다.
+Output) 최소 몇번만에 빨간 구슬을 구멍을 통해 빼낼 수 있는 지 출력하라. 만약 10번을 초과한다면 -1 을 출력하라.
+'''
+'''
+1회차 > 입력되는 값의 제한이 따로 주어지지 않았다. 우선 움직임 함수를 구현하고 dfs 를 통해 count 값이 10을 넘어가면 실행하지 않도록 해봐야겠다.
+'''
+from typing import Counter
+
+
+n,m = 5,5
+data = [
+    '#####',
+    '#..B#',
+    '#.#.#',
+    '#RO.#',
+    '#####'
+]
+table =[[] for _ in range(n)]
+dic = {'#':9,'.':0,'O':-1,'R':1,'B':2}
+
+for i in range(n):
+    for j in range(m):
+        table[i].append(dic[data[i][j]])
+flag = False
+result = 11
+count = 0
+def roll_h(give,side,c):
+    global result
+    rnb = [[],[],[]]
+    for i in range(n):
+        for j in range(m):
+            if 1<= give[i][j] <= 2:
+                rnb[give[i][j]] = [i,j]
+    red,blue = rnb[1],rnb[2]
+    
+                
+    if side == -1:
+        for i in range(blue[1],0,-1):
+            if give[blue[0]][i-1] != 0:
+                if give[blue[0]][i-1] == -1:
+                    return give
+                give[blue[0]][blue[1]] = 0
+                blue[1] = i
+                give[blue[0]][blue[1]] = 2
+                break
+        for i in range(red[1],0,-1):
+            if give[red[0]][i-1] != 0:
+                if give[red[0]][i-1] == -1:
+                    result = min(result,c)
+                    print('well done')
+                    return give
+                give[red[0]][red[1]] = 0
+                red[1] = i
+                give[red[0]][red[1]] = 1
+                break
+    else:
+        for i in range(blue[1],m):
+            if give[blue[0]][i+1] != 0:
+                if give[blue[0]][i+1] == -1:
+                    return give
+                give[blue[0]][blue[1]] = 0
+                blue[1] = i
+                give[blue[0]][blue[1]] = 2
+                break
+        for i in range(red[1],m):
+            if give[red[0]][i+1] != 0:
+                if give[red[0]][i+1] == -1:
+                    result = min(result,c)
+                    print('well done')
+                    return give
+                give[red[0]][red[1]] = 0
+                red[1] = i
+                give[red[0]][red[1]] = 1
+                break
+
+    return give
+
+
+
+for i in table:
+    print(i)
+print()
+table = roll_h(table,1,count+1)
+for i in table:
+    print(i)

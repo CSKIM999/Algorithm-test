@@ -202,7 +202,7 @@ Breadth First Search [[ 너비 우선 탐색 ]]
 #5 새로 생성 된 리스트에서 재귀함수를 통해 #1부터 다시실행
 
 '''
-# # array = [5,7,9,0,3,1,6,2,4,8]
+# array = [5,7,9,0,3,1,6,2,4,8]
 # print(array)
 
 # def quick_sort(array, start, end):
