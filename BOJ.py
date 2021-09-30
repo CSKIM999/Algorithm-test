@@ -651,82 +651,270 @@ Output) 최소 몇번만에 빨간 구슬을 구멍을 통해 빼낼 수 있는 
 '''
 1회차 > 입력되는 값의 제한이 따로 주어지지 않았다. 우선 움직임 함수를 구현하고 dfs 를 통해 count 값이 10을 넘어가면 실행하지 않도록 해봐야겠다.
 '''
-from typing import Counter
+
+# # n,m = 10,10
+# # data = [
+# #     '##########',
+# #     '#R#...##B#',
+# #     '#...#.##.#',
+# #     '#####.##.#',
+# #     '#......#.#',
+# #     '#.######.#',
+# #     '#.#....#.#',
+# #     '#.#.##...#',
+# #     '#O..#....#',
+# #     '##########'
+# # ]
+# n,m = map(int,input().split())
+# # table =[[] for _ in range(n)]
+# # data = []
+# dic = {'#':9,'.':0,'O':-1,'R':1,'B':2}
+# table = [list(map(lambda x : dic[x],[i for i in input()])) for _ in range(n)]
+
+# # for i in range(n):
+# #     for j in range(m):
+# #         table[i].append(dic[data[i][j]])
+# result = 11
+# count = 0
+# def h_move_red(give,red,side,c):
+#     global result
+#     if side == -1:
+#         for i in range(red[1],0,-1):
+#             if give[red[0]][i-1] != 0:
+#                 if give[red[0]][i-1] == -1:
+#                     give[red[0]][red[1]] = 0
+#                     red[1] = i
+#                     result = min(result,c)
+#                     return give
+#                 give[red[0]][red[1]] = 0
+#                 red[1] = i
+#                 give[red[0]][red[1]] = 1
+#                 break
+#     else:
+#         for i in range(red[1],m):
+#             if give[red[0]][i+1] != 0:
+#                 if give[red[0]][i+1] == -1:
+#                     result = min(result,c)
+#                     give[red[0]][red[1]] = 0
+#                     red[1] = i
+#                     return give
+#                 give[red[0]][red[1]] = 0
+#                 red[1] = i
+#                 give[red[0]][red[1]] = 1
+#                 break
+#     return give
+
+# def h_move_blue(give,blue,side,flag):
+#     global result
+#     if side == -1:
+#         for i in range(blue[1],0,-1):
+#             if give[blue[0]][i-1] != 0:
+#                 if give[blue[0]][i-1] == -1:
+#                     flag = False
+#                     return give,flag
+#                 give[blue[0]][blue[1]] = 0
+#                 blue[1] = i
+#                 give[blue[0]][blue[1]] = 2
+#                 break
+#     else:
+#         for i in range(blue[1],m):
+#             if give[blue[0]][i+1] != 0:
+#                 if give[blue[0]][i+1] == -1:
+#                     flag = False
+#                     return give,flag
+#                 give[blue[0]][blue[1]] = 0
+#                 blue[1] = i
+#                 give[blue[0]][blue[1]] = 2
+#                 break
+#     return give,flag
 
 
-n,m = 5,5
+# def roll_h(give,side,c):
+#     global result
+
+#     rnb = [[],[],[]]
+#     for i in range(n):
+#         for j in range(m):
+#             if 1<= give[i][j] <= 2:
+#                 rnb[give[i][j]] = [i,j]
+#     red,blue = rnb[1],rnb[2]
+    
+#     flag = True
+#     if side == -1:
+#         if red[0] == blue[0]:
+#             if red[1]<blue[1]:
+#                 temp = h_move_red(give,red,side,c)
+#                 temp,flag = h_move_blue(temp,blue,side,flag)
+#                 if flag:
+#                     give = temp
+#                     return give
+#                 else:
+#                     result = 11
+#                     return give
+#         temp,flag = h_move_blue(give,blue,side,flag)
+#         temp = h_move_red(temp,red,side,c)
+#         # for i in range(blue[1],0,-1):
+#         #     if give[blue[0]][i-1] != 0:
+#         #         if give[blue[0]][i-1] == -1:
+#         #             return give
+#         #         give[blue[0]][blue[1]] = 0
+#         #         blue[1] = i
+#         #         give[blue[0]][blue[1]] = 2
+#         #         break
+#         # for i in range(red[1],0,-1):
+#         #     if give[red[0]][i-1] != 0:
+#         #         if give[red[0]][i-1] == -1:
+#         #             result = min(result,c)
+#         #             return give
+#         #         give[red[0]][red[1]] = 0
+#         #         red[1] = i
+#         #         give[red[0]][red[1]] = 1
+#         #         break
+#     else:
+#         if red[0] == blue[0]:
+#             if red[1]>blue[1]:
+#                 temp = h_move_red(give,red,side,c)
+#                 temp,flag = h_move_blue(temp,blue,side,flag)
+#                 if flag:
+#                     give = temp
+#                 else:
+#                     result = 11
+#                     return give
+
+#         temp,flag = h_move_blue(give,blue,side,flag)
+#         temp = h_move_red(temp,red,side,c)
+#         # for i in range(blue[1],m):
+#         #     if give[blue[0]][i+1] != 0:
+#         #         if give[blue[0]][i+1] == -1:
+#         #             return give
+#         #         give[blue[0]][blue[1]] = 0
+#         #         blue[1] = i
+#         #         give[blue[0]][blue[1]] = 2
+#         #         break
+#         # for i in range(red[1],m):
+#         #     if give[red[0]][i+1] != 0:
+#         #         if give[red[0]][i+1] == -1:
+#         #             result = min(result,c)
+#         #             return give
+#         #         give[red[0]][red[1]] = 0
+#         #         red[1] = i
+#         #         give[red[0]][red[1]] = 1
+#         #         break
+#     if flag:
+#         give = temp
+#         return give
+#     else:
+#         result = 11
+#         return give
+
+# def roll_v(give,side,c):
+#     global result
+
+#     rnb = [[],[],[]]
+#     for i in range(n):
+#         for j in range(m):
+#             if 1<= give[i][j] <= 2:
+#                 rnb[give[i][j]] = [i,j]
+#     red,blue = rnb[1],rnb[2]
+#     flag = [False,False]
+#     if side == -1:
+#         for i in range(blue[0],0,-1):
+#             if give[i-1][blue[1]] != 0:
+#                 if give[i-1][blue[1]] == -1:
+#                     flag[1] = True
+#                     break
+#                 give[blue[0]][blue[1]] = 0
+#                 blue[0] = i
+#                 give[blue[0]][blue[1]] = 2
+#                 break
+#         for i in range(red[0],0,-1):
+#             if give[i-1][red[1]] != 0:
+#                 if give[i-1][red[1]] == -1:
+#                     result = min(result,c)
+#                     return give
+#                 give[red[0]][red[1]] = 0
+#                 red[0] = i
+#                 give[red[0]][red[1]] = 1
+#                 break
+#     else:
+#         for i in range(blue[0],m):
+#             if give[i+1][blue[1]] != 0:
+#                 if give[i+1][blue[1]] == -1:
+#                     return give
+#                 give[blue[0]][blue[1]] = 0
+#                 blue[0] = i
+#                 give[blue[0]][blue[1]] = 2
+#                 break
+#         for i in range(red[0],m):
+#             if give[i+1][red[1]] != 0:
+#                 if give[i+1][red[1]] == -1:
+#                     result = min(result,c)
+#                     return give
+#                 give[red[0]][red[1]] = 0
+#                 red[0] = i
+#                 give[red[0]][red[1]] = 1
+#                 break
+
+#     return give
+
+
+
+# # for i in table:
+# #     print(i)
+# # print()
+# # table = roll_v(table,1,count+1)
+# # for i in table:
+# #     print(i)
+
+# def roll(g,count):
+#     global result
+#     if count >= result:
+#         return
+#     if g != roll_h([i[:] for i in g],1,count+1):
+#         roll(roll_h([i[:] for i in g],1,count+1),count+1)
+#     if g != roll_h([i[:] for i in g],-1,count+1):
+#         roll(roll_h([i[:] for i in g],-1,count+1),count+1)
+#     if g != roll_v([i[:] for i in g],1,count+1):
+#         roll(roll_v([i[:] for i in g],1,count+1),count+1)
+#     if g != roll_v([i[:] for i in g],-1,count+1):
+#         roll(roll_v([i[:] for i in g],-1,count+1),count+1)
+
+# roll(table,count)
+# print(result)
+
+'''
+1회차 > 간단한 구현은 끝냈으나, 한개의 반례가 걸려서 모두 뒤엎게 됨. 다음에 다시풀어봐야할 것 같음
+'''
+
+
+n,m = 10,10
 data = [
-    '#####',
-    '#..B#',
-    '#.#.#',
-    '#RO.#',
-    '#####'
+    '##########',
+    '#R#...##B#',
+    '#...#.##.#',
+    '#####.##.#',
+    '#......#.#',
+    '#.######.#',
+    '#.#....#.#',
+    '#.#.##...#',
+    '#O..#....#',
+    '##########'
 ]
-table =[[] for _ in range(n)]
+data = [list(i) for i in data]
 dic = {'#':9,'.':0,'O':-1,'R':1,'B':2}
+table = [[dic[i] for i in data[j]] for j in range(n)]
+for i in table:
+    print(i)
 
-for i in range(n):
-    for j in range(m):
-        table[i].append(dic[data[i][j]])
-flag = False
-result = 11
-count = 0
-def roll_h(give,side,c):
-    global result
-    rnb = [[],[],[]]
+def h_move(data,side,c):
+    red,blue = [],[]
     for i in range(n):
         for j in range(m):
-            if 1<= give[i][j] <= 2:
-                rnb[give[i][j]] = [i,j]
-    red,blue = rnb[1],rnb[2]
+            if data[i][j] == 1:
+                red = [i,j]
+            elif data[i][j] == 2:
+                blue = [i,j]
     
-                
-    if side == -1:
-        for i in range(blue[1],0,-1):
-            if give[blue[0]][i-1] != 0:
-                if give[blue[0]][i-1] == -1:
-                    return give
-                give[blue[0]][blue[1]] = 0
-                blue[1] = i
-                give[blue[0]][blue[1]] = 2
-                break
-        for i in range(red[1],0,-1):
-            if give[red[0]][i-1] != 0:
-                if give[red[0]][i-1] == -1:
-                    result = min(result,c)
-                    print('well done')
-                    return give
-                give[red[0]][red[1]] = 0
-                red[1] = i
-                give[red[0]][red[1]] = 1
-                break
-    else:
-        for i in range(blue[1],m):
-            if give[blue[0]][i+1] != 0:
-                if give[blue[0]][i+1] == -1:
-                    return give
-                give[blue[0]][blue[1]] = 0
-                blue[1] = i
-                give[blue[0]][blue[1]] = 2
-                break
-        for i in range(red[1],m):
-            if give[red[0]][i+1] != 0:
-                if give[red[0]][i+1] == -1:
-                    result = min(result,c)
-                    print('well done')
-                    return give
-                give[red[0]][red[1]] = 0
-                red[1] = i
-                give[red[0]][red[1]] = 1
-                break
-
-    return give
-
-
-
-for i in table:
-    print(i)
-print()
-table = roll_h(table,1,count+1)
-for i in table:
-    print(i)
+    if blue[0] == red[0]:
+        l,r = max(blue[1],red[1]),min(blue[1],red[1])
+        
