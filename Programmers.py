@@ -31,31 +31,25 @@
 ################################################################################
 ################################################################################
 ################################################################################
-'''
-전체 스테이지 개수 N
-현재 사용자의 스테이지 번호가 담긴 배열 stages
-실패율 = 해당 스테이지번호 수/ 스테이지번호 이상의 수
-'''
-N = 4
-stages = [4,4,4,4,4]
-length = len(stages)
-stages.sort()
-count = length
-P = [[i,0,0] for i in range(N+2)]
-print(P)
-for i in stages:
-    P[i][1] += 1
-for i in range(N+1):
-    count -= P[i][1]
-    P[i][2] = count
-result = [[i,1] for i in range(N+1)]
-for i in range(N+1):
-    if P[i][2] == 0:
-        result[i][1] = 1
+s = "try hello world"
+
+ret = s.split()
+print(ret)
+answer = ''
+
+for i in range(len(ret)):
+    c = -1
+    temp = ''
+    for j in ret[i]:
+        if c >0:
+            temp += j
+        else:
+            temp += j.upper()
+        c = c*-1
+    print(temp)
+    if i != len(ret)-1:
+        answer += temp + ' '
     else:
-        result[i][1] = P[i][1]/P[i][2]
-result = sorted(result[1:],key= lambda x: -x[1])
-answer = []
-for i in result:
-    answer.append(i[0])
+        answer += temp
+
 print(answer)
