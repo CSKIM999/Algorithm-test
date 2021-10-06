@@ -887,34 +887,5 @@ Output) 최소 몇번만에 빨간 구슬을 구멍을 통해 빼낼 수 있는 
 '''
 
 
-n,m = 10,10
-data = [
-    '##########',
-    '#R#...##B#',
-    '#...#.##.#',
-    '#####.##.#',
-    '#......#.#',
-    '#.######.#',
-    '#.#....#.#',
-    '#.#.##...#',
-    '#O..#....#',
-    '##########'
-]
-data = [list(i) for i in data]
-dic = {'#':9,'.':0,'O':-1,'R':1,'B':2}
-table = [[dic[i] for i in data[j]] for j in range(n)]
-for i in table:
-    print(i)
 
-def h_move(data,side,c):
-    red,blue = [],[]
-    for i in range(n):
-        for j in range(m):
-            if data[i][j] == 1:
-                red = [i,j]
-            elif data[i][j] == 2:
-                blue = [i,j]
-    
-    if blue[0] == red[0]:
-        l,r = max(blue[1],red[1]),min(blue[1],red[1])
-        
+
