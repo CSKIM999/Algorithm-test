@@ -17,10 +17,10 @@ product('ABCD', repeat=2) ///  AA AB AC AD BA BB BC BD CA CB CC CD DA DB DC DD
 >> AA,DD 는 있고 AD 와 DA 는 다른 객체이다
 
 permutations('ABCD', 2)   ///  AB AC AD BA BC BD CA CB CD DA DB DC
->> AA,DD 도 없으나, AB 와 BA 는 다르다
+>> AA,DD 는 없으나, AB 와 BA 는 다르다
 
 combinations('ABCD', 2)   /// AB AC AD BC BD CD
->> AA,DD 도 없고 AD 와 DA 는 같다
+>> AA,DD 도 없고 AD 와 DA 도 같다
 
 combinations_with_replacement('ABCD', 2)  ///AA AB AC AD BB BC BD CC CD DD
 >> AA와 DD 는 있으나, AD와 DA 는 다르다
