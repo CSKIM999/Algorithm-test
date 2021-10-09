@@ -361,57 +361,133 @@ Programmers level test
 
 # print(result)
 
-from collections import deque
-s = 'baabaa'
-result = -1
+# from collections import deque
+# s = 'baabaa'
+# result = -1
 
 
-def c(s):
-    q = deque(s)
-    temp = deque()
-    while q:
-        a = q.popleft()
-        if temp[-1] == a:
+# def c(s):
+#     q = deque(s)
+#     temp = deque()
+#     while q:
+#         a = q.popleft()
+#         if temp[-1] == a:
             
-    return list(temp)
-# s = (c(s))
-# print(c(s))
+#     return list(temp)
+# # s = (c(s))
+# # print(c(s))
 
 
-def cut(s):
-    temp = ''
-    flag = True
-    if len(s) == 0:
-        return 1
-    for i in range(len(s)):
-        if i == len(s)-1 and flag:
-            temp += s[i]
-            continue
-        elif i == len(s)-1 and flag == False:
-            continue
-        if s[i] != s[i+1] and flag:
-            temp += s[i]
-        elif s[i] == s[i+1] and flag:
-            flag = False
-            continue
-        elif flag == False:
-            flag = True
-            continue
-    if s == temp:
-        return False
-    else:
-        return temp
+# def cut(s):
+#     temp = ''
+#     flag = True
+#     if len(s) == 0:
+#         return 1
+#     for i in range(len(s)):
+#         if i == len(s)-1 and flag:
+#             temp += s[i]
+#             continue
+#         elif i == len(s)-1 and flag == False:
+#             continue
+#         if s[i] != s[i+1] and flag:
+#             temp += s[i]
+#         elif s[i] == s[i+1] and flag:
+#             flag = False
+#             continue
+#         elif flag == False:
+#             flag = True
+#             continue
+#     if s == temp:
+#         return False
+#     else:
+#         return temp
 
-# print(cut(s))
-flag = True
-while True:
-    temp = c(s)
-    if temp == s:
-        result = 0
-        break
-    elif len(temp) == 0:
-        result = 1
-        break
-    s = temp[:]
+# # print(cut(s))
+# flag = True
+# while True:
+#     temp = c(s)
+#     if temp == s:
+#         result = 0
+#         break
+#     elif len(temp) == 0:
+#         result = 1
+#         break
+#     s = temp[:]
 
-print(result)
+# print(result)
+
+
+################################################################################################################################################################
+################################################################################################################################################################
+################################################################################################################################################################
+# n = 5000
+# count = 0
+# while True:
+#     if n%2 != 0:
+#         n -= 1
+#         count +=1
+#     elif n%2 == 0:
+#         n = n//2
+    
+#     if 0<= n <= 2:
+#         count +=1
+#         break
+        
+# print(count)
+# '''
+# 19 18 9 8 4 2 1
+# 21/20 10 5/4 2 1/0
+
+# '''
+# # print(2//2)
+
+
+################################################################################################################################################################
+################################################################################################################################################################
+################################################################################################################################################################
+
+
+# exp = "50"
+
+# data = []
+# temp = ''
+# for i in range(len(exp)):
+#     if '0'<= exp[i] <='9':
+#         temp += exp[i]
+#     elif '0' > exp[i]:
+#         data.append(temp)
+#         data.append(exp[i])
+#         temp = ''
+# data.append(temp)
+# M = 0
+# def cal(x,a,b):
+#     a,b = int(a),int(b)
+#     if x == '*':
+#         return str(a*b)
+#     elif x == '-':
+#         return str(a-b)
+#     else:
+#         return str(a+b)
+
+# def calcul(x,data):
+#     for i in range(1,len(data)-1,2):
+#         if data[i] == x:
+#             data = data[:i-1] + [cal(x,data[i-1],data[i+1])] + data[i+2:]
+#             return calcul(x,data)
+#     return data
+
+            
+
+
+# dic =[['*','+','-'],['*','-','+'],['+','*','-'],['+','-','*'],['-','*','+'],['-','+','*']]
+# for i in range(6):
+#     temp = data[:]
+#     for j in range(3):
+#         now = dic[i][j]
+#         while True:
+#             temp = calcul(now,temp)
+#             if now not in temp:
+#                 break
+#     M =max(M,int(abs(int(temp[0]))))
+
+# print(M)

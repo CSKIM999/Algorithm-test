@@ -51,8 +51,5 @@
 #     return answer
 #     import collections
 
-
-from collections import deque
-a = 'cdcd'
-q = deque()
-print(q[-1])
+a = [0,1,2,3,4,5]
+print(a[:0] + [a[0]+a[2]] + a[3:])
