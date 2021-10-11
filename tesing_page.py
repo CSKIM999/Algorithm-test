@@ -51,5 +51,33 @@
 #     return answer
 #     import collections
 
-a = [0,1,2,3,4,5]
-print(a[:0] + [a[0]+a[2]] + a[3:])
+# a = [0,1,2,3,4,5]
+# print(a[:0] + [a[0]+a[2]] + a[3:])
+
+r,c = 3,3
+data = [[i+(c*j) for i in range(1,1+c)] for j in range(r)]
+for i in data:
+    print(i)
+
+xy = [1,1,2,2]
+ax,ay,bx,by = xy
+temp = [data[ax-1][ax-1:by],[i[by-1] for i in data[ax-1:bx]],data[bx-1][ax-1:by],[i[ay-1] for i in data[ax-1:bx]]]
+print(temp)
+
+def turn(temp):
+    alp = []
+    for x in temp[:2]:
+        alp.append(x[:-1])
+    for x in temp[2:]:
+        alp.append(x[1:])
+    tmp = alp[:]
+    alp[0] = [tmp[-1][0]] + tmp[0]
+    alp[1] = [tmp[0][-1]] + tmp[1]
+    alp[2] = tmp[2] + [tmp[1][-1]]
+    alp[3] = tmp[3] + [tmp[2][0]]
+
+    return alp
+    
+temp = turn(temp)
+print()
+print(temp)
