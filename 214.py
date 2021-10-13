@@ -500,35 +500,73 @@ Programmers level test
 ################################################################################################################################################################
 #  행렬 테두리 회전하기
 
-r,c = 6,6
-data = [[i+(c*j) for i in range(1,1+c)] for j in range(r)]
-for i in data:
-    print(i)
+# r,c = 6,6
+# data = [[i+(c*j) for i in range(1,1+c)] for j in range(r)]
+# for i in data:
+#     print(i)
 
-xy = [2,2,5,4]
-ax,ay,bx,by = xy
-temp = [data[ax-1][ax-1:by],[i[by-1] for i in data[ax-1:bx]],data[bx-1][ax-1:by],[i[ay-1] for i in data[ax-1:bx]]]
-print(temp)
+# xy = [2,2,5,4]
+# ax,ay,bx,by = xy
+# temp = [data[ax-1][ax-1:by],[i[by-1] for i in data[ax-1:bx]],data[bx-1][ax-1:by],[i[ay-1] for i in data[ax-1:bx]]]
+# print(temp)
+
+# # def turn(temp):
+# #     alp = []
+# #     a= list([temp[-1][1]]) + list(temp[0][:-1])
+# #     alp.append(a)
+# #     b= list([temp[0][-2]]) + list(temp[1][:-1])
+# #     alp.append(b)
+# #     c=  list(temp[2][1:]) + list([temp[1][-2]])
+# #     alp.append(c)
+# #     if len(temp[3]) == 2:
+# #         d = list(temp[3][1:]) + list([temp[2][-1]])
+# #         alp.append(d)
+# #     else:    
+# #         d=  list(temp[3][1:]) + list([temp[2][-2]])
+# #         alp.append(d)
+
+# #     return alp
+# # temp = turn(temp)
+
+# # print(temp)
 
 # def turn(temp):
 #     alp = []
-#     a= list([temp[-1][1]]) + list(temp[0][:-1])
-#     alp.append(a)
-#     b= list([temp[0][-2]]) + list(temp[1][:-1])
-#     alp.append(b)
-#     c=  list(temp[2][1:]) + list([temp[1][-2]])
-#     alp.append(c)
-#     if len(temp[3]) == 2:
-#         d = list(temp[3][1:]) + list([temp[2][-1]])
-#         alp.append(d)
-#     else:    
-#         d=  list(temp[3][1:]) + list([temp[2][-2]])
-#         alp.append(d)
+#     for x in temp[:2]:
+#         alp.append(x[:-1])
+#     for x in temp[2:]:
+#         alp.append(x[1:])
+#     tmp = alp[:]
+#     alp[0] = [tmp[-1][0]] + tmp[0]
+#     alp[1] = [tmp[0][-1]] + tmp[1]
+#     alp[2] = tmp[2] + [tmp[1][-1]]
+#     alp[3] = tmp[3] + [tmp[2][0]]
 
 #     return alp
-# temp = turn(temp)
+    
 
-# print(temp)
+
+
+# def roll(data,temp,xy):
+#     ax,ay,bx,by = xy
+#     data[ax-1][ay-1:by] = temp[0]
+#     data[bx-1][ay-1:by] = temp[2]
+#     for v,i in enumerate(range(ax-1,bx)):
+#         data[i][by-1] = temp[1][v]
+#         data[i][ay-1] = temp[3][v]
+
+#     return data
+
+# print()
+# data = roll(data,temp,xy)
+# m = 1e9
+# for i in temp:
+#     for j in i:
+#         m = min(m,j)     
+# print(m)
+# for i in data:
+#     print(i)
+
 
 def turn(temp):
     alp = []
@@ -541,11 +579,8 @@ def turn(temp):
     alp[1] = [tmp[0][-1]] + tmp[1]
     alp[2] = tmp[2] + [tmp[1][-1]]
     alp[3] = tmp[3] + [tmp[2][0]]
-
-    return alp
     
-
-
+    return alp
 
 def roll(data,temp,xy):
     ax,ay,bx,by = xy
@@ -557,15 +592,25 @@ def roll(data,temp,xy):
 
     return data
 
-print()
-data = roll(data,temp,xy)
-m = 1e9
-for i in temp:
-    for j in i:
-        m = min(m,j)     
-print(m)
-for i in data:
-    print(i)
+def solution(rows, columns, queries):
+    r,c = rows,columns
+    data = [[i+(c*j) for i in range(1,1+c)] for j in range(r)]
+    # data=[]
+    # for r in range(rows):
+    #         data.append([a for a in range(r*columns+1, (r+1)*columns+1)])
+    answer = []
+    
+    for xy in queries:
+        m = 1e9
+        ax,ay,bx,by = xy
+        temp = [data[ax-1][ay-1:by],[i[by-1] for i in data[ax-1:bx]],data[bx-1][ay-1:by],[i[ay-1] for i in data[ax-1:bx]]]
+        temp = turn(temp)
+        for i in temp:
+            for j in i:
+                m = min(m,j)
+        data = roll(data,temp,xy)
+        answer.append(m)
+    return answer
 '''
 >>> 결국 풀어내긴 했다. line 511 의 turn 함수에서 뭔가 문제가 생겨서 오류가 생겼던 듯 하다.
 '''

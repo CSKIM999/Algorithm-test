@@ -886,6 +886,132 @@ Output) 최소 몇번만에 빨간 구슬을 구멍을 통해 빼낼 수 있는 
 1회차 > 간단한 구현은 끝냈으나, 한개의 반례가 걸려서 모두 뒤엎게 됨. 다음에 다시풀어봐야할 것 같음
 '''
 
+###############################################################################################################################################################################################
+#################################################################################     Q14500 _ 테트로미노    ##################################################################################
+###############################################################################################################################################################################################
+'''
+Given ) 정사각형을 4 개 이어붙인 테트로미노 5가지 모양을 이용하여 종이 위에 테트로미노를 놓았을 때 각 칸의 합의 최대를 구하는 프로그램을 작성하라
+Input ) 첫째 줄에 세로크기 N 과 가로크기 M 이 주어진다 ( 4<= M,N <= 500 )
+        둘째 줄부터 N 개의 줄에 종이 데이터가 주어진다.
+Output) 칸이 가리는 최댓값을 출력하라
+'''
+c,r = 5,5
+result = -1
+data = [[i+(c*j) for i in range(1,1+c)] for j in range(r)]
+for i in data:
+    print(i)
+def tet_1(vh,x,y,give):
+    global result
+    if vh == 0:
+        if x+2>=len(give[0]) or y+1 >= len(give):
+            return False
+        try:
+            i = [give[i][y] for i in range(x,x+4)]
+            # tmp = 0
+            # for j in i:
+            #     tmp +=j
+            result = max(result,sum(i))
+        except IndexError:
+            return False
+            
+
+    else:
+        if x+1>=len(give[0]) or y+2 >= len(give):
+            return False
+        try:
+            i = give[x][y:y+4]
+            # tmp = 0
+            # for j in i:
+            #     tmp +=j
+            result = max(result,sum(i))
+        except IndexError:
+            return False
+
+def tet_2(x,y,give):
+    global result
+    if x+2>=len(give[0]) or y+1 >= len(give):
+            return False
+    try:
+        i = [give[x][y],give[x+1][y],give[x][y+1],give[x+1][y+1]]
+        # tmp = 0
+        # for j in i:
+        #     tmp +=j
+        result = max(result,sum(i))
+    except IndexError:
+        return False
 
 
+def tet_3(vh,x,y,give):
+    global result
+    dic = [
+        [
+            [[1,1],[0,1],[0,1]],
+            [[1,1],[1,0],[1,0]]
+        ],
+        [
+            [[1,0],[1,1],[1,0]],
+            [[1,0],[1,1],[0,1]],
+            [[0,1],[1,1],[1,0]],
+            [[0,1],[1,1],[0,1]]
+        ],
+        [
+            [[1,0],[1,0],[1,1]],
+            [[0,1],[0,1],[1,1]]
+        ]
+    ]
+    if vh == 0: #세로
+        if x+2>=len(give[0]) or y+1 >= len(give):
+            return False
 
+        try:
+            tb = [[] for _ in range(3)]
+            for i in range(3):
+                for j in range(len(dic[i])):
+                    tmp = 0
+                    #dic[j][0] = [1,1]
+                    tt = []
+                    for k in range(3):
+                        for n in range(2):
+                            if dic[i][j][k][n] == 1:
+                                tt.append(give[x+k][y+n])
+                    if len(tt) != 0:
+                        # tb[i].append(tt)
+                        # for num in tt:
+                        #     tmp += num
+                        # result = max(result,tmp)
+                        result = max(result,sum(tt))
+
+
+        except IndexError:
+            print('error')
+    else: #가로
+        if x+1>=len(give[0]) or y+2 >= len(give):
+            return False
+        try:
+            tb = [[] for _ in range(3)]
+            for i in range(3):
+                tmp = 0
+                for j in range(len(dic[i])):
+                    #dic[j][0] = [1,1]
+                    tt = []
+                    for k in range(3):
+                        for n in range(2):
+                            if dic[i][j][k][n] == 1:
+                                tt.append(give[x+n][y+k])
+                    if len(tt) != 0:
+                        # tb[i].append(tt)
+                        # for num in tt:
+                        #     tmp += num
+                        result = max(result,sum(tt))
+                # print(tb)
+        except IndexError:
+            print('error')
+
+for i in range(r):
+    for j in range(c):
+        for k in range(2):
+            tet_1(k,i,j,data)
+            tet_3(k,i,j,data)
+        tet_2(i,j,data)
+# tet_3(1,3,2,data)
+print(result)
