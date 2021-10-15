@@ -895,123 +895,221 @@ Input ) 첫째 줄에 세로크기 N 과 가로크기 M 이 주어진다 ( 4<= M
         둘째 줄부터 N 개의 줄에 종이 데이터가 주어진다.
 Output) 칸이 가리는 최댓값을 출력하라
 '''
-c,r = 5,5
-result = -1
-data = [[i+(c*j) for i in range(1,1+c)] for j in range(r)]
-for i in data:
-    print(i)
-def tet_1(vh,x,y,give):
-    global result
-    if vh == 0:
-        if x+2>=len(give[0]) or y+1 >= len(give):
-            return False
-        try:
-            i = [give[i][y] for i in range(x,x+4)]
-            # tmp = 0
-            # for j in i:
-            #     tmp +=j
-            result = max(result,sum(i))
-        except IndexError:
-            return False
+# c,r = map(int,input().split())
+# result = -1
+# # data = [[i+(c*j) for i in range(1,1+c)] for j in range(r)]
+# data = [list(map(int,input().split())) for _ in range(c)]
+# # for i in data:
+# #     print(i)
+# def tet_1(vh,x,y,give): # 1자
+#     global result
+#     if vh == 0:
+#         if x+3>=len(give) or y >= len(give[0]):
+#             return False
+#         try:
+#             i = [give[i][y] for i in range(x,x+4)]
+#             # tmp = 0
+#             # for j in i:
+#             #     tmp +=j
+#             result = max(result,sum(i))
+#         except IndexError:
+#             return False
             
 
-    else:
-        if x+1>=len(give[0]) or y+2 >= len(give):
-            return False
-        try:
-            i = give[x][y:y+4]
-            # tmp = 0
-            # for j in i:
-            #     tmp +=j
-            result = max(result,sum(i))
-        except IndexError:
-            return False
+#     else:
+#         if x>=len(give) or y+3 >= len(give[0]):
+#             return False
+#         try:
+#             i = give[x][y:y+4]
+#             # tmp = 0
+#             # for j in i:
+#             #     tmp +=j
+#             result = max(result,sum(i))
+#         except IndexError:
+#             return False
 
-def tet_2(x,y,give):
-    global result
-    if x+2>=len(give[0]) or y+1 >= len(give):
-            return False
-    try:
-        i = [give[x][y],give[x+1][y],give[x][y+1],give[x+1][y+1]]
-        # tmp = 0
-        # for j in i:
-        #     tmp +=j
-        result = max(result,sum(i))
-    except IndexError:
-        return False
-
-
-def tet_3(vh,x,y,give):
-    global result
-    dic = [
-        [
-            [[1,1],[0,1],[0,1]],
-            [[1,1],[1,0],[1,0]]
-        ],
-        [
-            [[1,0],[1,1],[1,0]],
-            [[1,0],[1,1],[0,1]],
-            [[0,1],[1,1],[1,0]],
-            [[0,1],[1,1],[0,1]]
-        ],
-        [
-            [[1,0],[1,0],[1,1]],
-            [[0,1],[0,1],[1,1]]
-        ]
-    ]
-    if vh == 0: #세로
-        if x+2>=len(give[0]) or y+1 >= len(give):
-            return False
-
-        try:
-            tb = [[] for _ in range(3)]
-            for i in range(3):
-                for j in range(len(dic[i])):
-                    tmp = 0
-                    #dic[j][0] = [1,1]
-                    tt = []
-                    for k in range(3):
-                        for n in range(2):
-                            if dic[i][j][k][n] == 1:
-                                tt.append(give[x+k][y+n])
-                    if len(tt) != 0:
-                        # tb[i].append(tt)
-                        # for num in tt:
-                        #     tmp += num
-                        # result = max(result,tmp)
-                        result = max(result,sum(tt))
+# def tet_2(x,y,give):
+#     global result
+#     if x+1>=len(give) or y+1 >= len(give[0]):
+#             return False
+#     try:
+#         i = [give[x][y],give[x+1][y],give[x][y+1],give[x+1][y+1]]
+#         # tmp = 0
+#         # for j in i:
+#         #     tmp +=j
+#         result = max(result,sum(i))
+#     except IndexError:
+#         return False
 
 
-        except IndexError:
-            print('error')
-    else: #가로
-        if x+1>=len(give[0]) or y+2 >= len(give):
-            return False
-        try:
-            tb = [[] for _ in range(3)]
-            for i in range(3):
-                tmp = 0
-                for j in range(len(dic[i])):
-                    #dic[j][0] = [1,1]
-                    tt = []
-                    for k in range(3):
-                        for n in range(2):
-                            if dic[i][j][k][n] == 1:
-                                tt.append(give[x+n][y+k])
-                    if len(tt) != 0:
-                        # tb[i].append(tt)
-                        # for num in tt:
-                        #     tmp += num
-                        result = max(result,sum(tt))
-                # print(tb)
-        except IndexError:
-            print('error')
+# def tet_3(vh,x,y,give):
+#     global result
+#     dic = [
+#         [
+#             [[1,1],[0,1],[0,1]],
+#             [[1,1],[1,0],[1,0]]
+#         ],
+#         [
+#             [[1,0],[1,1],[1,0]],
+#             [[1,0],[1,1],[0,1]],
+#             [[0,1],[1,1],[1,0]],
+#             [[0,1],[1,1],[0,1]]
+#         ],
+#         [
+#             [[1,0],[1,0],[1,1]],
+#             [[0,1],[0,1],[1,1]]
+#         ]
+#     ]
+#     if vh == 0: #세로
+#         if x+2>=len(give) or y+1 >= len(give[0]):
+#             return False
 
+#         try:
+#             tb = [[] for _ in range(3)]
+#             for i in range(3):
+#                 for j in range(len(dic[i])):
+#                     tmp = 0
+#                     #dic[j][0] = [1,1]
+#                     tt = []
+#                     for k in range(3):
+#                         for n in range(2):
+#                             if dic[i][j][k][n] == 1:
+#                                 tt.append(give[x+k][y+n])
+#                     if len(tt) != 0:
+#                         # tb[i].append(tt)
+#                         # for num in tt:
+#                         #     tmp += num
+#                         # result = max(result,tmp)
+#                         result = max(result,sum(tt))
+
+
+#         except IndexError:
+#             print('error')
+#     else: #가로
+#         if x+1>=len(give) or y+2 >= len(give[0]):
+#             return False
+#         try:
+#             tb = [[] for _ in range(3)]
+#             for i in range(3):
+#                 tmp = 0
+#                 for j in range(len(dic[i])):
+#                     #dic[j][0] = [1,1]
+#                     tt = []
+#                     for k in range(3):
+#                         for n in range(2):
+#                             if dic[i][j][k][n] == 1:
+#                                 tt.append(give[x+n][y+k])
+#                     if len(tt) != 0:
+#                         # tb[i].append(tt)
+#                         # for num in tt:
+#                         #     tmp += num
+#                         result = max(result,sum(tt))
+#                 # print(tb)
+#         except IndexError:
+#             print('error')
+
+# for i in range(c):
+#     for j in range(r):
+#         for k in range(2):
+#             tet_1(k,i,j,data)
+#             tet_3(k,i,j,data)
+#         tet_2(i,j,data)
+# print(result)
+
+# # tet_3(1,3,2,data)
+'''
+1회차 > python3 로 채점하니 시간초과, pypy3 로 채점하니 정답판정을 받았다.
+        다른사람들은 dfs 로 풀었던데, 나중에 다시 풀게되면 dfs 를 사용하는 방법도 찾아보자
+'''
+
+
+###############################################################################################################################################################################################
+#################################################################################     Q14503 _ 로봇청소기    ##################################################################################
+###############################################################################################################################################################################################
+
+'''
+Given ) 로봇청소기가 N*M 의 영역을 청소하기 시작한다. 각가의 칸은 벽 또는 빈칸이다. 청소기는 동/서/남/북 중 하나로 바라보는 방향이 정해져있으며, 지도의 각 칸(r,c) 는 북쪽으로부터 r칸, 서쪽으로부터
+        c 칸 멀어진것을 뜻한다.
+        로봇청소기는 다음의 알고리즘을 따른다.
+        1. 현재 위치를 청소한다.
+        2. 현재 위치에서 현재 방향을 기준으로 왼쪽방향부터 차례대로 인접한 칸을 탐색한다.
+            2.a. 왼쪽 방향에 아직 청소하지 않은 공간이 존재한다면, 그 방향으로 회전 후 한칸을 전진하고 1번으로 돌아간다.
+            2.b. 왼쪽 방향에 청소할 공간이 없다면, 그 방향으로 회전하고 2번으로 돌아간다.
+            2.c. 2.b 의 반복을 통해 네 방향 모두 확인결과 모두 청소가 되어있거나 벽인 경우 바라보는 방향을 유지한 채로 한 칸 후진을 하고 2번으로 돌아간다.
+            2.d. 네 방향 모두 청소가 이미 되어있거나 벽이면서, 벽으로 막혀 후진을 할 수 없는 경우 작동을 멈춘다.
+        로봇 청소기는 이미 청소된 칸을 청소하지 않으며, 벽을 통과하지 못한다
+Input ) 첫째 줄에 세로크기 N 과 가로크기 M 이 주어진다. (3<=N,M<=50)
+        둘째 줄에 로봇 청소기가 있는 칸의 좌표(r,c) 와 바라보는방향 d 가 주어진다. d가 0,1,2,3 순서로 북,동,남,서 방향을 가리킨다.
+        셋째 줄부터 N 개의 줄에 맵 데이터가 주어진다. 0은 빈칸 1 은 벽을 나타낸다. 맵의 테두리는 벽으로 주어진다.
+
+Output) 로봇청소기가 청소하는 칸의 개수를 구하라
+'''
+
+'''
+Approach ) dxdy 테이블로 현재 로봇의 방향을 처리, 맵데이터에 0을 2 로 바꾸어서 방문처리
+           만들어야할 모듈 // 0.회전탐색 1. 전진 2. 회전탐색 3. 후진
+'''
+
+# r,c = 11,10
+# robot = [7,4,0]
+
+
+# data = [
+#     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+#     [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+#     [1, 0, 0, 0, 1, 1, 1, 1, 0, 1],
+#     [1, 0, 0, 1, 1, 0, 0, 0, 0, 1],
+#     [1, 0, 1, 1, 0, 0, 0, 0, 0, 1],
+#     [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+#     [1, 0, 0, 0, 0, 0, 0, 1, 0, 1],
+#     [1, 0, 0, 0, 0, 0, 1, 1, 0, 1],#
+#     [1, 0, 0, 0, 0, 0, 1, 1, 0, 1],
+#     [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+#     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+# ]
+
+dd = [[-1,0],[0,1],[1,0],[0,-1]]
+r,c = map(int,input().split())
+robot = list(map(int,input().split()))
+data = []
 for i in range(r):
-    for j in range(c):
-        for k in range(2):
-            tet_1(k,i,j,data)
-            tet_3(k,i,j,data)
-        tet_2(i,j,data)
-# tet_3(1,3,2,data)
+    data.append(list(map(int,input().split())))
+
+
+def turn(x):
+    if x != 0:
+        a = x-1
+        return a
+    else:
+        a = 3
+        return a
+result = 0
+flag = True
+while flag:
+    check = True
+    x,y,d = robot[0],robot[1],robot[2]
+    if data[x][y] == 0:
+        data[x][y] = 2 #현재 위치 청소
+        result += 1
+    count = 0
+    for i in range(4): # 0. 회전탐색
+        d = turn(d)
+        nx,ny = x+dd[d][0],y+dd[d][1]
+        if data[nx][ny] == 0: #nxny 가 빈칸이라면 
+            robot = [nx,ny,d] #지금 방향 그대로 이동
+            break
+        count +=1
+        if count == 4: #4방향 모두 체크한결과 후진해야함
+            check = False
+
+    if not check: # 후진
+        nx,ny = x-dd[d][0],y-dd[d][1]
+        if data[nx][ny] != 1:
+            robot = [nx,ny,d]
+        else:
+            flag = False
+
+    if result == 100:
+        break
+
 print(result)
