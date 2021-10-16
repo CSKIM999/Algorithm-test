@@ -1050,66 +1050,169 @@ Approach ) dxdy 테이블로 현재 로봇의 방향을 처리, 맵데이터에 
            만들어야할 모듈 // 0.회전탐색 1. 전진 2. 회전탐색 3. 후진
 '''
 
-# r,c = 11,10
-# robot = [7,4,0]
+# # r,c = 11,10
+# # robot = [7,4,0]
 
 
-# data = [
-#     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-#     [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-#     [1, 0, 0, 0, 1, 1, 1, 1, 0, 1],
-#     [1, 0, 0, 1, 1, 0, 0, 0, 0, 1],
-#     [1, 0, 1, 1, 0, 0, 0, 0, 0, 1],
-#     [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-#     [1, 0, 0, 0, 0, 0, 0, 1, 0, 1],
-#     [1, 0, 0, 0, 0, 0, 1, 1, 0, 1],#
-#     [1, 0, 0, 0, 0, 0, 1, 1, 0, 1],
-#     [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-#     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+# # data = [
+# #     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+# #     [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+# #     [1, 0, 0, 0, 1, 1, 1, 1, 0, 1],
+# #     [1, 0, 0, 1, 1, 0, 0, 0, 0, 1],
+# #     [1, 0, 1, 1, 0, 0, 0, 0, 0, 1],
+# #     [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+# #     [1, 0, 0, 0, 0, 0, 0, 1, 0, 1],
+# #     [1, 0, 0, 0, 0, 0, 1, 1, 0, 1],#
+# #     [1, 0, 0, 0, 0, 0, 1, 1, 0, 1],
+# #     [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+# #     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+# # ]
+
+# dd = [[-1,0],[0,1],[1,0],[0,-1]]
+# r,c = map(int,input().split())
+# robot = list(map(int,input().split()))
+# data = []
+# for i in range(r):
+#     data.append(list(map(int,input().split())))
+
+
+# def turn(x): #방향 전환 0이 아니라면 -1 씩 해줘서 왼쪽으로 회전 0이라면 3으로
+#     if x != 0:
+#         a = x-1
+#         return a
+#     else:
+#         a = 3
+#         return a
+# result = 0
+# flag = True
+# while flag:
+#     check = True
+#     x,y,d = robot[0],robot[1],robot[2]
+#     if data[x][y] == 0:
+#         data[x][y] = 2 #현재 위치 청소
+#         result += 1
+#     count = 0
+#     for i in range(4): # 0. 회전탐색
+#         d = turn(d)
+#         nx,ny = x+dd[d][0],y+dd[d][1]
+#         if data[nx][ny] == 0: #nxny 가 빈칸이라면 
+#             robot = [nx,ny,d] #지금 방향 그대로 이동
+#             break
+#         count +=1
+#         if count == 4: #4방향 모두 체크한결과 후진해야함
+#             check = False
+
+#     if not check: # 후진
+#         nx,ny = x-dd[d][0],y-dd[d][1]
+#         if data[nx][ny] != 1:
+#             robot = [nx,ny,d]
+#         else:
+#             flag = False
+
+#     # if result == 100:
+#     #     break
+
+
+# print(result)
+
+'''
+1회차 > 무조건 맞는데 왜 자꾸 틀렸다고 하나 하고 찬찬히 코드를 뜯어보던 중 마지막 line 1112 에 코드 확인용으로 적어두었던 break
+        문을 지우지 않고 업로드했었다. 이걸 지우니 바로 정답을 받았다. 조금 어이없다 꼼꼼하게좀 보자
+'''
+
+###############################################################################################################################################################################################
+####################################################################################     Q14503 _ 경사로    ###################################################################################
+###############################################################################################################################################################################################
+'''
+Given ) N*N 크기의 지도가 있고, 각 칸에는 그 칸의 높이가 주어진다. 높이가 다른 칸을 지나기 위해선 L칸짜리 경사로가 필요하다. 오로지 높이가 1, 밑변이 L 인 삼각형의 빗변이 위로 가는 방향으로만
+        놓을 수 있다.
+Input ) 첫째 줄에 N (2<=N<=100) 과 L(1<=L<=N) 이 주어진다.
+        둘째 줄부터 N 개의 줄에 지도가 주어지며, 각 칸의 높이는 10보다 작거나 같은 자연수이다.
+Output) 지나갈 수 있는 길의 개수를 출력하라
+'''
+
+'''
+Approach >> 각 행, 각 열마다 슬라이싱해온 후 경사로를 놓되, 경사로를 놓은 자리를 방문처리 리스트를 관리한다.
+            매 칸을 순회하여 방문 후 다음칸의 높이가 2 이상 차이나면 해당 행렬은 바로 불가능판정.
+            1만큼 높다면 현재칸을 포함하여 경사로를 놓을 L 칸이 방문처리되지 않고 같은 높이인지, 지도를 벗어나지 않는지 판별 후 조건 만족시 방문처리.
+            1만큼 낮다면 다음칸을 포함하여 L 칸이 지도를 벗어나지 않고, 지도를 벗어나지 않는다면 방문처리.
+            모든 행과 열이 위 처리를 만족한다면 count 를 return 해주면 됨.
+'''
+
+from ast import Index
+
+
+count = 0
+# n,l = 6,1
+# data =[
+#     [3, 3, 3, 3, 3, 3],
+#     [2, 3, 3, 3, 3, 3],
+#     [2, 2, 2, 3, 2, 3],
+#     [1, 1, 1, 2, 2, 2],
+#     [1, 1, 1, 3, 3, 1],
+#     [1, 1, 2, 3, 3, 2]
 # ]
+# data = [
+#     [3, 2, 1, 1, 2, 3],
+#     [3, 2, 2, 1, 2, 3],
+#     [3, 2, 2, 2, 3, 3],
+#     [3, 3, 3, 3, 3, 3],
+#     [3, 3, 3, 3, 2, 2],
+#     [3, 3, 3, 3, 2, 2]
+# ]
+n,l = map(int,input().split())
+data = [list(map(int,input().split())) for _ in range(n)]
 
-dd = [[-1,0],[0,1],[1,0],[0,-1]]
-r,c = map(int,input().split())
-robot = list(map(int,input().split()))
-data = []
-for i in range(r):
-    data.append(list(map(int,input().split())))
+def disc(lst,L,count): #정제된 list 입력
+    given = lst[:]
+    used_index = []
+    for i in range(len(given)-1):
+        if given[i+1] - given[i] == 1:#i가 i+1 보다 작을때 // 오름 경사
+            try:
+                tmp = [i for i in range(i-L+1,i+1)]
+                if i-L+1 < 0:
+                    return count
+                if max([given[i] for i in tmp]) != min([given[i] for i in tmp]): # L 범위 내의 수가 모두 같은 수가 아닐때
+                    return count
+                for i in tmp:
+                    if i in used_index: #방문처리가 이미 된 칸일때
+                        return count
 
 
-def turn(x):
-    if x != 0:
-        a = x-1
-        return a
-    else:
-        a = 3
-        return a
-result = 0
-flag = True
-while flag:
-    check = True
-    x,y,d = robot[0],robot[1],robot[2]
-    if data[x][y] == 0:
-        data[x][y] = 2 #현재 위치 청소
-        result += 1
-    count = 0
-    for i in range(4): # 0. 회전탐색
-        d = turn(d)
-        nx,ny = x+dd[d][0],y+dd[d][1]
-        if data[nx][ny] == 0: #nxny 가 빈칸이라면 
-            robot = [nx,ny,d] #지금 방향 그대로 이동
-            break
-        count +=1
-        if count == 4: #4방향 모두 체크한결과 후진해야함
-            check = False
+                used_index += tmp
 
-    if not check: # 후진
-        nx,ny = x-dd[d][0],y-dd[d][1]
-        if data[nx][ny] != 1:
-            robot = [nx,ny,d]
-        else:
-            flag = False
+            except IndexError: #지도를 벗어날 때
+                return count
+        elif given[i+1] - given[i] == -1: #i+1 이 i 보다 작을때 // 내림 경사
+            try:
+                tmp = [i for i in range(i+1,i+L+1)] 
+                if max([given[i] for i in tmp]) != min([given[i] for i in tmp]): # 다음 L 범위의 숫자가 모두 같은가?
+                    return count
+                
+                used_index += tmp
+                
+            except IndexError: #인덱스에러가 일어나는가?
+                return count
+        elif given[i+1] - given[i] == 0:  #i 와 i+1 이 같을 때 // 평지
+            continue
+        else: #높이가 2 이상 차이나는 경우
+            return count
 
-    if result == 100:
-        break
+    return count+1
 
-print(result)
+for i in range(n):
+    #행
+    v = data[i][:]
+    count = disc(v,l,count)
+    #열
+    h = [data[j][i] for j in range(n)]
+    count = disc(h,l,count)
+
+print(count)
+
+'''
+1회차 > 첫 런타임 에러를 제외한다면 line 1173 조건문을 추가하지 않아 오답판정을 받았다.
+        모든 인덱스 에러를 제외문으로 처리하고자 하였으나, tmp 리스트에 음수 인덱스가 담기고 음수데이터를 리스트컴프리헨션을 통해
+        리스트화 시켰을 때 올바른 데이터가 입력되어 생긴 문제였다. 인덱스에러 예외처리가 만능은 아니라는 점을 기억하자.
+    
+'''

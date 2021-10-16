@@ -82,6 +82,18 @@
 # print()
 # print(temp)
 
+L = 2
+l = 2
+i = 3
+b = []
+tx = [8,9,10]
+tx1=[8,10]
+a = [1,2,3,4,5,6,7,8,9]
+b += tx
+tmp = [i for i in range(i+1,i+L+1)]
+
+print(tmp)
+
 
 '''
 6 7
