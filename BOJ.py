@@ -1139,76 +1139,73 @@ Approach >> 각 행, 각 열마다 슬라이싱해온 후 경사로를 놓되, �
             모든 행과 열이 위 처리를 만족한다면 count 를 return 해주면 됨.
 '''
 
-from ast import Index
+# count = 0
+# # n,l = 6,1
+# # data =[
+# #     [3, 3, 3, 3, 3, 3],
+# #     [2, 3, 3, 3, 3, 3],
+# #     [2, 2, 2, 3, 2, 3],
+# #     [1, 1, 1, 2, 2, 2],
+# #     [1, 1, 1, 3, 3, 1],
+# #     [1, 1, 2, 3, 3, 2]
+# # ]
+# # data = [
+# #     [3, 2, 1, 1, 2, 3],
+# #     [3, 2, 2, 1, 2, 3],
+# #     [3, 2, 2, 2, 3, 3],
+# #     [3, 3, 3, 3, 3, 3],
+# #     [3, 3, 3, 3, 2, 2],
+# #     [3, 3, 3, 3, 2, 2]
+# # ]
+# n,l = map(int,input().split())
+# data = [list(map(int,input().split())) for _ in range(n)]
+
+# def disc(lst,L,count): #정제된 list 입력
+#     given = lst[:]
+#     used_index = []
+#     for i in range(len(given)-1):
+#         if given[i+1] - given[i] == 1:#i가 i+1 보다 작을때 // 오름 경사
+#             try:
+#                 tmp = [i for i in range(i-L+1,i+1)]
+#                 if i-L+1 < 0:
+#                     return count
+#                 if max([given[i] for i in tmp]) != min([given[i] for i in tmp]): # L 범위 내의 수가 모두 같은 수가 아닐때
+#                     return count
+#                 for i in tmp:
+#                     if i in used_index: #방문처리가 이미 된 칸일때
+#                         return count
 
 
-count = 0
-# n,l = 6,1
-# data =[
-#     [3, 3, 3, 3, 3, 3],
-#     [2, 3, 3, 3, 3, 3],
-#     [2, 2, 2, 3, 2, 3],
-#     [1, 1, 1, 2, 2, 2],
-#     [1, 1, 1, 3, 3, 1],
-#     [1, 1, 2, 3, 3, 2]
-# ]
-# data = [
-#     [3, 2, 1, 1, 2, 3],
-#     [3, 2, 2, 1, 2, 3],
-#     [3, 2, 2, 2, 3, 3],
-#     [3, 3, 3, 3, 3, 3],
-#     [3, 3, 3, 3, 2, 2],
-#     [3, 3, 3, 3, 2, 2]
-# ]
-n,l = map(int,input().split())
-data = [list(map(int,input().split())) for _ in range(n)]
+#                 used_index += tmp
 
-def disc(lst,L,count): #정제된 list 입력
-    given = lst[:]
-    used_index = []
-    for i in range(len(given)-1):
-        if given[i+1] - given[i] == 1:#i가 i+1 보다 작을때 // 오름 경사
-            try:
-                tmp = [i for i in range(i-L+1,i+1)]
-                if i-L+1 < 0:
-                    return count
-                if max([given[i] for i in tmp]) != min([given[i] for i in tmp]): # L 범위 내의 수가 모두 같은 수가 아닐때
-                    return count
-                for i in tmp:
-                    if i in used_index: #방문처리가 이미 된 칸일때
-                        return count
-
-
-                used_index += tmp
-
-            except IndexError: #지도를 벗어날 때
-                return count
-        elif given[i+1] - given[i] == -1: #i+1 이 i 보다 작을때 // 내림 경사
-            try:
-                tmp = [i for i in range(i+1,i+L+1)] 
-                if max([given[i] for i in tmp]) != min([given[i] for i in tmp]): # 다음 L 범위의 숫자가 모두 같은가?
-                    return count
+#             except IndexError: #지도를 벗어날 때
+#                 return count
+#         elif given[i+1] - given[i] == -1: #i+1 이 i 보다 작을때 // 내림 경사
+#             try:
+#                 tmp = [i for i in range(i+1,i+L+1)] 
+#                 if max([given[i] for i in tmp]) != min([given[i] for i in tmp]): # 다음 L 범위의 숫자가 모두 같은가?
+#                     return count
                 
-                used_index += tmp
+#                 used_index += tmp
                 
-            except IndexError: #인덱스에러가 일어나는가?
-                return count
-        elif given[i+1] - given[i] == 0:  #i 와 i+1 이 같을 때 // 평지
-            continue
-        else: #높이가 2 이상 차이나는 경우
-            return count
+#             except IndexError: #인덱스에러가 일어나는가?
+#                 return count
+#         elif given[i+1] - given[i] == 0:  #i 와 i+1 이 같을 때 // 평지
+#             continue
+#         else: #높이가 2 이상 차이나는 경우
+#             return count
 
-    return count+1
+#     return count+1
 
-for i in range(n):
-    #행
-    v = data[i][:]
-    count = disc(v,l,count)
-    #열
-    h = [data[j][i] for j in range(n)]
-    count = disc(h,l,count)
+# for i in range(n):
+#     #행
+#     v = data[i][:]
+#     count = disc(v,l,count)
+#     #열
+#     h = [data[j][i] for j in range(n)]
+#     count = disc(h,l,count)
 
-print(count)
+# print(count)
 
 '''
 1회차 > 첫 런타임 에러를 제외한다면 line 1173 조건문을 추가하지 않아 오답판정을 받았다.
@@ -1216,3 +1213,36 @@ print(count)
         리스트화 시켰을 때 올바른 데이터가 입력되어 생긴 문제였다. 인덱스에러 예외처리가 만능은 아니라는 점을 기억하자.
     
 '''
+
+
+
+###############################################################################################################################################################################################
+#####################################################################################     Q14503 _ 감시    ####################################################################################
+###############################################################################################################################################################################################
+'''
+Given ) CCTV 를 통해 N*M 크기의 직사각형 모양 사무실을 감시하고자 한다 CCTV 는 총 5가지가 있으며 모두 회전이 가능하다
+        1. 한쪽방향 2.양쪽방향 3.ㄱ자 방향 4. ㅗ자 방향 5. 十자방향
+        사무실에는 벽이 설치되어있으며 벽으로 가려서 CCTV 로 감시하지 못하는 범위를 사각지대라고 칭한다.
+Input ) 첫째 줄에 사무실의 크기 N,M 이 주어진다 (1<=N,M<=8)
+        둘째 줄부터 N 개의 줄에 사무실 각 칸의 정보가 주어진다. 0 은 빈칸, 6은 벽, 1~5는 CCTV 의 종류를 의미한다.
+        CCTV 의 개수는 최대 8개를 넘지 않는다.
+Output) 사각지대의 최소 크기를 출력하라.
+'''
+
+'''
+Approach >> 현재 바라보는 방향을 사각지대에서 제외하는 함수(방문처리를 통해)와 dfs를 통해 문제를 풀어보고자 한다.
+            사무실의 최대크기가 8*8 이므로 index 가 최대일 때 체크해도 무방할듯 함.
+'''
+
+N,M = 4,6
+data = [
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 1, 0, 6, 0],
+    [0, 0, 0, 0, 0, 0]
+]
+cctv = []
+for i in range(N):
+    for j in range(M):
+        if 0<data[i][j]<6:
+            cctv.append([data[i][j],i,j])
