@@ -1234,15 +1234,218 @@ Approach >> 현재 바라보는 방향을 사각지대에서 제외하는 함수
             사무실의 최대크기가 8*8 이므로 index 가 최대일 때 체크해도 무방할듯 함.
 '''
 
-N,M = 4,6
-data = [
-    [0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0],
-    [0, 0, 1, 0, 6, 0],
-    [0, 0, 0, 0, 0, 0]
-]
-cctv = []
-for i in range(N):
-    for j in range(M):
-        if 0<data[i][j]<6:
-            cctv.append([data[i][j],i,j])
+#오답코드
+
+    # # 북 동 남 서 >> 0,1,2,3
+    # result = 1e9
+    # cctv = []
+    # walls = []
+    # for i in range(N):
+    #     for j in range(M):
+    #         if 0<data[i][j]<6:
+    #             cctv.append([data[i][j],i,j])
+    #         elif data[i][j] == 6:
+    #             walls.append([i,j])
+
+    # print(cctv)
+    # print(walls)
+    # # dfs 내에서 4 방향 for문을 작성하되, count 를 관리하여 마지막의 경우  min(0) 값을 탐색하게 만들기
+    # def rd(data,t,node,dir):
+    #     pass
+
+    # def ctd(data,t,node,dir):
+    #     x,y = node
+    #     if t == 1:
+    #         index = 1
+    #         d = [[-1,0],[0,1],[1,0],[0,-1]]
+    #         while True:
+    #             try:
+    #                 if data[x+(d[dir][0])*index][y+(d[dir][1])*index] == 6:
+    #                     return data
+    #                 elif x+(d[dir][0])*index < 0 or y+(d[dir][1])*index < 0:
+    #                     return data
+    #             except IndexError:
+    #                 return data
+
+    #             if data[x+(d[dir][0])*index][y+(d[dir][1])*index] == 0:
+    #                 data[x+(d[dir][0])*index][y+(d[dir][1])*index] = 9
+    #             index += 1
+    #     elif t == 2:
+    #         l,r = False,False
+    #         if dir == 1:
+    #             index = 1
+    #             while True:
+    #                 try:
+    #                     if data[x][y+index] == 6:
+    #                         break
+    #                 except IndexError:
+    #                     break
+    #                 if data[x][y+index] == 0:
+    #                     data[x][y+index] = 9
+    #                 index += 1
+    #             index = 1
+    #             while True:
+    #                 try:
+    #                     if data[x][y-index] == 6:
+    #                         break
+    #                     elif y-index < 0:
+    #                         break
+    #                 except IndexError:
+    #                     break
+    #                 if data[x][y-index] == 0:
+    #                     data[x][y-index] = 9
+    #                 index += 1
+
+
+    # data = ctd(data,1,[2,2],3)
+    # for i in data:
+    #     print(i)
+
+    # # def dfs(data,cctv,count):
+    # #     global result
+    # #     end = len(cctv)
+    # #     if count == end:
+    # #         print('check')
+    # #         return
+    # #     t,x,y =cctv[count]
+    # #     temp = [i[:] for i in data]
+    # #     # h_data = data[x][:]
+    # #     # v_data = [ i[y] for i in data]
+    # #     # print(h_data)
+    # #     # print(v_data)
+    # #     for i in range(4):
+    # #         pass
+            
+
+    # # dfs(data,cctv,0)
+
+
+    # N,M = 4,6
+    # data = [
+    #     [0, 0, 0, 0, 0, 0],
+    #     [0, 0, 0, 0, 0, 0],
+    #     [0, 0, 0, 0, 6, 0],
+    #     [0, 0, 0, 0, 0, 0]
+    # ]
+'''
+위에 길게 작성했는데 아무래도 아닌거같음 다르게 풀어봐야겠음
+'''
+
+# N,M = map(int,input().split())
+# data = []
+# for i in range(N):
+#     data.append(list(map(int,input().split())))
+
+# def change(data,node,dir):
+#     x,y = node
+#     if dir ==3:
+#         for i in range(y-1,-1,-1):
+#             if data[x][i] == 6:
+#                 return data
+#             if data[x][i] == 0:
+#                 data[x][i] = 9
+#         return data
+#     elif dir == 1:
+#         for i in range(y,len(data[0])):
+#             if data[x][i] == 6:
+#                 return data
+#             if data[x][i] == 0:
+#                 data[x][i] = 9
+#         return data
+#     elif dir == 0:
+#         for i in range(x,-1,-1):
+#             if data[i][y] == 6:
+#                 return data
+#             if data[i][y] == 0:
+#                 data[i][y] = 9
+#         return data
+#     else:
+#         for i in range(x,len(data)):
+#             if data[i][y] == 6:
+#                 return data
+#             if data[i][y] == 0:
+#                 data[i][y] = 9
+#         return data
+
+# # for i in data:
+# #     print(i)
+# node =[]
+# for i in range(N):
+#     for j in range(M):
+#         if 0<data[i][j]<6:
+#             node.append([data[i][j],i,j])
+
+
+# end = len(node)
+# result = 1e9
+# def dfs(data,node,count):
+#     global end,result
+#     if count == end:
+#         tmp = 0
+#         for i in range(N):
+#             for j in range(M):
+#                 if data[i][j] == 0:
+#                     tmp += 1
+#         result = min(result,tmp)
+#         return
+#     t,x,y = node[count]
+#     if t == 1:
+#         for i in range(4):
+#             dfs(change([i[:] for i in data],[x,y],i),node,count+1)
+#     elif t == 2:
+#         for i in range(2):
+#             temp = change([i[:] for i in data],[x,y],i+2)
+#             dfs(change([i[:] for i in temp],[x,y],i),node,count+1)
+#     elif t == 3:
+#         for i in range(4):
+#             if i == 3:
+#                 temp = change([i[:] for i in data],[x,y],0)
+#             else:
+#                 temp = change([i[:] for i in data],[x,y],i+1)
+#             dfs(change([i[:] for i in temp],[x,y],i),node,count+1)
+#     elif t == 4:
+#         for i in range(2):
+#             for j in range(2):
+#                 if i == 0:
+#                     temp = change([i[:] for i in data],[x,y],1)
+#                     temp = change([i[:] for i in temp],[x,y],3)
+#                     dfs(change([i[:] for i in temp],[x,y],j*2),node,count+1)
+#                 else:
+#                     temp = change([i[:] for i in data],[x,y],0)
+#                     temp = change([i[:] for i in temp],[x,y],2)
+#                     if j == 0:
+#                         dfs(change([i[:] for i in temp],[x,y],1),node,count+1)
+#                     else:
+#                         dfs(change([i[:] for i in temp],[x,y],3),node,count+1)
+#     else:
+#         temp = change([i[:] for i in data],[x,y],0)
+#         temp = change([i[:] for i in temp],[x,y],1)
+#         temp = change([i[:] for i in temp],[x,y],2)
+#         dfs(change([i[:] for i in temp],[x,y],3),node,count+1)
+
+
+# dfs([i[:] for i in data],node,0)
+# print(result)
+# '''
+# 1회차 > 오답목록 // 1. 어렵게 각 타입마다 다른 mapping 방법을 사용하려했음. 너무 복잡하고 코드도 길어짐
+#                     >> 따라서 단순하게 상하좌우 확산하는 change 함수만으로 관리
+#                     2. 다 맞춘거같은데 오답이 나옴
+#                     >> type 4 의 line 1410 에서 change 함수의 i 입력관리를 제대로 하지 않아 오류가 발생
+#                     >> dfs 내에 들어가는 data 부 change i 에 마지막 값을 제대로 넣어주어 정답판정
+#         리뷰 // 오히려 아주 간단한 코드를 반복사용하는것이 간결하고 정확한 출력을 낼 수도 있다.
+# '''
+
+
+
+###############################################################################################################################################################################################
+#################################################################################     Q14503 _ 사다리 조작    #################################################################################
+###############################################################################################################################################################################################
+
+'''
+Given ) N 개의 세로선과 H 개의 가로선이 주어질 때, M 개의 가로선이 이미 배치되어있다.
+        주어진 상황에서 i 번의 세로선이 출발하여 i 번으로 도착하기 위해 추가해야하는 가로선의 최솟값을 출력하라.
+Input ) 첫째 줄에 세로선의 개수 N 과 그어진 가로선의 개수 M , 가로줄의 개수 H 가 주어진다  (2 ≤ N ≤ 10, 1 ≤ H ≤ 30, 0 ≤ M ≤ (N-1)×H)
+        둘째 줄부터 M 개의 줄에 가로선(M) 의 정보가 한줄에 하나씩 주어진다. (a,b) b번 세로선과 b+1 번 세로선을 a번 가로줄 에서 연결했다는 의미
+        가장 위의 가로줄이 1번이고 가장 왼쪽 세로줄의 번호가 1번이다.
+Output) i번 세로선이 i번 으로 도착하도록 하는 추가 가로줄의 최소 개수를 출력하라. 만약 3 이상, 혹은 불가능이라면 -1 을 출력하라.
+'''
