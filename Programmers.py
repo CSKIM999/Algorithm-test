@@ -237,35 +237,107 @@ Approach >> 회원의 데이터는 유저아이디로 처리되며, 만약 아�
 
 '''
 
-n = 5
-money = [1,2,5]
+# n = 5
+# money = [2,1,5]
+# money.sort()
 
-dp = [set() for _ in range(n-money[0]+1)]
+# dp = [set() for _ in range(n-money[0]+1)]
 
-#타겟넘버까지 dp 테이블을 만들고 해당 테이블을 통해 타겟넘버를 만들자
-# 
-print(dp)
-for now in range(1,n-money[0]+1): # DP 순환
-    tmp = now
-    for j in range(1,len(money)+1):
-        now_money = money[-j]
-        if now_money == now:
-            dp[now].add(now_money)
+# #타겟넘버까지 dp 테이블을 만들고 해당 테이블을 통해 타겟넘버를 만들자
+# # 
+# print(dp)
+# for now in range(1,n-money[0]+1): # DP 순환
+#     for j in range(1,len(money)+1):
+#         tmp = now
+#         now_money = money[-j]
+#         if now_money == now:
+#             dp[now].add(now_money)
+#             continue
+#         if tmp > now_money:
+#             tmp -= now_money
+#             # for k in list(dp[tmp]):
+#             for k in dp[tmp]:
+#                 if type(k) == int:
+#                     t = [k]
+#                 else:
+#                     t = list(k)
+#                 t.append(now_money)
+#                 dp[now].add(tuple(sorted(t,key=lambda x:x)))
+
+
+# # t = (2,3,2)
+# # a.add(tuple(sorted(t,key=lambda x:x)))
+
+# # b = (2,3)
+# # tmp = list(b)
+# # tmp.append(2)
+# # tmp.sort(reverse=True)
+# # print(tuple(tmp))
+# # print(a)
+# print(dp)
+# print()
+# result = set()
+# for i in reversed(money):
+#     temp = n
+#     if i == temp:
+#         result.add(i)
+#         continue
+#     if temp > i:
+#         temp -= i
+#         for j in dp[temp]:
+#             if type(j) == int:
+#                 t = [j]
+#             else:
+#                 t = list(j)
+#             t.append(i)
+#             result.add(tuple(sorted(t,key=lambda x:x)))
+            
+
+# answer = len(result)%1000000007
+# print(answer)
+
+def solution(n, money):
+    money.sort()
+    dp = [set() for _ in range(n-money[0]+1)]
+    for now in range(1,n-money[0]+1): # DP 순환
+        for j in range(1,len(money)+1):
+            tmp = now
+            now_money = money[-j]
+            if now_money == now:
+                dp[now].add(now_money)
+                continue
+            if tmp > now_money:
+                tmp -= now_money
+                # for k in list(dp[tmp]):
+                for k in dp[tmp]:
+                    if type(k) == int:
+                        t = [k]
+                    else:
+                        t = list(k)
+                    t.append(now_money)
+                    dp[now].add(tuple(sorted(t,key=lambda x:x)))
+    result = set()
+    for i in reversed(money):
+        temp = n
+        if i == temp:
+            result.add(i)
             continue
-        if tmp > now_money:
-            tmp -= now_money
-            for k in list(dp[tmp]):
-                t = [k]
-                t.append(now_money)
-                dp[now].add(tuple(sorted(t,key=lambda x:x)))
+        if temp > i:
+            temp -= i
+            for j in dp[temp]:
+                if type(j) == int:
+                    t = [j]
+                else:
+                    t = list(j)
+                t.append(i)
+                result.add(tuple(sorted(t,key=lambda x:x)))
 
 
-# t = (2,3,2)
-# a.add(tuple(sorted(t,key=lambda x:x)))
+    answer = len(result)%1000000007
+    return answer
 
-b = (2,3)
-tmp = list(b)
-tmp.append(2)
-tmp.sort(reverse=True)
-print(tuple(tmp))
-# print(a)
+
+
+'''
+1회차 > 정확도 테스트는 모두 통과했다. 하지만 효율성테스트는 모두 시간초과로 실패했다.
+'''

@@ -84,16 +84,20 @@
 
 
 
-data = [
-    [0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0],
-    [0, 0, 1, 0, 6, 0],
-    [0, 0, 0, 0, 0, 0]
-]
+# data = [
+#     [0, 0, 0, 0, 0, 0],
+#     [0, 0, 0, 0, 0, 0],
+#     [0, 0, 1, 0, 6, 0],
+#     [0, 0, 0, 0, 0, 0]
+# ]
 
-data[0][2:] = [ 4 for _ in range(len(data[0][2:]))]
-print(data)
+# data[0][2:] = [ 4 for _ in range(len(data[0][2:]))]
+# print(data)
 
-pp = [ i for i in range(5,-1,-1)]
-print(pp)
+# pp = [ i for i in range(5,-1,-1)]
+# print(pp)
 
+a = (1,1)
+b = 2
+
+print(list(a))
