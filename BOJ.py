@@ -1449,3 +1449,68 @@ Input ) 첫째 줄에 세로선의 개수 N 과 그어진 가로선의 개수 M 
         가장 위의 가로줄이 1번이고 가장 왼쪽 세로줄의 번호가 1번이다.
 Output) i번 세로선이 i번 으로 도착하도록 하는 추가 가로줄의 최소 개수를 출력하라. 만약 3 이상, 혹은 불가능이라면 -1 을 출력하라.
 '''
+
+'''
+Approach >> 보니 세로선과 세로선 사이에 놓인 가로선의 갯수가 짝수여야 출발과 도착이 같을 수 있다. 또한 A-out 가로선과 A-in 가로선 사이에 B-out 가로선이 위치한다면 그 사이에 B-in 가로선이 위치해야만한다
+            따라서 각 세로선을 따라 in&out 을 체크하여 주어진 데이터에서 가로선이 들어갈 수 있는 자리를 모두 받아오도록 해보자
+'''
+
+# # for i in give:
+# #     data[i[0]-1][i[1]-1] = 1
+# # ino =[[] for _ in range(N-1)]
+# # point = [[] for _ in range(N-1)]
+
+# # for i in range(len(data[0])):
+# #     temp = [j[i] for j in data]
+# #     for k in range(H):
+# #         if temp[k] != 0:
+# #             ino[i].append(k)
+
+# # for i in range(len(ino)):
+# #     if len(ino[i])%2 == 0:
+# #         continue
+# #     tmp = []
+# #     if i == 0: #1번줄의 경우
+# #         last = ino[i][-1]
+# #         a,b = 0,H
+# #         if ino
+# #         pass
+
+# # print(ino)
+
+
+# # for i in data:
+# #     print(i)
+
+# N,M,H = 5,5,6
+
+# data = [[0]*(N-1) for _ in range(H)]
+# give = [
+#     [5, 1],
+#     [1, 1],
+#     [3, 2],
+#     [2, 3],
+#     [5, 4]
+# ]
+
+# lines = [[] for _ in range(N-1)]
+# for i,j in give:
+#     lines[j-1].append(i)
+# for i in lines:
+#     i.sort()
+# #3개 이상 그어야하는가?
+# count = 0
+# for i in lines:
+#     if len(i)%2 !=0:
+#         count +=1
+
+# #각 줄마다 ino 체크
+# print(lines)
+
+'''
+
+아 몰라!!!!!!!!!!!!!!!!!!!!!!!
+
+'''
+
+
