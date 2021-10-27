@@ -97,7 +97,26 @@
 # pp = [ i for i in range(5,-1,-1)]
 # print(pp)
 
-a = (1,1)
-b = 2
 
-print(list(a))
+
+# def solution(n, money):
+#     answer = 0
+#     def search(n, i):
+#         nonlocal answer
+#         if i == 0:
+#             if n % money[i] == 0: #남은 돈이 최소단위로 나뉘어진다면 case 아니라면 case-out
+#                 answer += 1
+#             return
+#         else:
+#             for j in range(0, n // money[i]+1): #0~(n//money[i])+1 까지
+#                 search(n-money[i]*j, i-1)
+#     search(n, len(money)-1) #len(money)-1 = 2
+#     return answer
+
+# n = 5
+# money = [1,2,5]
+# for i in range(15):
+#     print(f'{i} 입니다')
+#     print(solution(i,money))
+
+

@@ -1514,3 +1514,169 @@ Approach >> 보니 세로선과 세로선 사이에 놓인 가로선의 갯수�
 '''
 
 
+# RETRY #
+'''
+Given ) N 개의 세로선과 H 개의 가로선이 주어질 때, M 개의 가로선이 이미 배치되어있다.
+        주어진 상황에서 i 번의 세로선이 출발하여 i 번으로 도착하기 위해 추가해야하는 가로선의 최솟값을 출력하라.
+Input ) 첫째 줄에 세로선의 개수 N 과 그어진 가로선의 개수 M , 가로줄의 개수 H 가 주어진다  (2 ≤ N ≤ 10, 1 ≤ H ≤ 30, 0 ≤ M ≤ (N-1)×H)
+        둘째 줄부터 M 개의 줄에 가로선(M) 의 정보가 한줄에 하나씩 주어진다. (a,b) b번 세로선과 b+1 번 세로선을 a번 가로줄 에서 연결했다는 의미
+        가장 위의 가로줄이 1번이고 가장 왼쪽 세로줄의 번호가 1번이다.
+Output) i번 세로선이 i번 으로 도착하도록 하는 추가 가로줄의 최소 개수를 출력하라. 만약 3 이상, 혹은 불가능이라면 -1 을 출력하라.
+'''
+
+'''
+Approach >> 보니 세로선과 세로선 사이에 놓인 가로선의 갯수가 짝수여야 출발과 도착이 같을 수 있다. 또한 A-out 가로선과 A-in 가로선 사이에 B-out 가로선이 위치한다면 그 사이에 B-in 가로선이 위치해야만한다
+            따라서 각 세로선을 따라 in&out 을 체크하여 주어진 데이터에서 가로선이 들어갈 수 있는 자리를 모두 받아오도록 해보자
+'''
+def xprint(a):
+    for i in a:
+        print(i)
+
+
+n,m,h = 5,5,6
+
+#[a,b] b번 세로의 a번째 가로줄
+give = [ 
+    [1, 1],
+    [3, 2],
+    [2, 3],
+    [5, 1],
+    [5, 4]
+]
+
+data = [[False]*(n-1) for _ in range(h)]
+
+def check(x):
+    global n,h
+    for i in range(n):
+        stack = []
+        for j in range(h):
+            if 0<i<n-1:
+                if x[j][i]:
+                    if len(stack) != 0 and stack[-1]==i+1:
+                        stack.pop()
+                        i += 1
+                        continue
+                    stack.append(i)
+                    i+=1
+                    continue
+                elif x[j][i-1]:
+                    if len(stack) != 0 and stack[-1] == i-1:
+                        stack.pop()
+                        i-=1
+                        continue
+                    stack.append(i)
+                    i-=1
+                    continue
+            elif i == 0:
+                if x[j][0]:
+                    if len(stack) !=0:
+                        stack.pop()
+                        i+=1
+                        continue
+                    else:
+                        stack.append(i)
+                        i+=1
+                        continue
+            elif i == n-1:
+                if x[j][i-1]:
+                    if len(stack) !=0:
+                        stack.pop()
+                        i-=1
+                        continue
+                    else:
+                        stack.append(i)
+                        i-=1
+                        continue
+        if stack:
+            return False
+    return True
+
+
+
+for a,b in give:
+    data[a-1][b-1] = True #사다리 데이터 받아오기
+empty = [[i[j] for i in data] for j in range(len(data[0]))]
+
+target = []
+for i in range(len(empty)):
+    if empty[i].count(True)%2 !=0:
+        target.append(i)
+print(target)
+
+def dfs(data):
+    pass
+
+
+
+# print(check(data))
+
+# for i in range(len(data[0])):
+#     temp = [j[i] for j in data]
+#     flag = True
+#     tmp = []
+#     for x in temp:
+#         if not x and flag:
+#             tmp.append(0)
+#         elif not x and not flag:
+#             tmp.append(1)
+#         elif x and flag:
+#             tmp.append(9)
+#             flag = False
+#         elif x and not flag:
+#             tmp.append(9)
+#             flag = True
+#     print(tmp)
+
+# print()
+# xprint(data)
+
+
+
+#######################################3##############################
+#######################################3##############################
+#######################################3##############################
+# xprint(empty)
+# target = []
+# for i in range(len(empty)):
+#     if empty[i].count(True)%2 !=0:
+#         target.append(i)
+# print(target)
+
+# #open,close
+# rd = [[],[]]
+# ld = [[],[]]
+
+# l,r = True,True
+# for i in range(h):
+#     if not empty[0][i] and r:
+#         rd[0].append(i)
+#     elif not empty[0][i] and not r:
+#         rd[1].append(i)
+#     elif empty[0][i] and r:
+#         r = False
+#     else:
+#         r = True
+    
+#     if not empty[1][i] and l:
+#         ld[0].append(i)
+#     elif not empty[1][i] and not l:
+#         ld[1].append(i)
+#     elif empty[1][i] and l:
+#         l = False
+#     else:
+#         l = True
+# if not r:
+#     rd[0] += rd[1]
+#     rd[1] = []
+# if not l:
+#     ld[0] += ld[1]
+#     ld[1] = []
+    
+# print(rd)
+# print(ld)
+
+#######################################3##############################
+#######################################3##############################
+#######################################3##############################        
+
