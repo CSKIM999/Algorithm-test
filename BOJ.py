@@ -1528,155 +1528,202 @@ Output) i번 세로선이 i번 으로 도착하도록 하는 추가 가로줄의
 Approach >> 보니 세로선과 세로선 사이에 놓인 가로선의 갯수가 짝수여야 출발과 도착이 같을 수 있다. 또한 A-out 가로선과 A-in 가로선 사이에 B-out 가로선이 위치한다면 그 사이에 B-in 가로선이 위치해야만한다
             따라서 각 세로선을 따라 in&out 을 체크하여 주어진 데이터에서 가로선이 들어갈 수 있는 자리를 모두 받아오도록 해보자
 '''
-def xprint(a):
-    for i in a:
-        print(i)
+# def xprint(a):
+#     for i in a:
+#         print(i)
 
 
-n,m,h = 5,5,6
+# # n,m,h = 5,5,6
 
-#[a,b] b번 세로의 a번째 가로줄
-give = [ 
-    [1, 1],
-    [3, 2],
-    [2, 3],
-    [5, 1],
-    [5, 4]
+# # #[a,b] b번 세로의 a번째 가로줄
+# # give = [ 
+# #     [1, 1],
+# #     [3, 2],
+# #     [2, 3],
+# #     [5, 1],
+# #     [5, 4]
+# # ]
+# give = []
+# n,m,h = map(int,input().split())
+# for i in range(m):
+#     give.append(map(int,input().split()))
+# def check(x): #x 는 boolean-list 형태
+#     global n,h
+#     back = []
+#     for i in range(n):
+#         stack = []
+#         for j in range(h):
+#             if 0<i<n-1:
+#                 if x[j][i]:
+#                     if len(stack) != 0 and stack[-1]==i+1:
+#                         stack.pop()
+#                         i += 1
+#                         continue
+#                     stack.append(i)
+#                     i+=1
+#                     continue
+#                 elif x[j][i-1]:
+#                     if len(stack) != 0 and stack[-1] == i-1:
+#                         stack.pop()
+#                         i-=1
+#                         continue
+#                     stack.append(i)
+#                     i-=1
+#                     continue
+#             elif i == 0:
+#                 if x[j][0]:
+#                     if len(stack) !=0:
+#                         stack.pop()
+#                         i+=1
+#                         continue
+#                     else:
+#                         stack.append(i)
+#                         i+=1
+#                         continue
+#             elif i == n-1:
+#                 if x[j][i-1]:
+#                     if len(stack) !=0:
+#                         stack.pop()
+#                         i-=1
+#                         continue
+#                     else:
+#                         stack.append(i)
+#                         i-=1
+#                         continue
+#         if len(stack) !=0:
+#             return False
+#     return True
+
+# def i_is_i(ladder):
+#     for i in range(n):  # i가 i로 가는지 확인한다
+#         col = i
+#         for row in range(h):  # 마지막 가로줄(H) 가기 전까지 확인
+#             if col < n-1 and ladder[row][col]:  # col번 세로선과 col+1번 세로선이 row번 가로선에 의해 연결되는가?
+#                 col += 1  # 다음 세로줄로 이동
+#             elif 0 < col and ladder[row][col-1]:  # col-1 세로선과 col 세로선이 row 가로선에 의해 연결되는가?
+#                 col -= 1
+#         if col != i:
+#             return False
+#     return True
+
+
+# data = [[False]*(n-1) for _ in range(h)]
+# for a,b in give:
+#     data[a-1][b-1] = True #사다리 데이터 받아오기
+# # empty = [[i[j] for i in data] for j in range(len(data[0]))]
+# # print(check(data))
+# # target = []
+# # for i in range(len(empty)):
+# #     if empty[i].count(True)%2 !=0:
+# #         target.append(i)
+# # print(target)
+# # print(empty)
+# result = 4
+# def dfs(x,count,limit,a):
+#     global result
+#     l,h = len(x[0]),len(x)
+#     if count == limit:
+#         if i_is_i(x):
+#             result = min(result,count)
+#             return
+#         return
+#     for i in range(a,h):
+#         for j in range(l):
+#             # if count == limit:
+#             #     if x[i][j] or x[i][j-1] or x[i][j+1]:
+#             #         continue
+#             #     x[i][j] = True
+#             #     if check(x):
+#             #         return count
+#             #     x[i][j] = False
+#             # else:
+#             #     if x[i][j] or x[i][j-1] or x[i][j+1]:
+#             #         continue
+#             #     x[i][j] = True
+#             #     dfs([i[:] for i in x],count+1,limit)
+#             #     x[i][j] = False
+            
+#             if 0<j<l-1:
+#                 if x[i][j] or x[i][j-1] or x[i][j+1]:
+#                     continue
+#             elif j == l-1:
+#                 if x[i][j] or x[i][j-1]:
+#                     continue
+#             else:
+#                 if x[i][j] or x[i][j+1]:
+#                     continue
+#             x[i][j] = True
+#             dfs([q[:] for q in x],count+1,limit,i)
+#             if result != 4:
+#                 return
+#             x[i][j] = False
+#     return
+
+# for i in range(4):
+#     dfs(data,0,i,0)
+# if result == 4:
+#     result = -1
+# print(result)
+
+
+
+###############################################################################################################################################################################################
+#################################################################################     Q14503 _ 드래곤 커브    #################################################################################
+###############################################################################################################################################################################################
+'''
+Given ) 드래곤 커브는 3가지 속성으로 이루어진다. 1. 시작점 / 2. 시작방향 / 3. 세대
+        i+1 세대는 i세대 끝점을 기준으로 i세대 드래곤 커브를 시계방향으로 90도 회전시킨 후 i세대의 끝점에 붙인 점이며, 여기서 끝점이란 시작점에서 선분을 타고 이동하여 이동했을 때 가장 먼 점이다.
+        100*100인 격자 위에 드래곤커브가 N 개 있다. 이때, 크기가 1*1 인 정사각형의 네 꼭지점이 모두 드래곤 커브의 일부인 정사각형의 개수를 구하는 프로그램을 작성하라.
+Input ) 첫째 줄에는 커브의 개수 N (1<= N <= 20)이 주어진다. 둘째 줄부터 N 개의 줄에는 드래곤커브의 정보가 주어진다. 드래곤커브의 정보는 x,y,d,g 로 이루어져 있으며,
+        x,y 는 커브의 시작점, d 는 시작방향, g 는  세대이다.
+Output) 1*1 정사각형의 개수를 출력하라
+'''
+
+'''
+1회차 > 1세대 올라갈 때 마다 원소의 역순을 시계 반대방향으로 회전시켜 넣으면된다는 규칙을 확인했다. 구현해보자.
+        마지막에 data 를 완전탐색하여 4칸이 모두 True 인 사각형을 찾으면 될 듯하다.
+'''
+
+# 방향 0 -> 3 (동 북 서 남)
+
+n = 3
+give = [
+    [3, 3, 0, 1],
+    [4, 2, 1, 3],
+    [4, 2, 2, 1]
 ]
 
-data = [[False]*(n-1) for _ in range(h)]
-
-def check(x):
-    global n,h
-    for i in range(n):
-        stack = []
-        for j in range(h):
-            if 0<i<n-1:
-                if x[j][i]:
-                    if len(stack) != 0 and stack[-1]==i+1:
-                        stack.pop()
-                        i += 1
-                        continue
-                    stack.append(i)
-                    i+=1
-                    continue
-                elif x[j][i-1]:
-                    if len(stack) != 0 and stack[-1] == i-1:
-                        stack.pop()
-                        i-=1
-                        continue
-                    stack.append(i)
-                    i-=1
-                    continue
-            elif i == 0:
-                if x[j][0]:
-                    if len(stack) !=0:
-                        stack.pop()
-                        i+=1
-                        continue
-                    else:
-                        stack.append(i)
-                        i+=1
-                        continue
-            elif i == n-1:
-                if x[j][i-1]:
-                    if len(stack) !=0:
-                        stack.pop()
-                        i-=1
-                        continue
-                    else:
-                        stack.append(i)
-                        i-=1
-                        continue
-        if stack:
-            return False
-    return True
+data = [[[] for _ in range(101)] for _ in range(101)]
 
 
+def d_curve(x,y,d,g):
+    dx,dy = [1,0,-1,0],[0,-1,0,1]
+    data[x][y].append
+    temp = []
+    temp.append(d)
+    nx,ny = x+dx[d],y+dy[d]
+    def turn(a):
+        if a==3:
+            a=0
+        else:
+            a += 1
+        return a
 
-for a,b in give:
-    data[a-1][b-1] = True #사다리 데이터 받아오기
-empty = [[i[j] for i in data] for j in range(len(data[0]))]
+    def rc(xx,yy,gg):
+        nonlocal g,temp
+        l = len(temp)
+        for i in range(l):
+            i = -(1+i)
+            d = turn(temp[i])
+            nx,ny = xx+dx[d],yy+dy[d]
+            data[nx][ny].append(d)
+            xx,yy = nx,ny
+        if g != gg:
 
-target = []
-for i in range(len(empty)):
-    if empty[i].count(True)%2 !=0:
-        target.append(i)
-print(target)
 
-def dfs(data):
+            
+        
+        
+
+
     pass
-
-
-
-# print(check(data))
-
-# for i in range(len(data[0])):
-#     temp = [j[i] for j in data]
-#     flag = True
-#     tmp = []
-#     for x in temp:
-#         if not x and flag:
-#             tmp.append(0)
-#         elif not x and not flag:
-#             tmp.append(1)
-#         elif x and flag:
-#             tmp.append(9)
-#             flag = False
-#         elif x and not flag:
-#             tmp.append(9)
-#             flag = True
-#     print(tmp)
-
-# print()
-# xprint(data)
-
-
-
-#######################################3##############################
-#######################################3##############################
-#######################################3##############################
-# xprint(empty)
-# target = []
-# for i in range(len(empty)):
-#     if empty[i].count(True)%2 !=0:
-#         target.append(i)
-# print(target)
-
-# #open,close
-# rd = [[],[]]
-# ld = [[],[]]
-
-# l,r = True,True
-# for i in range(h):
-#     if not empty[0][i] and r:
-#         rd[0].append(i)
-#     elif not empty[0][i] and not r:
-#         rd[1].append(i)
-#     elif empty[0][i] and r:
-#         r = False
-#     else:
-#         r = True
-    
-#     if not empty[1][i] and l:
-#         ld[0].append(i)
-#     elif not empty[1][i] and not l:
-#         ld[1].append(i)
-#     elif empty[1][i] and l:
-#         l = False
-#     else:
-#         l = True
-# if not r:
-#     rd[0] += rd[1]
-#     rd[1] = []
-# if not l:
-#     ld[0] += ld[1]
-#     ld[1] = []
-    
-# print(rd)
-# print(ld)
-
-#######################################3##############################
-#######################################3##############################
-#######################################3##############################        
-

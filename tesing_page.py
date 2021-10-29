@@ -38,85 +38,141 @@
 #     count = 0
 #     answer = []
 #     n = len(grid)
-#     m = len(grid[0])
-#     data = [[[0,0,0,0] for _ in range(m)] for _ in range(n)]
-#     for i in range(n):
-#         for j in range(m):
-#             for k in range(4):
-#                 if data[i][j][k] == 0:
-#                     count +=1
-#                     data,temp = move(k,[i,j],data,count,0,grid)
-#                     answer.append(temp)
-#     answer.sort()
-#     return answer
-#     import collections
+# #     m = len(grid[0])
+# #     data = [[[0,0,0,0] for _ in range(m)] for _ in range(n)]
+# #     for i in range(n):
+# #         for j in range(m):
+# #             for k in range(4):
+# #                 if data[i][j][k] == 0:
+# #                     count +=1
+# #                     data,temp = move(k,[i,j],data,count,0,grid)
+# #                     answer.append(temp)
+# #     answer.sort()
+# #     return answer
+# #     import collections
 
-# a = [0,1,2,3,4,5]
-# print(a[:0] + [a[0]+a[2]] + a[3:])
+# # a = [0,1,2,3,4,5]
+# # print(a[:0] + [a[0]+a[2]] + a[3:])
 
-# r,c = 3,3
-# data = [[i+(c*j) for i in range(1,1+c)] for j in range(r)]
-# for i in data:
-#     print(i)
+# # r,c = 3,3
+# # data = [[i+(c*j) for i in range(1,1+c)] for j in range(r)]
+# # for i in data:
+# #     print(i)
 
-# xy = [1,1,2,2]
-# ax,ay,bx,by = xy
-# temp = [data[ax-1][ax-1:by],[i[by-1] for i in data[ax-1:bx]],data[bx-1][ax-1:by],[i[ay-1] for i in data[ax-1:bx]]]
-# print(temp)
+# # xy = [1,1,2,2]
+# # ax,ay,bx,by = xy
+# # temp = [data[ax-1][ax-1:by],[i[by-1] for i in data[ax-1:bx]],data[bx-1][ax-1:by],[i[ay-1] for i in data[ax-1:bx]]]
+# # print(temp)
 
-# def turn(temp):
-#     alp = []
-#     for x in temp[:2]:
-#         alp.append(x[:-1])
-#     for x in temp[2:]:
-#         alp.append(x[1:])
-#     tmp = alp[:]
-#     alp[0] = [tmp[-1][0]] + tmp[0]
-#     alp[1] = [tmp[0][-1]] + tmp[1]
-#     alp[2] = tmp[2] + [tmp[1][-1]]
-#     alp[3] = tmp[3] + [tmp[2][0]]
+# # def turn(temp):
+# #     alp = []
+# #     for x in temp[:2]:
+# #         alp.append(x[:-1])
+# #     for x in temp[2:]:
+# #         alp.append(x[1:])
+# #     tmp = alp[:]
+# #     alp[0] = [tmp[-1][0]] + tmp[0]
+# #     alp[1] = [tmp[0][-1]] + tmp[1]
+# #     alp[2] = tmp[2] + [tmp[1][-1]]
+# #     alp[3] = tmp[3] + [tmp[2][0]]
 
-#     return alp
+# #     return alp
     
-# temp = turn(temp)
-# print()
-# print(temp)
+# # temp = turn(temp)
+# # print()
+# # print(temp)
 
 
 
-# data = [
-#     [0, 0, 0, 0, 0, 0],
-#     [0, 0, 0, 0, 0, 0],
-#     [0, 0, 1, 0, 6, 0],
-#     [0, 0, 0, 0, 0, 0]
-# ]
+# # data = [
+# #     [0, 0, 0, 0, 0, 0],
+# #     [0, 0, 0, 0, 0, 0],
+# #     [0, 0, 1, 0, 6, 0],
+# #     [0, 0, 0, 0, 0, 0]
+# # ]
 
-# data[0][2:] = [ 4 for _ in range(len(data[0][2:]))]
-# print(data)
+# # data[0][2:] = [ 4 for _ in range(len(data[0][2:]))]
+# # print(data)
 
-# pp = [ i for i in range(5,-1,-1)]
-# print(pp)
+# # pp = [ i for i in range(5,-1,-1)]
+# # print(pp)
 
 
 
-# def solution(n, money):
-#     answer = 0
-#     def search(n, i):
-#         nonlocal answer
-#         if i == 0:
-#             if n % money[i] == 0: #남은 돈이 최소단위로 나뉘어진다면 case 아니라면 case-out
-#                 answer += 1
+# # def solution(n, money):
+# #     answer = 0
+# #     def search(n, i):
+# #         nonlocal answer
+# #         if i == 0:
+# #             if n % money[i] == 0: #남은 돈이 최소단위로 나뉘어진다면 case 아니라면 case-out
+# #                 answer += 1
+# #             return
+# #         else:
+# #             for j in range(0, n // money[i]+1): #0~(n//money[i])+1 까지
+# #                 search(n-money[i]*j, i-1)
+# #     search(n, len(money)-1) #len(money)-1 = 2
+# #     return answer
+
+# # n = 5
+# # money = [1,2,5]
+# # for i in range(15):
+# #     print(f'{i} 입니다')
+# #     print(solution(i,money))
+
+# give = []
+# n,m,h = map(int,input().split())
+# for i in range(m):
+#     give.append(map(int,input().split()))
+
+# def i_is_i(ladder):
+#     for i in range(n):  # i가 i로 가는지 확인한다
+#         col = i
+#         for row in range(h):  # 마지막 가로줄(H) 가기 전까지 확인
+#             if col < n-1 and ladder[row][col]:  # col번 세로선과 col+1번 세로선이 row번 가로선에 의해 연결되는가?
+#                 col += 1  # 다음 세로줄로 이동
+#             elif 0 < col and ladder[row][col-1]:  # col-1 세로선과 col 세로선이 row 가로선에 의해 연결되는가?
+#                 col -= 1
+#         if col != i:
+#             return False
+#     return True
+
+# data = [[False]*(n-1) for _ in range(h)]
+# for a,b in give:
+#     data[a-1][b-1] = True #사다리 데이터 받아오기
+# result = 4
+# def dfs(x,count,limit,a):
+#     global result
+#     l,h = len(x[0]),len(x)
+#     if count == limit:
+#         if i_is_i(x):
+#             result = min(result,count)
 #             return
-#         else:
-#             for j in range(0, n // money[i]+1): #0~(n//money[i])+1 까지
-#                 search(n-money[i]*j, i-1)
-#     search(n, len(money)-1) #len(money)-1 = 2
-#     return answer
+#         return
+#     for i in range(a,h):
+#         for j in range(l):
+#             if 0<j<l-1:
+#                 if x[i][j] or x[i][j-1] or x[i][j+1]:
+#                     continue
+#             elif j == l-1:
+#                 if x[i][j] or x[i][j-1]:
+#                     continue
+#             else:
+#                 if x[i][j] or x[i][j+1]:
+#                     continue
+#             x[i][j] = True
+#             dfs([q[:] for q in x],count+1,limit,i)
+#             if result != 4:
+#                 return
+#             x[i][j] = False
+#     return
 
-# n = 5
-# money = [1,2,5]
-# for i in range(15):
-#     print(f'{i} 입니다')
-#     print(solution(i,money))
+# for i in range(4):
+#     dfs(data,0,i,0)
+# if result == 4:
+#     result = -1
+# print(result)
 
 
+
+data = [[[i] for i in range(5)] for _ in range(5)]
+print(data[0][3])
