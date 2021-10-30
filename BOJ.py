@@ -1686,19 +1686,28 @@ Output) 1*1 정사각형의 개수를 출력하라
 
 # 방향 0 -> 3 (동 북 서 남)
 
-n = 3
-give = [
-    [3, 3, 0, 1],
-    [4, 2, 1, 3],
-    [4, 2, 2, 1]
-]
 
-data = [[[] for _ in range(101)] for _ in range(101)]
+def xprint(a):
+    for i in a:
+        print(i)
+
+# n = 3
+# give = [
+#     [3, 3, 0, 1],
+#     [4, 2, 1, 3],
+#     [4, 2, 2, 1]
+# ]
+n = int(input())
+give = []
+for i in range(n):
+    give.append(list(map(int,input().split())))
+
+data = [[[] for _ in range(100)] for _ in range(100)]
 
 
 def d_curve(x,y,d,g):
-    dx,dy = [1,0,-1,0],[0,-1,0,1]
-    data[x][y].append
+    dx,dy = [0,-1,0,1],[1,0,-1,0]
+    data[x][y].append(d)
     temp = []
     temp.append(d)
     nx,ny = x+dx[d],y+dy[d]
@@ -1708,22 +1717,51 @@ def d_curve(x,y,d,g):
         else:
             a += 1
         return a
-
     def rc(xx,yy,gg):
         nonlocal g,temp
         l = len(temp)
+        tt=[]
         for i in range(l):
             i = -(1+i)
             d = turn(temp[i])
+            tt.append(d)
             nx,ny = xx+dx[d],yy+dy[d]
-            data[nx][ny].append(d)
+            data[xx][yy].append(d)
             xx,yy = nx,ny
+        temp += tt
         if g != gg:
+            rc(xx,yy,gg+1)
+            return
+    if g != 0:
+        rc(nx,ny,1)
 
+    return
 
-            
-        
-        
+# def check_sq(x,y):
+#     square = [False,False,False,False]
+#     if 0 in data[x][y] or 2 in data[x][y+1]:
+#         square[0] = True
+#     if 3 in data[x][y] or 1 in data[x+1][y]:
+#         square[1] = True
+#     if 0 in data[x+1][y] or 2 in data[x+1][y+1]:
+#         square[2] = True
+#     if 3 in data[x][y+1] or 1 in data[x+1][y+1]:
+#         square[3] = True
+#     for i in square:
+#         if not i:
+#             return False
+#     return True
 
+for q,w,e,r in give:
+    d_curve(w,q,e,r)
 
-    pass
+count = 0
+for i in range(99):
+    for j in range(99):
+        if data[i][j]:
+            if data[i][j+1]:
+                if data[i+1][j]:
+                    if data[i+1][j+1]:
+                        count+=1
+
+print(count)
