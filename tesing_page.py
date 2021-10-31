@@ -174,5 +174,54 @@
 
 
 
-data = [[[i] for i in range(5)] for _ in range(5)]
-print(data[0][3])
+n = int(input())
+give = []
+for i in range(n):
+    give.append(list(map(int,input().split())))
+data = [[[] for _ in range(100)] for _ in range(100)]
+def d_curve(x,y,d,g):
+    dx,dy = [0,-1,0,1],[1,0,-1,0]
+    data[x][y].append(d)
+    temp = []
+    temp.append(d)
+    nx,ny = x+dx[d],y+dy[d]
+    def turn(a):
+        if a==3:
+            a=0
+        else:
+            a += 1
+        return a
+    def rc(xx,yy,gg):
+        nonlocal g,temp
+        l = len(temp)
+        tt=[]
+        for i in range(l):
+            i = -(1+i)
+            d = turn(temp[i])
+            tt.append(d)
+            nx,ny = xx+dx[d],yy+dy[d]
+            data[xx][yy].append(d)
+            xx,yy = nx,ny
+        temp += tt
+        if g == gg:
+            data[xx][yy].append(-1)
+        if g != gg:
+            rc(xx,yy,gg+1)
+            return
+    if g != 0:
+        rc(nx,ny,1)
+    else:
+        data[nx][ny].append(-1)
+    return
+    
+for q,w,e,r in give:
+    d_curve(w,q,e,r)
+count = 0
+for i in range(99):
+    for j in range(99):
+        if data[i][j]:
+            if data[i][j+1]:
+                if data[i+1][j]:
+                    if data[i+1][j+1]:
+                        count+=1
+print(count)

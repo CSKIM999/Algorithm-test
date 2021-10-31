@@ -1702,7 +1702,7 @@ give = []
 for i in range(n):
     give.append(list(map(int,input().split())))
 
-data = [[[] for _ in range(100)] for _ in range(100)]
+data = [[[] for _ in range(101)] for _ in range(101)]
 
 
 def d_curve(x,y,d,g):
@@ -1729,39 +1729,25 @@ def d_curve(x,y,d,g):
             data[xx][yy].append(d)
             xx,yy = nx,ny
         temp += tt
+        if g == gg:
+            data[xx][yy].append(-1)
         if g != gg:
             rc(xx,yy,gg+1)
             return
     if g != 0:
         rc(nx,ny,1)
-
+    else:
+        data[nx][ny].append(-1)
     return
-
-# def check_sq(x,y):
-#     square = [False,False,False,False]
-#     if 0 in data[x][y] or 2 in data[x][y+1]:
-#         square[0] = True
-#     if 3 in data[x][y] or 1 in data[x+1][y]:
-#         square[1] = True
-#     if 0 in data[x+1][y] or 2 in data[x+1][y+1]:
-#         square[2] = True
-#     if 3 in data[x][y+1] or 1 in data[x+1][y+1]:
-#         square[3] = True
-#     for i in square:
-#         if not i:
-#             return False
-#     return True
 
 for q,w,e,r in give:
     d_curve(w,q,e,r)
-
 count = 0
-for i in range(99):
-    for j in range(99):
+for i in range(100):
+    for j in range(100):
         if data[i][j]:
             if data[i][j+1]:
                 if data[i+1][j]:
                     if data[i+1][j+1]:
                         count+=1
-
 print(count)
