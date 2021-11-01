@@ -1687,67 +1687,207 @@ Output) 1*1 정사각형의 개수를 출력하라
 # 방향 0 -> 3 (동 북 서 남)
 
 
-def xprint(a):
-    for i in a:
-        print(i)
+# def xprint(a):
+#     for i in a:
+#         print(i)
 
-# n = 3
-# give = [
-#     [3, 3, 0, 1],
-#     [4, 2, 1, 3],
-#     [4, 2, 2, 1]
-# ]
-n = int(input())
-give = []
-for i in range(n):
-    give.append(list(map(int,input().split())))
+# # n = 3
+# # give = [
+# #     [3, 3, 0, 1],
+# #     [4, 2, 1, 3],
+# #     [4, 2, 2, 1]
+# # ]
+# n = int(input())
+# give = []
+# for i in range(n):
+#     give.append(list(map(int,input().split())))
 
-data = [[[] for _ in range(101)] for _ in range(101)]
+# data = [[[] for _ in range(101)] for _ in range(101)]
 
 
-def d_curve(x,y,d,g):
-    dx,dy = [0,-1,0,1],[1,0,-1,0]
-    data[x][y].append(d)
-    temp = []
-    temp.append(d)
-    nx,ny = x+dx[d],y+dy[d]
-    def turn(a):
-        if a==3:
-            a=0
-        else:
-            a += 1
-        return a
-    def rc(xx,yy,gg):
-        nonlocal g,temp
-        l = len(temp)
-        tt=[]
-        for i in range(l):
-            i = -(1+i)
-            d = turn(temp[i])
-            tt.append(d)
-            nx,ny = xx+dx[d],yy+dy[d]
-            data[xx][yy].append(d)
-            xx,yy = nx,ny
-        temp += tt
-        if g == gg:
-            data[xx][yy].append(-1)
-        if g != gg:
-            rc(xx,yy,gg+1)
-            return
-    if g != 0:
-        rc(nx,ny,1)
+# def d_curve(x,y,d,g):
+#     dx,dy = [0,-1,0,1],[1,0,-1,0]
+#     data[x][y].append(d)
+#     temp = []
+#     temp.append(d)
+#     nx,ny = x+dx[d],y+dy[d]
+#     def turn(a):
+#         if a==3:
+#             a=0
+#         else:
+#             a += 1
+#         return a
+#     def rc(xx,yy,gg):
+#         nonlocal g,temp
+#         l = len(temp)
+#         tt=[]
+#         for i in range(l):
+#             i = -(1+i)
+#             d = turn(temp[i])
+#             tt.append(d)
+#             nx,ny = xx+dx[d],yy+dy[d]
+#             data[xx][yy].append(d)
+#             xx,yy = nx,ny
+#         temp += tt
+#         if g == gg:
+#             data[xx][yy].append(-1)
+#         if g != gg:
+#             rc(xx,yy,gg+1)
+#             return
+#     if g != 0:
+#         rc(nx,ny,1)
+#     else:
+#         data[nx][ny].append(-1)
+#     return
+
+# for q,w,e,r in give:
+#     d_curve(w,q,e,r)
+# count = 0
+# for i in range(100):
+#     for j in range(100):
+#         if data[i][j]:
+#             if data[i][j+1]:
+#                 if data[i+1][j]:
+#                     if data[i+1][j+1]:
+#                         count+=1
+# print(count)
+
+###############################################################################################################################################################################################
+#################################################################################     Q5373 _ 드래곤 커브    #################################################################################
+###############################################################################################################################################################################################
+'''
+Given ) 루빅스 큐브는 3*3*3 의 정육면체로 퍼즐을 풀기 위해선 9개의 작은 정육면체의 색이 동일해야한다.
+        이 문제에서의 루빅스큐브는 모두 풀린 상태로 시작한다. 윗면은 흰색, 아랫 면은 노란색, 앞면은 빨간색, 뒷면은 오렌지색, 왼쪽면은 초록색, 오른쪽면은 파란색이다.
+        루빅스 큐브를 돌린 방법이 순서대로 주어질 때, 모두 돌린 후 윗면의 색조합을 구하는 프로그램을 작성하라.
+Input ) 첫째 줄에 테스트 케이스의 개수가 주어진다. 테스트케이스의 개수는 최대 100개이며 각 테스트케이스는 다음과 같이 구성된다.
+            첫째 줄에 큐브를 돌리는 횟수 n 이 주어진다. ( 1<= n <= 1000)
+            둘째 줄에는 큐브를 돌린 방법이 주어진다. 각 방법은 공백으로 구분되며, 첫 문자는 돌린 면 ( Up/Down/Front/Back/Left/Right )
+            두 번째 문자는 돌린 방향이다. 각 면을 정면으로 바라보았을 때 +는 시계방향, -는 반시계 방향이다.
+Output) 각 테스트케이스에 대해서 큐브를 모두 돌린 후의 윗면의 색상을 출력하라. 첫번째 줄에 뒷면과 접하는 색을 출력하면 된다.
+        w HITE/ y ELLOW / r ED / o RANGE / g REEN / b LUE 
+'''
+
+'''
+이전에 주사위 문제를 풀었던 기억이 있다. 하지만 이 문제는 더욱 더 각 면마다의 관계가 엮여있으므로, 차라리 각 면을 위치에 해당하는 리스트로 만들고
+그 면이 움직일 때 변하는 범위를 지정하자
+'''
+
+# def xprint(a):
+#     for i in a:
+#         print(i)
+U = [['w']*3 for _ in range(3)]
+D = [['y']*3 for _ in range(3)]
+F = [['r']*3 for _ in range(3)]
+B = [['o']*3 for _ in range(3)]
+L = [['g']*3 for _ in range(3)]
+R = [['b']*3 for _ in range(3)]
+dic = {0:U,1:D,2:F,3:B,4:L,5:R,'U':0,'D':1,'F':2,'B':3,'L':4,'R':5}
+comb = [[3,5,2,4],[2,5,3,4],[0,5,1,4],[0,4,1,5],[0,2,1,3],[0,3,1,2]]
+def turn(d,x):
+    tmp = [i[:] for i in x]
+    if d == '-':
+        for i in range(3):
+            x[2][i],x[1][i],x[0][i] = tmp[i][0],tmp[i][1],tmp[i][2]
     else:
-        data[nx][ny].append(-1)
-    return
+        for i in range(3):
+            x[0][-(1+i)],x[1][-(1+i)],x[2][-(1+i)] = tmp[i][0],tmp[i][1],tmp[i][2]
+    
+    return x
 
-for q,w,e,r in give:
-    d_curve(w,q,e,r)
-count = 0
-for i in range(100):
-    for j in range(100):
-        if data[i][j]:
-            if data[i][j+1]:
-                if data[i+1][j]:
-                    if data[i+1][j+1]:
-                        count+=1
-print(count)
+def move(d,x):
+    global U,D,F,B,L,R
+    dic[dic[x]] = turn(d,dic[dic[x]])
+    if x == 'U': #done
+        if d == '-':
+            L[0],B[0],R[0],F[0] = B[0],R[0],F[0],L[0]
+        else:
+            L[0],B[0],R[0],F[0] = F[0],L[0],B[0],R[0]
+    elif x == 'D':
+        if d == '+':
+            L[2],B[2],R[2],F[2] = B[2],R[2],F[2],L[2]
+        else:
+            L[2],B[2],R[2],F[2] = F[2],L[2],B[2],R[2]
+    elif x== 'F':
+        key = dic[x]
+        t,r,b,l = [dic[i] for i in comb[key]]
+        tmp1,tmp2 = t[2][:],b[0][:]
+        if d == '+':
+            t[2],b[0] = list(reversed([i[2] for i in l])),list(reversed([j[0] for j in r]))
+            for i in range(3):
+                r[i][0],l[i][2] = tmp1[i],tmp2[i]
+        else:
+            b[0],t[2] = [i[2] for i in l],[j[0] for j in r]
+            for i in range(3):
+                r[i][0],l[i][2] =tmp2[i], tmp1[i]
+    elif x == 'B':
+        key = dic[x]
+        t,r,b,l = [dic[i] for i in comb[key]]
+        tmp1,tmp2 = list(reversed(t[0][:])),b[2][:]
+        if d == '+':
+            t[0],b[2] = [i[2] for i in l],[j[0] for j in r]
+            for i in range(3):
+                r[i][0],l[i][2] = tmp1[i],tmp2[i]
+        else:
+            b[2],t[0] = list(reversed([i[2] for i in l])),list(reversed([j[0] for j in r]))
+            for i in range(3):
+                r[i][0],l[i][2] =tmp2[i], tmp1[i]
+    elif x == 'L':
+        key = dic[x]
+        t,r,b,l = [dic[i] for i in comb[key]]
+        if d == '+':
+            for i in range(3):
+                t[i][0],b[i][0],r[i][0],l[-(1+i)][2] = l[-(1+i)][2],r[i][0],t[i][0],b[i][0]
+        else:
+            for i in range(3):
+                t[i][0],l[-(1+i)][2],b[i][0],r[i][0] = r[i][0],t[i][0],l[-(1+i)][2],b[i][0]
+    elif x== 'R':
+        key = dic[x]
+        t,r,b,l = [dic[i] for i in comb[key]]
+        if d == '+':
+            for i in range(3):
+                t[i][2],r[-(1+i)][0],b[i][2],l[i][2] = l[i][2],t[i][2],r[-(1+i)][0],b[i][2]
+        else:
+            for i in range(3):
+                t[i][2],r[-(1+i)][0],b[i][2],l[i][2] = r[-(1+i)][0],b[i][2],l[i][2],t[i][2]
+
+n = int(input())
+for i in range(n):
+    U = [['w']*3 for _ in range(3)]
+    D = [['y']*3 for _ in range(3)]
+    F = [['r']*3 for _ in range(3)]
+    B = [['o']*3 for _ in range(3)]
+    L = [['g']*3 for _ in range(3)]
+    R = [['b']*3 for _ in range(3)]
+    dic = {0:U,1:D,2:F,3:B,4:L,5:R,'U':0,'D':1,'F':2,'B':3,'L':4,'R':5}
+    comb = [[3,5,2,4],[2,5,3,4],[0,5,1,4],[0,4,1,5],[0,2,1,3],[0,3,1,2]]
+    m = int(input())
+    lst = input().split()
+    for j in lst:
+        x,d = list(j)
+        move(d,x)
+    for q in U:
+        a = ''
+        for w in q:
+            a += w
+        print(a)
+
+# move('-','U')
+# move('-','R')
+# move('-','U')
+# move('-','U')
+# move('+','L')
+# move('+','B')
+# move('+','D')
+# move('+','R')
+# move('+','L')
+# move('+','F')
+
+
+
+
+# for q in U:
+#         a = ''
+#         for w in q:
+#             a += w
+#         print(a)
+
