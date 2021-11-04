@@ -62,3 +62,5 @@ Output) 요구 정답 출력
 # for i in range(2,half_num):
 
 
+a=[1,2,3,4,5]
+print(a[:3])

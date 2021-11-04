@@ -172,23 +172,134 @@
 #     result = -1
 # print(result)
 
-a = [[i]*3 for i in range(3)]
-b = [[2,2,2] for _ in range(3)]
-c = [[3,3,3] for _ in range(3)]
-dic = {0:a,1:b,'a':0,'b':1}
 
-def turn(d,x):
-    tmp = [i[:] for i in x]
-    if d == '-':
-        for i in range(3):
-            x[2][i],x[1][i],x[0][i] = tmp[i][0],tmp[i][1],tmp[i][2]
-    else:
-        for i in range(3):
-            x[0][-(1+i)],x[1][-(1+i)],x[2][-(1+i)] = tmp[i][0],tmp[i][1],tmp[i][2]
+def xprint(a):
+    for i in a:
+        print(i)
+# import heapq
+
+# n,m,k = map(int,input().split())
+# now = 0
+# feed = []
+# woods = []
+# ground = [[5]*n for _ in range(n)]
+
+# for i in range(n):
+#     feed.append(list(map(int,input().split())))
+# for j in range(m):
+#     a,b,c = list(map(int,input().split()))
+#     heapq.heappush(woods,(c,a-1,b-1))
+
+
+# def spring():
+#     global ground,now,woods
+#     now = 0
+#     temp_spring = []
+#     for _ in range(len(woods)):
+#         o,x,y = heapq.heappop(woods)
+#         if ground[x][y] >= o:
+#             ground[x][y] -= o
+#             heapq.heappush(temp_spring,(o+1,x,y))
+#         else:
+#             ground[x][y] += int(o/2)
+#     woods = temp_spring[:]
+
+# # def summer():
+# #     global ground,woods
+# #     for _ in range(len(woods)):
+# #         o,x,y = heapq.heappop(woods)
+# #         if o < 0:
+# #             ground[x][y] += int(-o/2)
+# #         else:
+# #             heapq.heappush(woods,(o,x,y))
+# #             break
     
-    return x
 
-a = list(reversed([i[2] for i in a]))
+# def fall():
+#     global ground,woods
+#     temp_fall = []
+#     for _ in range(len(woods)):
+#         o,x,y = heapq.heappop(woods)
+#         if o % 5 == 0:
+#             for q in range(-1,2):
+#                 for w in range(-1,2):
+#                     if 0<=x+q<n and 0<=y+w<n:
+#                         if q==0 and w==0:
+#                             continue
+#                         heapq.heappush(temp_fall,(1,x+q,y+w))
+#             heapq.heappush(temp_fall,(o,x,y))
+#         else:
+#             heapq.heappush(temp_fall,(o,x,y))
+#     woods = temp_fall[:]
 
-print(a)
 
+# def winter():
+#     global ground,now
+#     for i in range(n):
+#         for j in range(n):
+#             ground[i][j] += feed[i][j]
+#     now = len(woods)
+
+
+# for _ in range(k):
+#     spring()
+#     # summer()
+#     fall()
+#     winter()
+#     # print(woods)
+# print(len(woods))
+
+n,m,k = map(int,input().split())
+now = 0
+feed = []
+woods = []
+ground = [[5]*n for _ in range(n)]
+db = [[[] for _ in range(n)] for _ in range(n)]
+
+for i in range(n):
+    feed.append(list(map(int,input().split())))
+for j in range(m):
+    woods.append(list(map(int,input().split())))
+for x,y,z in woods:
+    db[x-1][y-1].append(z)
+
+
+for _ in range(k):
+    #성장과 죽음
+    for i in range(n): 
+        for j in range(n):
+            db[i][j].sort()
+            for k in range(len(db[i][j])):
+                if ground[i][j] >= db[i][j][k]:
+                    ground[i][j] -= db[i][j][k]
+                    db[i][j][k] += 1
+                else:
+                    for q in db[i][j][k:]:
+                        ground[i][j] += q//2
+                    db[i][j] = db[i][j][:k]
+                    break
+    
+    #번식
+    for i in range(n): 
+        for j in range(n):
+            if len(db[i][j]) != 0:
+                for k in range(len(db[i][j])):
+                    if db[i][j][k]%5 == 0:
+                        for q in range(-1,2):
+                            for w in range(-1,2):
+                                if 0<=i+q<n and 0<=j+w<n:
+                                    if q==0 and w==0:
+                                        continue
+                                    db[i+q][j+w].append(1)
+
+    #r2d2
+    for i in range(n):
+        for j in range(n):
+            ground[i][j] += feed[i][j]
+now = 0
+for i in range(n):
+    for j in range(n):
+        if len(db[i][j]) != 0:
+            now += len(db[i][j])
+
+print(now)
