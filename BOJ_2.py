@@ -29,73 +29,206 @@ Output) T초 지난 후의 방에 남은 미세먼지양을 출력하라
 R*C 의 최대크기는 50*50 으로 2500, 미세먼지 확산에 필요한 연산 2500 리스트로 관리할까? 확산시 각 칸에 영향을 주지 않기위해선 슬라이싱이 필요함 2500000
 '''
 
-r,c,t = 7,8,1
-data = [
-    [5 ,0 ,0, 0, 0, 0, 0 ,9],
-    [0 ,0 ,0, 0, 3, 0, 0 ,8],
-    [-1, 0, 5, 0, 0, 0, 22 ,0],
-    [-1, 8, 0, 0, 0, 0, 0 ,0],
-    [0 ,0 ,0 ,0, 0 ,10 ,43 ,0],
-    [5 ,0 ,5 ,0, 15, 0 ,0 ,0],
-    [0 ,0 ,40 ,0 ,0, 0, 20 ,0]
-]
+# # r,c,t = 7,8,1
+# # data = [
+# #     [5 ,0 ,0, 0, 0, 0, 0 ,9],
+# #     [0 ,0 ,0, 0, 3, 0, 0 ,8],
+# #     [-1, 0, 5, 0, 0, 0, 22 ,0],
+# #     [-1, 8, 0, 0, 0, 0, 0 ,0],
+# #     [0 ,0 ,0 ,0, 0 ,10 ,43 ,0],
+# #     [0 ,0 ,5 ,0, 15, 0 ,0 ,0],
+# #     [0 ,0 ,40 ,0 ,0, 0, 20 ,0]
+# # ]
 
-# r,c,t = 3,3,1
-# data = [
-#     [0,0,0],
-#     [0,46,0],
-#     [0,0,0]
+# r,c,t = map(int,input().split())
+# data = []
+# for i in range(r):
+#     data.append(list(map(int,input().split())))
+
+# # r,c,t = 3,3,1
+# # data = [
+# #     [0,0,0],
+# #     [0,46,0],
+# #     [0,0,0]
+# # ]
+
+# cleaner = []
+# for i in range(r):
+#     if data[i][0] == -1:
+#         cleaner.append(i)
+#         cleaner.append(i+1)
+
+#         break
+# dx,dy = [-1,0,1,0],[0,1,0,-1]
+
+# for _ in range(t):
+#     temp = [[0]*c for _ in range(r)]
+#     #확산
+#     tx,bx=cleaner[0],cleaner[1]
+#     for i in range(r):
+#         for j in range(c):
+#             if (i == tx or i==bx) and j == 0:
+#                 temp[i][j] = -1
+#                 continue
+#             if data[i][j] >= 5:
+#                 now = data[i][j]
+#                 sep = data[i][j]//5
+#                 count = 0
+#                 for q in range(4):
+#                     nx,ny = i+dx[q],j+dy[q]
+#                     if (0<=nx<r and 0<=ny<c) and data[nx][ny] != -1:
+#                         count +=1
+#                         temp[nx][ny] += sep
+#                 temp[i][j] += now-sep*count
+#             elif 0<= data[i][j] <5:
+#                 temp[i][j] += data[i][j]
+#     data = [i[:] for i in temp]
+#     #공청기
+#     tt,tb,bt,bb = data[0][:],data[tx][:],data[bx][:],data[-1][:]
+#     L,R = [i[0] for i in data],[i[-1] for i in data]
+#     tr,tl,br,bl = R[:bx],L[:bx], R[bx:],L[bx:]
+
+#     data[0][:-1] = tt[1:]
+#     for i in range(tx):
+#         data[i][-1] = tr[i+1]
+#         if data[i][0] != -1 and i != 0:
+#             data[i][0] = tl[i-1]
+#     data[tx][1:] = [0] + tb[1:-1]
+
+#     data[bx][1:] = [0] + bt[1:-1]
+#     for x,i in enumerate(range(bx+1,r)):
+#         data[i][-1] = br[x]
+#         if i<r-1:
+#             data[i][0] = bl[x+2]
+#     data[-1]= bb[1:] + [br[-2]]
+
+# result = 2
+# for i in range(r):
+#     result += sum(data[i])
+# print(result)
+
+###############################################################################################################################################################################################
+####################################################################################    Q17144 _ 낚시왕    ####################################################################################
+###############################################################################################################################################################################################
+'''
+Given ) r*c 의 격자칸에 상어가 들어있으며 각 상어는 크기와 속도를 가지고 있다. 
+        낚시왕은 처음에 1번열의 한칸 왼쪽에 위치한다. 1초마다 알고리즘에 따라 이동하며, 가장 오른쪽열의 오른쪽에 위치하면 이동을 멈춘다.
+            1.낚시왕이 오른쪽으로 한 칸 이동한다
+            2.낚시왕이 있는 열에 있는 상어 중 지면과 가장 가까운 상어를 잡는다. 상어를 잡으면 격자판에서 잡은 상어가 사라진다.
+            3.상어가 이동한다
+        상어는 입력으로 주어진 속도로 이동하고, 속도의 단위는 칸/초 이다. 상어가 이동하려고 하는 칸이 격자판의 경계를 넘어갈 때, 상어는 방향을 반대로 바꾸어 속력을 유지한채로 이동한다
+        한 칸에 상어는 두마리 이상 위치할 수 있으며, 이 경우 가장 큰 상어가 나머지상어를 모두 잡아먹는다
+        격자판의 상태가 주어질 때 낚시왕이 잡은 상어 크기의 합을 구해보자
+Input ) 첫째 줄에 R,C,M 이 주어진다 ( 2<= r,c <= 100 // 0<= M <= r*c)
+        둘째 줄부터 m 개의 줄에 상어의 정보가 주어진다. 상어의 정보는 다섯개의 정수로 이루어져있다
+        r,c,s,d,z (1<=r<=R // 1<=c<=C // 0<=s<=1000 // 1<=d<=4 // 1<=z<=10000 )
+        r,c 는 상어의 좌표, s 는 속력, d는 방향, z 는 크기이다. d 는 1~4 로 위/아래/오른쪽/왼쪽 을 의미한다.
+Output) 낚시왕이 잡은 상어 크기의 합을 출력하라
+'''
+
+# r,c,m = 4,6,8
+# give =[
+#     [4, 1, 3, 3, 8],
+#     [1, 3, 5, 2, 9],
+#     [2, 4, 8, 4, 1],
+#     [4, 5, 0, 1, 4],
+#     [3, 3, 1, 2, 7],
+#     [1, 5, 8, 4, 3],
+#     [3, 6, 2, 1, 2],
+#     [2, 2, 2, 3, 5]
 # ]
 
-cleaner = []
-for i in range(r):
-    if data[i][0] == -1:
-        cleaner.append(i)
-        cleaner.append(i+1)
-
-        break
-dx,dy = [-1,0,1,0],[0,1,0,-1]
-temp = [[0]*c for _ in range(r)]
-#확산
-for i in range(r):
-    for j in range(c):
-        if (i == cleaner[0] or i==cleaner[1]) and j == 0:
-            temp[i][j] = -1
-            continue
-        if data[i][j] >= 5:
-            now = data[i][j]
-            sep = data[i][j]//5
-            count = 0
-            for q in range(4):
-                nx,ny = i+dx[q],j+dy[q]
-                if (0<=nx<r and 0<=ny<c) and data[nx][ny] != -1:
-                    count +=1
-                    temp[nx][ny] += sep
-            temp[i][j] += now-sep*count
-        elif 0<= data[i][j] <5:
-            temp[i][j] += data[i][j]
-data = [i[:] for i in temp]
-#공청기
-tt,tb,bt,bb = data[0][:],data[cleaner[0]][:],data[cleaner[1]][:],data[-1][:]
-l,r = [i[0] for i in data],[i[-1] for i in data]
-tr,br = r[:cleaner[1]], r[cleaner[1]:]
-tl,bl = l[:cleaner[1]], l[cleaner[1]:]
+r,c,m = map(int,input().split())
+give = []
+for i in range(m):
+    give.append(list(map(int,input().split())))
 
 
-data[0][:-1] = tt[1:]
-for i in range(cleaner[0]):
-    data[i][-1] = tr[i+1]
-    if data[i][0] != -1 and i != 0:
-        data[i][0] = tl[i-1]
-data[cleaner[0]][1:] = [0] + tb[1:-1]
+data = [[[] for _ in range(c)] for _ in range(r)]
+dic = {0:-1,1:1,2:2,3:-2}
+for x,y,s,d,z in give:
+    d = dic[d-1]
+    data[x-1][y-1].append((s,d,z))
+king = 0
 
-tx,bx=cleaner[0],cleaner[1]
+# 1
+for idx in range(c): # c 로변경하기
+    # 2
+    for q in range(r):
+        if data[q][idx]:
+            s,d,z = data[q][idx][0]
+            king += z
+            data[q][idx] = []
+            break
+    
+    #3
+    temp = []
+    for i in range(r):
+        for j in range(c):
+            if data[i][j]:
+                s,d,z = data[i][j][0] #5 1 9
+                x,y = i,j
+                data[i][j].remove((s,d,z))
+                #이동
 
-data[bx][1:] = [0] + bt[1:-1]
-for x,i in enumerate(range(bx+1,7)):
-    data[i][-1] = br[x]
-    if i<6:
-        data[i][0] = bl[x+2]
-data[-1]= bb[1:] + [br[-2]]
-print()
-xprint(data)
+                if d == -1 or d == 1:
+                    n = s%((r-1)*2)
+                    while n!=0:
+                        if d > 0:
+                            t = r-x-1
+                            if n<t:
+                                x += n
+                                n = 0
+                            else:
+                                x +=t
+                                n -=t
+                                d*=-1
+                        else:
+                            if n<x:
+                                x -=n
+                                n = 0
+                            else:
+                                n -=x
+                                x = 0
+                                d *= -1
+                        
+                else:
+                    n = s%((c-1)*2)
+                    while n!=0:
+                        if d > 0:
+                            t = c-y-1
+                            if n<t:
+                                y += n
+                                n = 0
+                            else:
+                                y +=t
+                                n -=t
+                                d*=-1
+                        else:
+                            if n<y:
+                                y -=n
+                                n = 0
+                            else:
+                                n -=y
+                                y = 0
+                                d *= -1
+
+                    # for q in range(s):
+                    #     if 0<= y+(d//2) < c:
+                    #         y += d//2
+                    #     else:
+                    #         d *= -1
+                    #         y += d//2
+
+                temp.append((x,y,s,d,z))
+    for x,y,s,d,z in temp:
+        if data[x][y]:
+            if data[x][y][0][2] < z:
+                data[x][y].clear()
+                data[x][y].append((s,d,z))
+                continue
+            else:
+                continue
+        data[x][y].append((s,d,z))
+
+print(king)
