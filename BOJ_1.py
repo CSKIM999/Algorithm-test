@@ -1850,26 +1850,26 @@ Output) 각 테스트케이스에 대해서 큐브를 모두 돌린 후의 윗�
 #             for i in range(3):
 #                 t[i][2],r[-(1+i)][0],b[i][2],l[i][2] = r[-(1+i)][0],b[i][2],l[i][2],t[i][2]
 
-# # n = int(input())
-# # for i in range(n):
-# #     U = [['w']*3 for _ in range(3)]
-# #     D = [['y']*3 for _ in range(3)]
-# #     F = [['r']*3 for _ in range(3)]
-# #     B = [['o']*3 for _ in range(3)]
-# #     L = [['g']*3 for _ in range(3)]
-# #     R = [['b']*3 for _ in range(3)]
-# #     dic = {0:U,1:D,2:F,3:B,4:L,5:R,'U':0,'D':1,'F':2,'B':3,'L':4,'R':5}
-# #     comb = [[3,5,2,4],[2,5,3,4],[0,5,1,4],[0,4,1,5],[0,2,1,3],[0,3,1,2]]
-# #     m = int(input())
-# #     lst = input().split()
-# #     for j in lst:
-# #         x,d = list(j)
-# #         move(d,x)
-# #     for q in U:
-# #         a = ''
-# #         for w in q:
-# #             a += w
-# #         print(a)
+# n = int(input())
+# for i in range(n):
+#     U = [['w']*3 for _ in range(3)]
+#     D = [['y']*3 for _ in range(3)]
+#     F = [['r']*3 for _ in range(3)]
+#     B = [['o']*3 for _ in range(3)]
+#     L = [['g']*3 for _ in range(3)]
+#     R = [['b']*3 for _ in range(3)]
+#     dic = {0:U,1:D,2:F,3:B,4:L,5:R,'U':0,'D':1,'F':2,'B':3,'L':4,'R':5}
+#     comb = [[3,5,2,4],[2,5,3,4],[0,5,1,4],[0,4,1,5],[0,2,1,3],[0,3,1,2]]
+#     m = int(input())
+#     lst = input().split()
+#     for j in lst:
+#         x,d = list(j)
+#         move(d,x)
+#     for q in U:
+#         a = ''
+#         for w in q:
+#             a += w
+#         print(a)
 
 # for q in U:
 #         a = ''

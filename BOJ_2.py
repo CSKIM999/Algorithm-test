@@ -126,109 +126,232 @@ Input ) 첫째 줄에 R,C,M 이 주어진다 ( 2<= r,c <= 100 // 0<= M <= r*c)
 Output) 낚시왕이 잡은 상어 크기의 합을 출력하라
 '''
 
-# r,c,m = 4,6,8
-# give =[
-#     [4, 1, 3, 3, 8],
-#     [1, 3, 5, 2, 9],
-#     [2, 4, 8, 4, 1],
-#     [4, 5, 0, 1, 4],
-#     [3, 3, 1, 2, 7],
-#     [1, 5, 8, 4, 3],
-#     [3, 6, 2, 1, 2],
-#     [2, 2, 2, 3, 5]
-# ]
+# # r,c,m = 4,6,8
+# # give =[
+# #     [4, 1, 3, 3, 8],
+# #     [1, 3, 5, 2, 9],
+# #     [2, 4, 8, 4, 1],
+# #     [4, 5, 0, 1, 4],
+# #     [3, 3, 1, 2, 7],
+# #     [1, 5, 8, 4, 3],
+# #     [3, 6, 2, 1, 2],
+# #     [2, 2, 2, 3, 5]
+# # ]
 
-r,c,m = map(int,input().split())
-give = []
-for i in range(m):
-    give.append(list(map(int,input().split())))
+# r,c,m = map(int,input().split())
+# give = []
+# for i in range(m):
+#     give.append(list(map(int,input().split())))
 
 
-data = [[[] for _ in range(c)] for _ in range(r)]
-dic = {0:-1,1:1,2:2,3:-2}
-for x,y,s,d,z in give:
-    d = dic[d-1]
-    data[x-1][y-1].append((s,d,z))
-king = 0
+# data = [[[] for _ in range(c)] for _ in range(r)]
+# dic = {0:-1,1:1,2:2,3:-2}
+# for x,y,s,d,z in give:
+#     d = dic[d-1]
+#     data[x-1][y-1].append((s,d,z))
+# king = 0
 
-# 1
-for idx in range(c): # c 로변경하기
-    # 2
-    for q in range(r):
-        if data[q][idx]:
-            s,d,z = data[q][idx][0]
-            king += z
-            data[q][idx] = []
-            break
+# # 1
+# for idx in range(c): # c 로변경하기
+#     # 2
+#     for q in range(r):
+#         if data[q][idx]:
+#             s,d,z = data[q][idx][0]
+#             king += z
+#             data[q][idx] = []
+#             break
     
-    #3
-    temp = []
-    for i in range(r):
-        for j in range(c):
-            if data[i][j]:
-                s,d,z = data[i][j][0] #5 1 9
-                x,y = i,j
-                data[i][j].remove((s,d,z))
-                #이동
+#     #3
+#     temp = []
+#     for i in range(r):
+#         for j in range(c):
+#             if data[i][j]:
+#                 s,d,z = data[i][j][0] #5 1 9
+#                 x,y = i,j
+#                 data[i][j].remove((s,d,z))
+#                 #이동
 
-                if d == -1 or d == 1:
-                    n = s%((r-1)*2)
-                    while n!=0:
-                        if d > 0:
-                            t = r-x-1
-                            if n<t:
-                                x += n
-                                n = 0
-                            else:
-                                x +=t
-                                n -=t
-                                d*=-1
-                        else:
-                            if n<x:
-                                x -=n
-                                n = 0
-                            else:
-                                n -=x
-                                x = 0
-                                d *= -1
+#                 if d == -1 or d == 1:
+#                     n = s%((r-1)*2)
+#                     while n!=0:
+#                         if d > 0:
+#                             t = r-x-1
+#                             if n<t:
+#                                 x += n
+#                                 n = 0
+#                             else:
+#                                 x +=t
+#                                 n -=t
+#                                 d*=-1
+#                         else:
+#                             if n<x:
+#                                 x -=n
+#                                 n = 0
+#                             else:
+#                                 n -=x
+#                                 x = 0
+#                                 d *= -1
                         
-                else:
-                    n = s%((c-1)*2)
-                    while n!=0:
-                        if d > 0:
-                            t = c-y-1
-                            if n<t:
-                                y += n
-                                n = 0
-                            else:
-                                y +=t
-                                n -=t
-                                d*=-1
-                        else:
-                            if n<y:
-                                y -=n
-                                n = 0
-                            else:
-                                n -=y
-                                y = 0
-                                d *= -1
+#                 else:
+#                     n = s%((c-1)*2)
+#                     while n!=0:
+#                         if d > 0:
+#                             t = c-y-1
+#                             if n<t:
+#                                 y += n
+#                                 n = 0
+#                             else:
+#                                 y +=t
+#                                 n -=t
+#                                 d*=-1
+#                         else:
+#                             if n<y:
+#                                 y -=n
+#                                 n = 0
+#                             else:
+#                                 n -=y
+#                                 y = 0
+#                                 d *= -1
 
-                    # for q in range(s):
-                    #     if 0<= y+(d//2) < c:
-                    #         y += d//2
-                    #     else:
-                    #         d *= -1
-                    #         y += d//2
+#                     # for q in range(s):
+#                     #     if 0<= y+(d//2) < c:
+#                     #         y += d//2
+#                     #     else:
+#                     #         d *= -1
+#                     #         y += d//2
 
-                temp.append((x,y,s,d,z))
-    for x,y,s,d,z in temp:
-        if data[x][y]:
-            if data[x][y][0][2] < z:
-                data[x][y].clear()
-                data[x][y].append((s,d,z))
-                continue
-            else:
-                continue
-        data[x][y].append((s,d,z))
+#                 temp.append((x,y,s,d,z))
+#     for x,y,s,d,z in temp:
+#         if data[x][y]:
+#             if data[x][y][0][2] < z:
+#                 data[x][y].clear()
+#                 data[x][y].append((s,d,z))
+#                 continue
+#             else:
+#                 continue
+#         data[x][y].append((s,d,z))
 
-print(king)
+# print(king)
+
+
+###############################################################################################################################################################################################
+#############################################################################    Q17140 _ 이차원 배열과 연산     ##############################################################################
+###############################################################################################################################################################################################
+'''
+Given ) 크기가 3*3 의 배열 A 가 있다. 배열의 인덱스는 1부터 시작한다. 1초가 지날때마다 배열에 연산이 적용된다.
+            R 연산 : 배열 A 모든 행에 대해서 정렬을 수행한다. 행의 개수 >= 열의 개수인 경우 적용
+            C 연산 : 배열 A 모든 열에 대해서 정렬을 수행한다. 행의 개수 < 열의 개수인 경우 적용
+        각 행/열 을 정렬하기 위해선, 각각의 수가 몇 번 나왔는지 알아야한다. 그 다음 등장횟수가 커지는 순서로 정렬하고, 같은 수라면 그 수가 커지는 순서로 정렬하여 다시 배열 A 에 넣는다.
+        정렬 결과를 배열에 넣을땐, 수와 등장 횟수를 모두 넣으며, 순서는 수가 먼저이다.
+        연산을 통해 나온 리스트를 넣는다면 현재 리스트의 길이와 다를 수 있다. 그 경우 비어있는 곳에 0 을 채워넣으면 된다.
+        또한 0이 채워진 리스트를 다시 정렬할 때 0 은 수로서는 무시하고 진행한다.
+        행/열 의 크기가 100 이상 넘어간다면, 앞의 100개를 제외한 나머지를 버린다.
+Input ) 첫째 줄에 r,c,k 가 주어진다 ( 1 <= r,c,k <= 100 )
+        둘째 줄부터 3개의 줄에 배열 A 에 들어가있는 수가 주어진다. 배열 A 에 들어가있는 수는 100 보다 작거나 같은 수 이다.
+
+Output) A[r][c] 에 들어있는 값이 k 가 되기위한 연산의 최소시간을 출력하라. 100초가 지나도 A[r][c] == k 가 아니라면 -1 을 출력하라
+'''
+
+'''
+Approach ) 우선 R/C 연산을 구현하고 몇번 반복해보자. 반복에 따른 내가 모르는 규칙이 발생할 수도 있다. 정렬의 방식은 계수정렬을 의미하는 듯하다. 최대 100개의 원소를 가지지만, 
+꺼내는 속도를 더욱 더 빠르게 하기위해 queue 를 써볼까 한다
+'''
+
+# from collections import deque
+
+# def Csort(lst):
+#     counting = [[i,0] for i in range(101)]
+#     result = []
+#     for i in lst:
+#         counting[i][1]+=1
+#     counting.sort(key= lambda x:x[1])
+
+#     # print(counting)
+#     counting = deque(counting)
+#     while counting:
+#         a,b = counting.popleft()
+#         if b == 0 or a == 0:
+#             continue
+#         else:
+#             result += [a,b]
+#     return result
+
+
+# def cal_c(x): #열 정렬
+#     vert = []
+#     bm = 0
+#     for i in range(len(x[0])):
+#         tmp = [j[i] for j in x]
+#         tmp = Csort(tmp)
+#         if len(tmp) >= 100:
+#             tmp = tmp
+#         bm = max(bm,len(tmp))
+#         vert.append(tmp)
+#     result = [[] for _ in range(bm)]
+#     for i in range(len(vert)):
+#         if len(vert[i]) < bm:
+#             t = [0]*(bm-len(vert[i]))
+#             vert[i] += t
+#         for j in range(bm):
+#             result[j].append(vert[i][j])
+#     return result
+
+# def cal_r(x): #행 정렬
+#     bm = 0
+#     hor = []
+#     for i in x:
+#         i = Csort(i)
+#         if len(i) >= 100:
+#             i = i[:100]
+#         bm = max(bm,len(i))
+#         hor.append(i)
+#     result = []
+#     for i in hor:
+#         if len(i) < bm:
+#             t = [0]*(bm-len(i))
+#             i+=t
+#         result.append(i)
+#     return result
+
+# r,c,k = map(int,input().split())
+# data = []
+# for i in range(3):
+#     data.append(list(map(int,input().split())))
+# count = 0
+
+# while count!=101:
+#     try:
+#         if data[r-1][c-1] == k:
+#             break
+#     except IndexError:
+#         pass
+#     count += 1
+#     if len(data)>=len(data[0]):
+#         data = cal_r(data)
+#     else:
+#         data = cal_c(data)
+
+# if count != 101:
+#     print(count)
+# else:
+#     print(-1)
+'''
+1회차 > 무난한 정답판정. 시간도 추가없는 0.5초였지만, data 의 크기가 최대 100*100에 불과해서 러프하게 작성했다.
+'''
+
+
+###############################################################################################################################################################################################
+##################################################################################    Q17142 _ 연구소 3     ###################################################################################
+###############################################################################################################################################################################################
+'''
+Given ) 연구소 내에 있는 바이러스를 유출하려고 한다. 바이러스는 활성/비활성 상태로 나뉘며, 가장 처음의 바이러스는 모두 비활성 상태이며 활성 상태 바이러스는 상/하/좌/우 인접한 모든 칸에 동시 복제되며
+        1초를 소요한다. 승원이는 M 개의 바이러스를 활성 상태로 변경하고자 한다.
+        연구소는 n*n 크기이며, 활성 바이러스가 비활성 바이러스가 있는 칸으로 이동하면, 비활성 바이러스가 활성으로 변한다.
+Input ) 첫째 줄에 연구소의 크기 n (4<= n <= 50) , 놓을 수 있는 바이러스의 수 m (1 <= m <= 10) 이 주어진다
+        둘째 줄부터 n 개의 줄에 연구소의 상태가 주어진다. 0은 빈칸, 1은 벽, 2는 바이러스를 놓을 수 있는 자리이다. 2 의 개수는 m 보다 크거나 같고 10보다 작거나 같은 자연수이다.
+Output) 연구소의 모든 빈칸에 바이러스가 있게 되는 최소시간을 출력 // 만약 어디에 두어도 모든 빈칸에 퍼트리지 못한다면, -1을 출력
+'''
+
+'''
+1회차 > 각 노드들을 dfs 로 처리하고 각 위치에 두었을때의 퍼지는 모양을 bfs 로 구현해보자
+'''
