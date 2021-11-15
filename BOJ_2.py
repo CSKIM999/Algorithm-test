@@ -355,3 +355,97 @@ Output) 연구소의 모든 빈칸에 바이러스가 있게 되는 최소시간
 '''
 1회차 > 각 노드들을 dfs 로 처리하고 각 위치에 두었을때의 퍼지는 모양을 bfs 로 구현해보자
 '''
+
+from collections import deque
+from itertools import combinations
+n,m = 7,3
+
+data = [
+    [2, 0, 0, 0, 1, 1, 0],
+    [0, 0, 1, 0, 1, 2, 0],
+    [0, 1, 1, 0, 1, 0, 0],
+    [0, 1, 0, 0, 0, 0, 0],
+    [0, 0, 0, 2, 0, 1, 1],
+    [0, 1, 0, 0, 0, 0, 0],
+    [2, 1, 0, 0, 0, 0, 2]
+]
+
+germ = []
+for i in range(n):
+    for j in range(n):
+        if data[i][j] == 2:
+            germ.append([i,j])
+def plague(data,cycle):
+    global answer
+    temp = [i[:] for i in data]
+    for i in range(n):
+        for j in range(n):
+            if temp[i][j] == 1:
+                temp [i][j] = -1
+            elif temp[i][j] == 2:
+                if [i,j] in cycle:
+                    temp[i][j] = 1
+                else:
+                    temp[i][j] = -2
+            else:
+                temp[i][j] = 0
+    # hist = [[True]*n for _ in range(n)]
+    search = [(1,0),(-1,0),(0,-1),(0,1)]
+    cycle = [i[:]+[1] for i in cycle]
+    q = deque(cycle)
+    result = 0
+    while q:
+        x,y,count = q.popleft()
+        result = max(result,count)
+        for dx,dy in search:
+            try:
+                if temp[x+dx][y+dy] == 0:
+                    if count+1 == answer:
+                        return answer
+                    temp[x+dx][y+dy] = count+1
+                    q.append((x+dx,y+dy,count+1))
+                elif temp[x+dx][y+dy] == -2:
+            except IndexError:
+                continue
+    for i in range(n):
+        for j in range(n):
+            if temp[i][j] == 0:
+                return -1
+    flag = True
+    return result
+
+answer = 50
+# def dfs(lst=[]):
+#     global m,answer,germ
+#     if len(lst) > m:
+#         return
+#     elif len(lst) > 0:
+#         # tmp = plague(data,lst)
+#         answer +=1
+#         # print(answer)
+#         # if tmp != -1:
+#         #     answer = min(answer,tmp)
+#     for i in germ:
+#         if i in lst:
+#             continue
+#         lst.append(i)
+#         dfs(lst)
+#         lst.remove(i)
+
+    
+for i in range(1,m+1):
+    ind = list(combinations(germ,i))
+    for j in ind:
+        if len(j) == 1:
+            tmp = plague(data,[j[0]])
+            if tmp != -1:
+                answer = min(answer,tmp)
+        else:
+            tmp = plague(data,[k for k in j])
+            if tmp != -1:
+                answer = min(answer,tmp)
+        
+
+
+print(answer)
+print(germ)
