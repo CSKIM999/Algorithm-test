@@ -358,18 +358,16 @@ Output) 연구소의 모든 빈칸에 바이러스가 있게 되는 최소시간
 
 from collections import deque
 from itertools import combinations
-n,m = 7,3
+import sys
 
-data = [
-    [2, 0, 0, 0, 1, 1, 0],
-    [0, 0, 1, 0, 1, 2, 0],
-    [0, 1, 1, 0, 1, 0, 0],
-    [0, 1, 0, 0, 0, 0, 0],
-    [0, 0, 0, 2, 0, 1, 1],
-    [0, 1, 0, 0, 0, 0, 0],
-    [2, 1, 0, 0, 0, 0, 2]
-]
+input = sys.stdin.readline
 
+n,m = map(int,input().split())
+data = []
+for i in range(n):
+    data.append(list(map(int,input().split())))
+
+answer = 1e9
 germ = []
 for i in range(n):
     for j in range(n):
@@ -396,25 +394,26 @@ def plague(data,cycle):
     result = 0
     while q:
         x,y,count = q.popleft()
-        result = max(result,count)
         for dx,dy in search:
-            try:
+            if 0<=x+dx<n and 0<=y+dy<n:
                 if temp[x+dx][y+dy] == 0:
                     if count+1 == answer:
                         return answer
                     temp[x+dx][y+dy] = count+1
                     q.append((x+dx,y+dy,count+1))
                 elif temp[x+dx][y+dy] == -2:
-            except IndexError:
-                continue
+                    temp[x+dx][y+dy] = 1
+                    q.append((x+dx,y+dy,count+1))
+
     for i in range(n):
         for j in range(n):
             if temp[i][j] == 0:
                 return -1
+            elif temp[i][j] >result:
+                result = max(result,temp[i][j])
     flag = True
     return result
 
-answer = 50
 # def dfs(lst=[]):
 #     global m,answer,germ
 #     if len(lst) > m:
@@ -433,19 +432,26 @@ answer = 50
 #         lst.remove(i)
 
     
-for i in range(1,m+1):
-    ind = list(combinations(germ,i))
-    for j in ind:
-        if len(j) == 1:
-            tmp = plague(data,[j[0]])
-            if tmp != -1:
-                answer = min(answer,tmp)
-        else:
-            tmp = plague(data,[k for k in j])
-            if tmp != -1:
-                answer = min(answer,tmp)
-        
 
-
+ind = list(combinations(germ,m))
+for j in ind:
+    if len(j) == 1:
+        tmp = plague(data,[j[0]])
+        if tmp != -1:
+            answer = min(answer,tmp)
+    else:
+        tmp = plague(data,[k for k in j])
+        if tmp != -1:
+            answer = min(answer,tmp)
+    
+if answer == 1e9:
+    answer = -1
+else:
+    answer = answer-1
 print(answer)
-print(germ)
+
+
+'''
+1회차 > pypy 로는 충분히 pass 하고 python3 로도 넉넉히 패스했다. dfs 와 bfs 를 동시사용하라는 말이 많았는데 combination 으로도 가능했다.
+
+'''
