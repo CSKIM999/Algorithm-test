@@ -356,102 +356,174 @@ Output) 연구소의 모든 빈칸에 바이러스가 있게 되는 최소시간
 1회차 > 각 노드들을 dfs 로 처리하고 각 위치에 두었을때의 퍼지는 모양을 bfs 로 구현해보자
 '''
 
-from collections import deque
-from itertools import combinations
-import sys
+# from collections import deque
+# from itertools import combinations
+# import sys
 
-input = sys.stdin.readline
+# input = sys.stdin.readline
 
-n,m = map(int,input().split())
-data = []
-for i in range(n):
-    data.append(list(map(int,input().split())))
+# n,m = map(int,input().split())
+# data = []
+# for i in range(n):
+#     data.append(list(map(int,input().split())))
 
-answer = 1e9
-germ = []
-for i in range(n):
-    for j in range(n):
-        if data[i][j] == 2:
-            germ.append([i,j])
-def plague(data,cycle):
-    global answer
-    temp = [i[:] for i in data]
-    for i in range(n):
-        for j in range(n):
-            if temp[i][j] == 1:
-                temp [i][j] = -1
-            elif temp[i][j] == 2:
-                if [i,j] in cycle:
-                    temp[i][j] = 1
-                else:
-                    temp[i][j] = -2
-            else:
-                temp[i][j] = 0
-    # hist = [[True]*n for _ in range(n)]
-    search = [(1,0),(-1,0),(0,-1),(0,1)]
-    cycle = [i[:]+[1] for i in cycle]
-    q = deque(cycle)
-    result = 0
-    while q:
-        x,y,count = q.popleft()
-        for dx,dy in search:
-            if 0<=x+dx<n and 0<=y+dy<n:
-                if temp[x+dx][y+dy] == 0:
-                    if count+1 == answer:
-                        return answer
-                    temp[x+dx][y+dy] = count+1
-                    q.append((x+dx,y+dy,count+1))
-                elif temp[x+dx][y+dy] == -2:
-                    temp[x+dx][y+dy] = 1
-                    q.append((x+dx,y+dy,count+1))
+# answer = 1e9
+# germ = []
+# for i in range(n):
+#     for j in range(n):
+#         if data[i][j] == 2:
+#             germ.append([i,j])
+# def plague(data,cycle):
+#     global answer
+#     temp = [i[:] for i in data]
+#     for i in range(n):
+#         for j in range(n):
+#             if temp[i][j] == 1:
+#                 temp [i][j] = -1
+#             elif temp[i][j] == 2:
+#                 if [i,j] in cycle:
+#                     temp[i][j] = 1
+#                 else:
+#                     temp[i][j] = -2
+#             else:
+#                 temp[i][j] = 0
+#     # hist = [[True]*n for _ in range(n)]
+#     search = [(1,0),(-1,0),(0,-1),(0,1)]
+#     cycle = [i[:]+[1] for i in cycle]
+#     q = deque(cycle)
+#     result = 0
+#     while q:
+#         x,y,count = q.popleft()
+#         for dx,dy in search:
+#             if 0<=x+dx<n and 0<=y+dy<n:
+#                 if temp[x+dx][y+dy] == 0:
+#                     if count+1 == answer:
+#                         return answer
+#                     temp[x+dx][y+dy] = count+1
+#                     q.append((x+dx,y+dy,count+1))
+#                 elif temp[x+dx][y+dy] == -2:
+#                     temp[x+dx][y+dy] = 1
+#                     q.append((x+dx,y+dy,count+1))
 
-    for i in range(n):
-        for j in range(n):
-            if temp[i][j] == 0:
-                return -1
-            elif temp[i][j] >result:
-                result = max(result,temp[i][j])
-    flag = True
-    return result
+#     for i in range(n):
+#         for j in range(n):
+#             if temp[i][j] == 0:
+#                 return -1
+#             elif temp[i][j] >result:
+#                 result = max(result,temp[i][j])
+#     flag = True
+#     return result
 
-# def dfs(lst=[]):
-#     global m,answer,germ
-#     if len(lst) > m:
-#         return
-#     elif len(lst) > 0:
-#         # tmp = plague(data,lst)
-#         answer +=1
-#         # print(answer)
-#         # if tmp != -1:
-#         #     answer = min(answer,tmp)
-#     for i in germ:
-#         if i in lst:
-#             continue
-#         lst.append(i)
-#         dfs(lst)
-#         lst.remove(i)
+# # def dfs(lst=[]):
+# #     global m,answer,germ
+# #     if len(lst) > m:
+# #         return
+# #     elif len(lst) > 0:
+# #         # tmp = plague(data,lst)
+# #         answer +=1
+# #         # print(answer)
+# #         # if tmp != -1:
+# #         #     answer = min(answer,tmp)
+# #     for i in germ:
+# #         if i in lst:
+# #             continue
+# #         lst.append(i)
+# #         dfs(lst)
+# #         lst.remove(i)
 
     
 
-ind = list(combinations(germ,m))
-for j in ind:
-    if len(j) == 1:
-        tmp = plague(data,[j[0]])
-        if tmp != -1:
-            answer = min(answer,tmp)
-    else:
-        tmp = plague(data,[k for k in j])
-        if tmp != -1:
-            answer = min(answer,tmp)
+# ind = list(combinations(germ,m))
+# for j in ind:
+#     if len(j) == 1:
+#         tmp = plague(data,[j[0]])
+#         if tmp != -1:
+#             answer = min(answer,tmp)
+#     else:
+#         tmp = plague(data,[k for k in j])
+#         if tmp != -1:
+#             answer = min(answer,tmp)
     
-if answer == 1e9:
-    answer = -1
-else:
-    answer = answer-1
-print(answer)
+# if answer == 1e9:
+#     answer = -1
+# else:
+#     answer = answer-1
+# print(answer)
 
 
 '''
 1회차 > pypy 로는 충분히 pass 하고 python3 로도 넉넉히 패스했다. dfs 와 bfs 를 동시사용하라는 말이 많았는데 combination 으로도 가능했다.
 
 '''
+
+
+###############################################################################################################################################################################################
+#####################################################################################    Q17779 _ 게리맨더링2     #####################################################################################
+###############################################################################################################################################################################################
+'''
+Given ) N*N 크기의 재현시에 각 구역을 5개 선거구로 나눠야하고, 각 구역은 다섯 선거구 중 하나에 포함되어야한다. 선거구는 구역을 적어도 하나 포함해야 하고  한 선거구에 포함된 구역은
+        모두 연결되어 있어야 한다. 구역 A 에서 인접한 구역을 통해 B 구역으로 갈 수 있을 때 두 구역은 연결되어있다 한다. 중간에 통하는 인접구역은 0개 이상이어야 하고, 모두 같은 선거구에 포함돼야한다.
+        선거구는 다음과같이 나뉜다.
+        1. 기준점 (x,y) 와 경계의 길이 d1,d2 를 정한다. (d1,d2 >= 1, 1<=x<=x+d1+d2<=N , 1<= y-d1<y<y+d2<= N)
+        2. 다음칸은 경계선이다.
+            2.1. (x,y),(x+1,y-1),...,(x+d1,y-d1)
+            2.2. (x,y),(x+1,y+1),...,(x+d2,y+d2)
+            2.3. (x+d1,y-d1),(x+d1+1,y-d1+1),...,(x+d1+d2,y-d1+d2)
+            2.4. (x+d2,y+d2),(x+d2+1,y+d2-1),...,(x+d2+d1,y+d2-d1)
+        3. 경계선과 경계선의 안에 포함되는곳이 5번선거구다.
+        4. 5번 선거구에 포함되지 않는 구역의 선거구 번호는 다음 기준을 따른다.
+            1번선거구 : 1<=r<x+d1 , 1<=c<=y
+            2번 선거구: 1 ≤ r ≤ x+d2, y < c ≤ N
+            3번 선거구: x+d1 ≤ r ≤ N, 1 ≤ c < y-d1+d2
+            4번 선거구: x+d2 < r ≤ N, y-d1+d2 ≤ c ≤ N
+Input ) 첫째 줄에 재현시의 크기 N 이 주어진다. ( 5 <= N <= 20 )
+        둘째 줄부터 N 개의 줄에 N 개의 정수가 주어진다. A[r][c] 는 r행c열의 정수를 의미
+Output) 첫째 줄에 최대 인구수 선거구와 최소 인기수 선거구의 차이를 출력하라
+'''
+
+N = 6
+data = [
+    [1, 2, 3, 4, 1, 6],
+    [7, 8, 9, 1, 4, 2],
+    [2, 3, 4, 1, 1, 3],
+    [6, 6, 6, 6, 9, 4],
+    [9, 1, 9, 1, 9, 5],
+    [1, 1, 1, 1, 9, 9]
+]
+def divide(N,x,y,d1,d2):
+    a,b,c = x+d1-1,x+d2-1,y-d1+d2-1
+    bd = set()
+    mat = [[0]*N for i in range(N)]
+    bd.add((x,y))
+    for i in range(1,d1+1):
+        bd.add((x+i,y-i))
+        bd.add((x+d2+i,y+d2-i))
+    for i in range(1,d2+1):
+        bd.add((x+i,y+i))
+        bd.add((x+d1+i,y-d1+i))
+    
+    bd =sorted(bd,key= lambda x:(x[0],-x[1]) )
+    b1,b2 = 0,0
+    while bd:
+        t1,t2 = bd.pop()
+        if b1!=t1-1:
+            mat[t1-1][t2-1] = 5
+            b1,b2 = t1-1,t2-1
+            continue
+        else:
+            mat[b1][b2+1:t2] = [5]*(t2-1-b2)
+            b1,b2 = 0,0
+
+    for i in range(N):
+        for j in range(N):
+            if 0<=i<a and 0<=j<=y-1 and mat[i][j] ==0:
+                mat[i][j] = 1
+            elif 0<=i<=b and y-1<j and mat[i][j] == 0:
+                mat[i][j] = 2
+            elif a<=i and 0<=j<c and mat[i][j] == 0:
+                mat[i][j] = 3
+            elif mat[i][j] == 0:
+                mat[i][j] = 4
+
+    return mat
+
