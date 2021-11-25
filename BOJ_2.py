@@ -481,49 +481,211 @@ Input ) 첫째 줄에 재현시의 크기 N 이 주어진다. ( 5 <= N <= 20 )
 Output) 첫째 줄에 최대 인구수 선거구와 최소 인기수 선거구의 차이를 출력하라
 '''
 
-N = 6
-data = [
-    [1, 2, 3, 4, 1, 6],
-    [7, 8, 9, 1, 4, 2],
-    [2, 3, 4, 1, 1, 3],
-    [6, 6, 6, 6, 9, 4],
-    [9, 1, 9, 1, 9, 5],
-    [1, 1, 1, 1, 9, 9]
-]
-def divide(N,x,y,d1,d2):
-    a,b,c = x+d1-1,x+d2-1,y-d1+d2-1
-    bd = set()
-    mat = [[0]*N for i in range(N)]
-    bd.add((x,y))
-    for i in range(1,d1+1):
-        bd.add((x+i,y-i))
-        bd.add((x+d2+i,y+d2-i))
-    for i in range(1,d2+1):
-        bd.add((x+i,y+i))
-        bd.add((x+d1+i,y-d1+i))
+# n = 6
+# data = [
+#     [1, 2, 3, 4, 1, 6],
+#     [7, 8, 9, 1, 4, 2],
+#     [2, 3, 4, 1, 1, 3],
+#     [6, 6, 6, 6, 9, 4],
+#     [9, 1, 9, 1, 9, 5],
+#     [1, 1, 1, 1, 9, 9]
+# ]
+
+# import sys
+# input = sys.stdin.readline
+# n = int(input())
+# data = []
+# for i in range(n):
+#     data.append(list(map(int,input().split())))
+
+# def divide(N,x,y,d1,d2):
+#     a,b,c = x+d1-1,x+d2-1,y-d1+d2-1
+#     bd = set()
+#     mat = [[0]*N for i in range(N)]
+#     bd.add((x,y))
+#     for i in range(1,d1+1):
+#         bd.add((x+i,y-i))
+#         bd.add((x+d2+i,y+d2-i))
+#     for i in range(1,d2+1):
+#         bd.add((x+i,y+i))
+#         bd.add((x+d1+i,y-d1+i))
     
-    bd =sorted(bd,key= lambda x:(x[0],-x[1]) )
-    b1,b2 = 0,0
-    while bd:
-        t1,t2 = bd.pop()
-        if b1!=t1-1:
-            mat[t1-1][t2-1] = 5
-            b1,b2 = t1-1,t2-1
-            continue
+#     bd =sorted(bd,key= lambda x:(x[0],-x[1]) )
+#     b1,b2 = 0,0
+#     while bd:
+#         t1,t2 = bd.pop()
+#         if b1!=t1-1:
+#             mat[t1-1][t2-1] = 5
+#             b1,b2 = t1-1,t2-1
+#             continue
+#         else:
+#             mat[b1][b2+1:t2] = [5]*(t2-1-b2)
+#             b1,b2 = 0,0
+
+#     for i in range(N):
+#         for j in range(N):
+#             if 0<=i<a and 0<=j<=y-1 and mat[i][j] ==0:
+#                 mat[i][j] = 1
+#             elif 0<=i<=b and y-1<j and mat[i][j] == 0:
+#                 mat[i][j] = 2
+#             elif a<=i and 0<=j<c and mat[i][j] == 0:
+#                 mat[i][j] = 3
+#             elif mat[i][j] == 0:
+#                 mat[i][j] = 4
+
+#     return mat
+# result= 1e9
+# # 0<x<n-1 // 0<= y <n-2 // x-1+(n-y)/2
+# for x in range(1,n-1):
+#     for y in range(2,n):
+#         flag = True
+#         for d1 in range(n):
+#             for d2 in range(n):
+#                 try:
+#                     test = data[x+d1+d2][y] + data[x+d2][y+d2]
+#                 except IndexError:
+#                     break
+#                 tmp = divide(n,x,y,d1,d2)
+                
+#                 sd = [0 for _ in range(5)]
+#                 for i in range(n):
+#                     for j in range(n):
+#                         now = tmp[i][j]
+#                         sd[now-1] += data[i][j]
+                
+#                 tr = max(sd) - min(sd)
+#                 result = min(result,tr)
+
+                        
+# print(result)
+'''
+1회차 > 시간소요를 너무 생각하느라 오래걸렸는데, 조금 러프하게 풀어도 넉넉히 시간을 충족했음.
+'''
+
+###############################################################################################################################################################################################
+################################################################################     Q13460 _ 구슬 탈출 2    ##################################################################################
+###############################################################################################################################################################################################
+'''
+Given ) N*M 크기의 보드가 1x1 칸으로 나누어져 가장 바깥 행과 열은 벽으로 막혀있다. 보드에는 구멍이 하나 있고 임의의 공간에 빨간 구슬과 파란 구슬이 각각 들어가있다.
+        게임의 목표는 파란 구슬이 구멍으로 들어가기 전에 빨간 구슬을 꺼내는 것이다. 구슬은 중력을 이용하여 이리 저리 굴린다.
+        각각의 동작에서 공은 동시에 움직이며 빨간 구슬과 파란 구슬이 동시에 구멍에 빠져도 실패이다. 구슬은 각각 한칸을 차지하여 동시에 같은 칸에 있을 수없다.
+        기울이는 동작을 그만하는것은 더이상 구슬이 움직이지 않을 때 까지이다. 최소 몇번 움직여서 구슬을 뺄 수 있는지 프로그램을 작성하라.
+Input ) 첫째 줄에는 가로 세로 N과 M 이 주어진다. ( 3<= N,M <= 10 )
+        그 이후 N개의 줄에 걸쳐 M 개의 문자열이 주어진다. '.','#','O','R','B' 에서 . 은 빈칸을 의미하고, #은 벽, O 는 구멍, R 은 빨간 구슬 B 는 파란 구슬을 의미한다.
+Output) 최소 몇번만에 빨간 구슬을 구멍을 통해 빼낼 수 있는 지 출력하라. 만약 10번을 초과한다면 -1 을 출력하라.
+'''
+'''
+2회차 > 움직임 함수를 dfs 를 통해 구현할것. 추가로 빨간구슬과 파란구슬은 각각 움직임이 끝나고 한 자리를 차지한다.
+'''
+
+n,m = 7,7
+dic = {'#':4,'.':0,'R':1,'B':2, 'O':7}
+table = [
+    '#######',
+    '#...RB#',
+    '#.#####',
+    '#.....#',
+    '#####.#',
+    '#O....#',
+    '#######'
+]
+matrix = []
+blue,red = [],[]
+goal = []
+for i in table:
+    matrix.append([dic[j] for j in i])
+for i in range(m):
+    for j in range(n):
+        if matrix[i][j] == 1:
+            red = [i,j]
+        elif matrix[i][j] == 2:
+            blue = [i,j]
+        elif matrix[i][j] == 7:
+            goal = [i,j]
+
+def go_horizon(mat,ball,side): #matrix 와 ball 의 좌표 반환예정 /// side = 1 -> right & -1 ->left
+    x,y = ball
+    temp = mat[x][:]
+    ny = y
+    while True:
+        if temp[ny+side] != 0:
+            if temp[ny+side] == 7:
+                temp[ny],temp[y] = temp[y],0
+            temp[ny],temp[y] = temp[y],temp[ny]
+            break
         else:
-            mat[b1][b2+1:t2] = [5]*(t2-1-b2)
-            b1,b2 = 0,0
+            ny += side
+    mat[x] = temp
+    ball = [x,ny]
 
-    for i in range(N):
-        for j in range(N):
-            if 0<=i<a and 0<=j<=y-1 and mat[i][j] ==0:
-                mat[i][j] = 1
-            elif 0<=i<=b and y-1<j and mat[i][j] == 0:
-                mat[i][j] = 2
-            elif a<=i and 0<=j<c and mat[i][j] == 0:
-                mat[i][j] = 3
-            elif mat[i][j] == 0:
-                mat[i][j] = 4
+    return mat,ball
 
-    return mat
+def go_vertical(mat,ball,side): # side = 1 -> down & side = -1 up
+    x,y = ball
+    temp = [i[y] for i in mat]
+    nx = x
+    while True:
+        if temp[nx+side] != 0 :
+            if temp[nx+side] == 7:
+                temp[nx],temp[x] = temp[x],0
+                break
+            temp[nx],temp[x] = temp[x],temp[nx]
+            break
+        else:
+            nx += side
+    for i in range(m):
+        mat[i][y] = temp[i]
+    ball = [nx,y]
+    return mat,ball
 
+def move(voh,side): # voh -> 0 = v 1 = h
+    global matrix,red,blue
+    rx,ry = red
+    bx,by = blue
+    if voh == 0: #세로이동
+        if ry == by: #같은 선상일때
+            if side == 1: #아래로 움직일때
+                if rx<bx:
+                    matrix,blue = go_vertical(matrix,blue,side)
+                    matrix,red = go_vertical(matrix,red,side)
+                else:
+                    matrix,red = go_vertical(matrix,red,side)
+                    matrix,blue = go_vertical(matrix,blue,side)
+            else:
+                if rx<bx:
+                    matrix,red = go_vertical(matrix,red,side)
+                    matrix,blue = go_vertical(matrix,blue,side)
+                else:
+                    matrix,blue = go_vertical(matrix,blue,side)
+                    matrix,red = go_vertical(matrix,red,side)
+        else:
+            matrix,blue = go_vertical(matrix,blue,side)
+            matrix,red = go_vertical(matrix,red,side)
+    else: #가로이동
+        if rx == bx:
+            if side == 1: #오른쪽
+                if ry < by:
+                    matrix,blue = go_horizon(matrix,blue,side)
+                    matrix,red = go_horizon(matrix,red,side)
+                else:
+                    matrix,red = go_horizon(matrix,red,side)
+                    matrix,blue = go_horizon(matrix,blue,side)
+            else:
+                if ry < by:
+                    matrix,red = go_horizon(matrix,red,side)
+                    matrix,blue = go_horizon(matrix,blue,side)
+                else:
+                    matrix,blue = go_horizon(matrix,blue,side)
+                    matrix,red = go_horizon(matrix,red,side)
+        else:
+            matrix,blue = go_horizon(matrix,blue,side)
+            matrix,red = go_horizon(matrix,red,side)
+
+# voh [0:v , 1:h] , vside[1:down,-1:up] , hside[-1:left,1:right]
+move(1,-1)
+move(0,1)
+move(1,1)
+move(0,1)
+move(1,-1)
+
+xprint(matrix)
