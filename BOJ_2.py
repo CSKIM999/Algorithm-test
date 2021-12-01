@@ -578,114 +578,153 @@ Output) 최소 몇번만에 빨간 구슬을 구멍을 통해 빼낼 수 있는 
 2회차 > 움직임 함수를 dfs 를 통해 구현할것. 추가로 빨간구슬과 파란구슬은 각각 움직임이 끝나고 한 자리를 차지한다.
 '''
 
-n,m = 7,7
-dic = {'#':4,'.':0,'R':1,'B':2, 'O':7}
-table = [
-    '#######',
-    '#...RB#',
-    '#.#####',
-    '#.....#',
-    '#####.#',
-    '#O....#',
-    '#######'
-]
-matrix = []
-blue,red = [],[]
-goal = []
-for i in table:
-    matrix.append([dic[j] for j in i])
-for i in range(m):
-    for j in range(n):
-        if matrix[i][j] == 1:
-            red = [i,j]
-        elif matrix[i][j] == 2:
-            blue = [i,j]
-        elif matrix[i][j] == 7:
-            goal = [i,j]
+# n,m = 7,7
+# table = [
+#     '#######',
+#     '#..R#B#',
+#     '#.#####',
+#     '#.....#',
+#     '#####.#',
+#     '#O....#',
+#     '#######'
+# ]
+# dic = {'#':4,'.':0,'R':1,'B':2, 'O':7}
+# n,m = map(int,input().split())
+# table = []
+# for i in range(n):
+#     table.append(input())
+# matrix = []
+# blue,red = [],[]
+# goal = []
+# for i in table:
+#     matrix.append([dic[j] for j in i])
+# for i in range(n):
+#     for j in range(m):
+#         if matrix[i][j] == 1:
+#             red = [i,j]
+#         elif matrix[i][j] == 2:
+#             blue = [i,j]
+#         elif matrix[i][j] == 7:
+#             goal = [i,j]
 
-def go_horizon(mat,ball,side): #matrix 와 ball 의 좌표 반환예정 /// side = 1 -> right & -1 ->left
-    x,y = ball
-    temp = mat[x][:]
-    ny = y
-    while True:
-        if temp[ny+side] != 0:
-            if temp[ny+side] == 7:
-                temp[ny],temp[y] = temp[y],0
-            temp[ny],temp[y] = temp[y],temp[ny]
-            break
-        else:
-            ny += side
-    mat[x] = temp
-    ball = [x,ny]
+# def go_horizon(mat,ball,side): #matrix 와 ball 의 좌표 반환예정 /// side = 1 -> right & -1 ->left
+#     x,y = ball
+#     temp = mat[x][:]
+#     ny = y
+#     while True:
+#         if temp[ny+side] != 0:
+#             if temp[ny+side] == 7:
+#                 temp[y] = 0
+#                 mat[x] = temp
+#                 ball = [-1,-1]
+#                 return mat,ball
+#             temp[ny],temp[y] = temp[y],temp[ny]
+#             break
+#         else:
+#             ny += side
+#     mat[x] = temp
+#     ball = [x,ny]
 
-    return mat,ball
+#     return mat,ball
 
-def go_vertical(mat,ball,side): # side = 1 -> down & side = -1 up
-    x,y = ball
-    temp = [i[y] for i in mat]
-    nx = x
-    while True:
-        if temp[nx+side] != 0 :
-            if temp[nx+side] == 7:
-                temp[nx],temp[x] = temp[x],0
-                break
-            temp[nx],temp[x] = temp[x],temp[nx]
-            break
-        else:
-            nx += side
-    for i in range(m):
-        mat[i][y] = temp[i]
-    ball = [nx,y]
-    return mat,ball
+# def go_vertical(mat,ball,side): # side = 1 -> down & side = -1 up
+#     x,y = ball
+#     temp = [i[y] for i in mat]
+#     nx = x
+#     while True:
+#         if temp[nx+side] != 0 :
+#             if temp[nx+side] == 7:
+#                 temp[x] = 0
+#                 for i in range(n):
+#                     mat[i][y] = temp[i]
+#                 ball = [-1,-1]
+#                 return mat,ball
+#             temp[nx],temp[x] = temp[x],temp[nx]
+#             break
+#         else:
+#             nx += side
+#     for i in range(n):
+#         mat[i][y] = temp[i]
+#     ball = [nx,y]
+#     return mat,ball
 
-def move(voh,side): # voh -> 0 = v 1 = h
-    global matrix,red,blue
-    rx,ry = red
-    bx,by = blue
-    if voh == 0: #세로이동
-        if ry == by: #같은 선상일때
-            if side == 1: #아래로 움직일때
-                if rx<bx:
-                    matrix,blue = go_vertical(matrix,blue,side)
-                    matrix,red = go_vertical(matrix,red,side)
-                else:
-                    matrix,red = go_vertical(matrix,red,side)
-                    matrix,blue = go_vertical(matrix,blue,side)
-            else:
-                if rx<bx:
-                    matrix,red = go_vertical(matrix,red,side)
-                    matrix,blue = go_vertical(matrix,blue,side)
-                else:
-                    matrix,blue = go_vertical(matrix,blue,side)
-                    matrix,red = go_vertical(matrix,red,side)
-        else:
-            matrix,blue = go_vertical(matrix,blue,side)
-            matrix,red = go_vertical(matrix,red,side)
-    else: #가로이동
-        if rx == bx:
-            if side == 1: #오른쪽
-                if ry < by:
-                    matrix,blue = go_horizon(matrix,blue,side)
-                    matrix,red = go_horizon(matrix,red,side)
-                else:
-                    matrix,red = go_horizon(matrix,red,side)
-                    matrix,blue = go_horizon(matrix,blue,side)
-            else:
-                if ry < by:
-                    matrix,red = go_horizon(matrix,red,side)
-                    matrix,blue = go_horizon(matrix,blue,side)
-                else:
-                    matrix,blue = go_horizon(matrix,blue,side)
-                    matrix,red = go_horizon(matrix,red,side)
-        else:
-            matrix,blue = go_horizon(matrix,blue,side)
-            matrix,red = go_horizon(matrix,red,side)
+# def move(matrix,red,blue,voh,side): # voh -> 0 = v 1 = h
+#     rx,ry = red
+#     bx,by = blue
+#     if voh == 1: #세로이동
+#         if ry == by: #같은 선상일때
+#             if side == 1: #아래로 움직일때
+#                 if rx<bx:
+#                     matrix,blue = go_vertical(matrix,blue,side)
+#                     matrix,red = go_vertical(matrix,red,side)
+#                 else:
+#                     matrix,red = go_vertical(matrix,red,side)
+#                     matrix,blue = go_vertical(matrix,blue,side)
+#             else:
+#                 if rx<bx:
+#                     matrix,red = go_vertical(matrix,red,side)
+#                     matrix,blue = go_vertical(matrix,blue,side)
+#                 else:
+#                     matrix,blue = go_vertical(matrix,blue,side)
+#                     matrix,red = go_vertical(matrix,red,side)
+#         else:
+#             matrix,blue = go_vertical(matrix,blue,side)
+#             matrix,red = go_vertical(matrix,red,side)
+#     else: #가로이동
+#         if rx == bx:
+#             if side == 1: #오른쪽
+#                 if ry < by:
+#                     matrix,blue = go_horizon(matrix,blue,side)
+#                     matrix,red = go_horizon(matrix,red,side)
+#                 else:
+#                     matrix,red = go_horizon(matrix,red,side)
+#                     matrix,blue = go_horizon(matrix,blue,side)
+#             else:
+#                 if ry < by:
+#                     matrix,red = go_horizon(matrix,red,side)
+#                     matrix,blue = go_horizon(matrix,blue,side)
+#                 else:
+#                     matrix,blue = go_horizon(matrix,blue,side)
+#                     matrix,red = go_horizon(matrix,red,side)
+#         else:
+#             matrix,blue = go_horizon(matrix,blue,side)
+#             matrix,red = go_horizon(matrix,red,side)
+#     return matrix,red,blue
+# # voh [0:v , 1:h] , vside[1:down,-1:up] , hside[-1:left,1:right]
+# result = 11
+# def dfs(give,r,b,count):
+#     global goal,result
+#     temp = []
+#     if count >= result:
+#         return
+#     temp,rr,bb = move([i[:] for i in give],r,b,0,-1)
+#     if temp != give:
+#         dfs([i[:] for i in temp],rr,bb,count+1)
+#         if rr==[-1,-1] and bb!=[-1,-1]:
+#             result = min(result,count)
+#     temp,rr,bb = move([i[:] for i in give],r,b,0,1)
+#     if temp != give:
+#         dfs([i[:] for i in temp],rr,bb,count+1)
+#         if rr==[-1,-1] and bb!=[-1,-1]:
+#             result = min(result,count)
+#     temp,rr,bb = move([i[:] for i in give],r,b,1,-1)
+#     if temp != give:
+#         dfs([i[:] for i in temp],rr,bb,count+1)
+#         if rr==[-1,-1] and bb!=[-1,-1]:
+#             result = min(result,count)
+#     temp,rr,bb = move([i[:] for i in give],r,b,1,1)
+#     if temp != give:
+#         dfs([i[:] for i in temp],rr,bb,count+1)
+#         if rr==[-1,-1] and bb!=[-1,-1]:
+#             result = min(result,count)
 
-# voh [0:v , 1:h] , vside[1:down,-1:up] , hside[-1:left,1:right]
-move(1,-1)
-move(0,1)
-move(1,1)
-move(0,1)
-move(1,-1)
+# dfs(matrix,red,blue,1)
+# if result == 11:
+#     print(-1)
+# else:
+#     print(result)
 
-xprint(matrix)
+
+'''
+2회차 > 정답판정 받음. 각 움직임을 모듈화 하여 객체지향성을 띠는 연습을 더 해야할듯
+'''
