@@ -1,4 +1,4 @@
-from typing import Counter, TextIO
+import abc
 
 
 def xprint(a):
@@ -753,58 +753,116 @@ Output) 몇번째 단계에서 break 되었는지 출력하라
         하지만 객체 지향적으로 코딩하려 노력해보자.
         -> return 값이 없는 단순한 함수
 '''
+# n,k = map(int,input().split())
+# data = list(map(int,input().split()))
+# robot=[]
 
-n,k = 3,2
-data = [1,2,1,2,1,2]
-n,k = map(int,input().split())
-data = list(map(int,input().split()))
-robot=[]
+# half = len(data)//2
+# result = 0
 
-half = len(data)//2
-result = 0
+# def roll():
+#     global data
+#     data = [data[-1]]+data[:-1]
+#     if len(robot) != 0:
+#         for i in range(len(robot)):
+#             robot[i] = (robot[i] + 1)%len(data)
+#                 # if data[robot[i]] > 0:
+#                 #     data[robot[i]] -= 1
 
 
-def Check(now):
-    new = (now + 1)%len(data)
-    if data[new] > 0:
-        if new not in robot:
-            return True
-    return False
+# def Check(now):
+#     new = (now + 1)%len(data)
+#     if data[new] > 0:
+#         if new not in robot:
+#             return True
+#     return False
 
-def GoDown():
-    if (half-1) in robot:
-        robot.remove(half-1)
+# def GoDown():
+#     if (half-1) in robot:
+#         robot.remove(half-1)
 
     
-while True:
-    td,bd = data[:half],data[half:]
-    #로봇과 모두함께 회전
-    td,bd = [bd[0]] + td[:-1], bd[1:]+ [td[-1]]
-    data = td+bd
-    if len(robot) != 0:
-        for i in range(len(robot)):
-            robot[i] = (robot[i] + 1)%len(data)
-            if data[robot[i]] > 0:
-                data[robot[i]] -= 1
-    GoDown()
+# while True:
+#     roll()
+#     GoDown()
 
-    #로봇 움직임 구현
-    if len(robot) != 0:
-        for i in range(len(robot)):
-            if Check(robot[i]):
-                robot[i] = (robot[i] + 1) % len(data)
-                if data[robot[i]] > 0:
-                    data[robot[i]] -= 1
-    GoDown()
+#     #로봇 움직임 구현
+#     if len(robot) != 0: #로봇이 1개 이상이라면
+#         for i in range(len(robot)): # 로봇 인덱스를 순회하며 로봇 움직임 구현
+#             if Check(robot[i]): #만약 로봇이 움직일수 있다면
+#                 robot[i] = (robot[i] + 1) % len(data) #움직인다
+#                 data[robot[i]] -= 1
+#     GoDown()
 
-    #로봇 올리기
-    if Check(-1):
-        data[0] -= 1
-        robot.append(0)
+#     #로봇 올리기
+#     if Check(-1):
+#         data[0] -= 1
+#         robot.append(0)
 
-    result += 1
+#     result += 1
 
-    if data.count(0) >= k:
-        break
+#     if data.count(0) >= k:
+#         break
 
-print(result)
+# print(result)
+'''
+1회차 > pypy3 사용 정답. 내용은 쉬운데 설명이 준나게 드러운문제였음.
+'''
+
+###############################################################################################################################################################################################
+################################################################################   Q17837  _ 새로운 게임 2     ################################################################################
+###############################################################################################################################################################################################
+'''
+Given ) N*N 크기의 판에서 K개의 말이 순서에 따라 움직인다. 말은 방향을 가지며 두 개 이상 겹쳐질 수 있으나 순서를 구분한다. 턴 한번에 1번부터 K 번 말까지 순서대로 이동시킨다.
+        현재 말이 다음에 이동할 다음칸에 대한 룰은 다음과 같다.
+        1. 흰색의 경우 -> 그 칸으로 이동한다. 만약 다른 말이 이미 존재한다면 가장 위에 A번 말을 올려놓는다.
+            A번 말의 위에 다른말이 있는경우 모든 말이 함께 이동한다.
+            ex ) D,E 말이 이미 존재하고 A,B,C 말이 그 위로 이동한다면 E,D,A,B,C 가 된다.
+        2. 빨간색의 경우 -> 이동한 후 이동한 말의 순서가 반대로 바뀐다.
+            A,B,C 가 이동하고 이동하려는 칸에 말이 없는 경우 C,B,A 가 위치한다.
+            A,D,F,G 가 이동하고, 이동하려는 칸에 E,C,B로 있는 경우에는 E,C,B,G,F,D,A 가 된다.
+        3. 파란색의 경우 -> 현재 이동하려는 말의 방향을 반대로 하고 한칸 이동한다.
+            만약 반대방향이 막혀 이동할 수 없다면 이동하지 않고 가만히 있는다.
+        4. 체스판을 벗어나는 경우
+            3번으로 취급하여 처리한다.
+Input ) 첫째 줄에 체스판의 크기 N, 말의 개수 K 이 주어진다.
+        둘째 줄부터 N개의 줄에 걸쳐 체스판의 정보가 주어진다. 0은 흰색, 1 은 빨간색, 2는 파란색을 의미한다.
+        다음 K 개의 줄에 말의 정보가 1번부터 순서대로 주어진다. 각 행은 순서대로 행,열,방향 이 주어진다.
+        방향은 1,2,3,4 순서로 동,서,북,남 방향이다.
+Output) 한 칸에 말이 4개 이상 올라간다면 그 즉시 게임은 종료된다.
+        게임이 종료되는 턴의 번호를 출력한다. 그 값이 1000을 넘어간다면, -1을 출력한다.
+'''
+direction = [[0,1],[0,-1],[-1,0],[1,0]]
+n,k = 4,4
+data = [
+    [0, 0, 2, 0],
+    [0, 0, 1, 0],
+    [0, 0, 1, 2],
+    [0, 2, 0, 0]
+]
+
+for i in range(n):
+    data[i] = [2]+data[i]+[2]
+data = [[2]*(n+2)] + data + [[2]*(n+2)]
+
+socket = [[[] for _ in range(n)] for _ in range(n)]
+
+dot = [[1,0,0],[2,1,2],[1,1,0],[3,0,1]]
+for i,a in enumerate(dot):
+    x,y,d =a
+    socket[x][y].append(i)
+xprint(socket)
+def white(idx):
+    x,y,d = dot[idx]
+    I = socket[x][y].index(idx)
+    nx,ny = x+direction[d[0]],y+direction[d[1]]
+    socket[nx][ny].append(socket[x][y][I:])
+    del socket[x][y][I:]
+
+for i in range(
+    
+)
+
+
+def rule(xyd):
+    x,y,d = xyd

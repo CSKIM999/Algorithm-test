@@ -1,4 +1,2 @@
-test = [i+3 for i in range(10)]
-print(test)
-test.remove(3)
-print(test)
+a = [0,1,2,3,4,5]
+print(a[1:])
