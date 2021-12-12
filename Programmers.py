@@ -221,8 +221,8 @@ Approach >> 회원의 데이터는 유저아이디로 처리되며, 만약 아�
 ################################################################################################################################################################
 ################################################################################################################################################################
 ################################################################################################################################################################
-' >>> LV 3 거스름돈 <<< '
 '''
+>>> LV 3 거스름돈 <<< 
 >>> DP 를 통해서 n 을 구하는 요소를 찾아보고자 한다
     DP 의 사용 플로우는 다음과 같을 예정이다
         >>> A ) DP생성 1부터 n-money[0] 까지
@@ -296,50 +296,134 @@ Approach >> 회원의 데이터는 유저아이디로 처리되며, 만약 아�
 # answer = len(result)%1000000007
 # print(answer)
 
-def solution(n, money):
-    money.sort()
-    dp = [set() for _ in range(n-money[0]+1)]
-    for now in range(1,n-money[0]+1): # DP 순환
-        for j in range(1,len(money)+1):
-            tmp = now
-            now_money = money[-j]
-            if now_money == now:
-                dp[now].add(now_money)
-                continue
-            if tmp > now_money:
-                tmp -= now_money
-                # for k in list(dp[tmp]):
-                for k in dp[tmp]:
-                    if type(k) == int:
-                        t = [k]
+# def solution(n, money):
+#     money.sort()
+#     dp = [set() for _ in range(n-money[0]+1)]
+#     for now in range(1,n-money[0]+1): # DP 순환
+#         for j in range(1,len(money)+1):
+#             tmp = now
+#             now_money = money[-j]
+#             if now_money == now:
+#                 dp[now].add(now_money)
+#                 continue
+#             if tmp > now_money:
+#                 tmp -= now_money
+#                 # for k in list(dp[tmp]):
+#                 for k in dp[tmp]:
+#                     if type(k) == int:
+#                         t = [k]
+#                     else:
+#                         t = list(k)
+#                     t.append(now_money)
+#                     dp[now].add(tuple(sorted(t,key=lambda x:x)))
+#     result = set()
+#     for i in reversed(money):
+#         temp = n
+#         if i == temp:
+#             result.add(i)
+#             continue
+#         if temp > i:
+#             temp -= i
+#             for j in dp[temp]:
+#                 if type(j) == int:
+#                     t = [j]
+#                 else:
+#                     t = list(j)
+#                 t.append(i)
+#                 result.add(tuple(sorted(t,key=lambda x:x)))
+
+
+#     answer = len(result)%1000000007
+#     return answer
+
+
+
+# '''
+# 1회차 > 정확도 테스트는 모두 통과했다. 하지만 효율성테스트는 모두 시간초과로 실패했다.
+# '''
+
+
+
+
+################################################################################################################################################################
+################################################################################################################################################################
+################################################################################################################################################################
+'''
+>>> LV 2 더 맵게 <<< 
+
+가장 낮은 스코빌 지수음식 2개를 찾아야하므로 최소힙을 사용하면 좋을듯
+
+'''
+
+# import heapq
+# K = 11
+# lst = [1,2,3]
+# result = 0
+# while True:
+#     if len(lst) <2:
+#         if lst[0] > K:
+#             break
+#         result = -1
+#         break
+#     alpha = heapq.heappop(lst)
+#     if alpha<K:
+#         beta = heapq.heappop(lst)
+#         gamma = alpha+(beta*2)
+#         heapq.heappush(lst,gamma)
+#         result+=1
+#     else:
+#         break
+
+# print(result)
+
+################################################################################################################################################################
+################################################################################################################################################################
+################################################################################################################################################################
+'''
+>>> LV 2 짝지어 제거하기 <<< 
+
+디큐 사용하면 빠를거같은디
+'''
+
+from collections import deque
+
+a = 'a'
+a = list(a)
+a = deque(a)
+before = a.popleft() #큐 빼기 A
+temp = deque()
+while True:
+    flag = True
+    while True:
+        try:
+            now = a.popleft() #큐 빼기 B
+        except:
+            flag = True
+            break
+        if before == now: # AB 비교 같다면?
+            flag = False
+            if (len(a)>0 and len(temp)>0) and temp[-1] == a[0]: #만약 
+                while True:
+                    if (len(a)>0 and len(temp)>0) and temp[-1] == a[0]:
+                        temp.pop()
+                        a.popleft()
                     else:
-                        t = list(k)
-                    t.append(now_money)
-                    dp[now].add(tuple(sorted(t,key=lambda x:x)))
-    result = set()
-    for i in reversed(money):
-        temp = n
-        if i == temp:
-            result.add(i)
-            continue
-        if temp > i:
-            temp -= i
-            for j in dp[temp]:
-                if type(j) == int:
-                    t = [j]
-                else:
-                    t = list(j)
-                t.append(i)
-                result.add(tuple(sorted(t,key=lambda x:x)))
+                        break
+            if len(a)==0:
+                break
+            before = a.popleft() #새로운 before 값이 필요하므로 큐빼놓기
+            
+        else:
+            if len(a)==0:
+                a.append(now)
+                break
+            temp.append(before)
+            before = now
+    if flag:
+        result = 0
+        break
+    elif len(a) == 0:
+        result = 1
+        break
 
-
-    answer = len(result)%1000000007
-    return answer
-
-
-
-'''
-1회차 > 정확도 테스트는 모두 통과했다. 하지만 효율성테스트는 모두 시간초과로 실패했다.
-'''
-
-
+print(result)
