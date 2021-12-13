@@ -385,45 +385,85 @@ Approach >> 회원의 데이터는 유저아이디로 처리되며, 만약 아�
 디큐 사용하면 빠를거같은디
 '''
 
-from collections import deque
+# from collections import deque
 
-a = 'a'
-a = list(a)
-a = deque(a)
-before = a.popleft() #큐 빼기 A
-temp = deque()
-while True:
-    flag = True
-    while True:
-        try:
-            now = a.popleft() #큐 빼기 B
-        except:
-            flag = True
-            break
-        if before == now: # AB 비교 같다면?
-            flag = False
-            if (len(a)>0 and len(temp)>0) and temp[-1] == a[0]: #만약 
-                while True:
-                    if (len(a)>0 and len(temp)>0) and temp[-1] == a[0]:
-                        temp.pop()
-                        a.popleft()
-                    else:
-                        break
-            if len(a)==0:
-                break
-            before = a.popleft() #새로운 before 값이 필요하므로 큐빼놓기
+# s = 'abbbaa'
+# s = list(s)
+# s = deque(s)
+# before = s.popleft() #큐 빼기 A
+# temp = deque()
+# while True:
+#     flag = True
+#     while True:
+#         try:
+#             now = s.popleft() #큐 빼기 B
+#         except:
+#             flag = True
+#             break
+#         if before == now: # AB 비교 같다면?
+#             flag = False
+#             if (len(s)>0 and len(temp)>0) and temp[-1] == s[0]: #만약 
+#                 while True:
+#                     if (len(s)>0 and len(temp)>0) and temp[-1] == s[0]:
+#                         temp.pop()
+#                         s.popleft()
+#                     else:
+#                         break
+#             if len(s)==0:
+#                 try:
+#                     s.append(temp.pop())
+#                 except:
+#                     break
+#                 break
+#             before = s.popleft() #새로운 before 값이 필요하므로 큐빼놓기
             
-        else:
-            if len(a)==0:
-                a.append(now)
-                break
-            temp.append(before)
-            before = now
-    if flag:
-        result = 0
-        break
-    elif len(a) == 0:
-        result = 1
-        break
+#         else:
+#             if len(s)==0:
+#                 s.append(now)
+#                 break
+#             temp.append(before)
+#             before = now
+#     if flag:
+#         result = 0
+#         break
+#     elif len(s) == 0:
+#         result = 1
+#         break
 
-print(result)
+# print(result)
+
+################################################################################################################################################################
+################################################################################################################################################################
+################################################################################################################################################################
+'''
+>>> LV 3 가장 먼 노드 <<< 
+
+방문처리하고 bfs 쓰면 충분할듯?
+'''
+
+n = 6
+from collections import deque
+data = [[] for _ in range(n+1)]
+hist = [1e9 for _ in range(n+1)] 
+edge = [[3, 6], [4, 3], [3, 2], [1, 3], [1, 2], [2, 4], [5, 2]]	
+for a,b in edge:
+    data[a].append(b)
+    data[b].append(a)
+q = deque([1])
+hist[0],hist[1] = 0,0
+count = 0
+while True:
+    now = q.popleft()
+    dist = hist[now]
+    for i in data[now]:
+        if hist[i] > dist+1:
+            hist[i] = dist+1
+            q.append(i)
+    count+=1
+    # print(q)
+    if not q:
+        break
+    elif count == 100:
+        break
+print(hist.count(max(hist)))
+print(hist)
