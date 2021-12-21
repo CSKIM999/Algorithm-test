@@ -840,94 +840,207 @@ Output) 한 칸에 말이 4개 이상 올라간다면 그 즉시 게임은 종�
 #     [0, 2, 0, 0]
 # ]
 # dot = [[1,0,0],[2,1,2],[1,1,0],[3,0,1]]
-direction = [[0,1],[0,-1],[-1,0],[1,0]]
-n,k = map(int,input().split())
-data = []
-dot = []
+# direction = [[0,1],[0,-1],[-1,0],[1,0]]
+# n,k = map(int,input().split())
+# data = []
+# dot = []
+# for i in range(n):
+#     data.append(list(map(int,input().split())))
+# for j in range(k):
+#     a,b,c = map(int,input().split())
+#     dot.append([a-1,b-1,c-1])
+# for i in range(n):
+#     data[i] = [2]+data[i]+[2]
+# data = [[2]*(n+2)] + data + [[2]*(n+2)]
+# socket = [[[] for _ in range(n)] for _ in range(n)]
+# for i,a in enumerate(dot):
+#     x,y,d =a
+#     socket[x][y].append(i)
+# flag = True
+# result = 1
+
+
+# def check():
+#     for i in range(n):
+#         for j in range(n):
+#             if len(socket[i][j]) >= 4:
+#                 return False
+#     return True
+
+# def white(idx):
+#     x,y,d = dot[idx]
+#     I = socket[x][y].index(idx)
+#     nx,ny = x+direction[d][0],y+direction[d][1]
+#     C = socket[x][y][I:]
+#     for n1 in C:
+#         nd = dot[n1][2]
+#         dot[n1] = [nx,ny,nd]
+#     dot[idx] = [nx,ny,d]
+#     socket[nx][ny] += (socket[x][y][I:])
+#     del socket[x][y][I:]
+
+# def red(idx):
+#     x,y,d = dot[idx]
+#     I = socket[x][y].index(idx)
+#     nx,ny = x+direction[d][0],y+direction[d][1]
+#     C = socket[x][y][I:]
+#     for n1 in C:
+#         nd = dot[n1][2]
+#         dot[n1] = [nx,ny,nd]
+#     socket[nx][ny] += list(reversed(socket[x][y][I:]))
+#     del socket[x][y][I:]
+
+# def blue(idx):
+#     x,y,d = dot[idx]
+#     if d%2 == 1:
+#         d-=1
+#     else:
+#         d+=1
+#     dot[idx] = [x,y,d]
+#     nx,ny = x+direction[d][0],y+direction[d][1]
+#     if data[nx+1][ny+1] == 2:
+#         return
+#     elif data[nx+1][ny+1] == 1:
+#         red(idx)
+#     else:
+#         white(idx)
+
+# def operation(lst):
+#     global flag
+#     for i in range(len(lst)):
+#         x,y,d = lst[i]
+#         nx,ny = x+direction[d][0],y+direction[d][1]
+#         if data[nx+1][ny+1] == 1:
+#             red(i)
+#         elif data[nx+1][ny+1] == 2:
+#             blue(i)
+#         else:
+#             white(i)
+#         if not check():
+#             flag = False
+#             break
+
+
+# while True:
+#     operation(dot)
+#     if flag == False:
+#         break
+#     if result > 1000:
+#         result = -1
+#         break
+#     result += 1
+
+# print(result)
+
+###############################################################################################################################################################################################
+################################################################################   Q17822  _ 원판돌리기     ################################################################################
+###############################################################################################################################################################################################
+'''
+Given ) N개의 원판이 크기가 작아지는 순서로 바닥에 놓여있고, 각각의 원판에 M 개의 정수가 적혀있으며, i 번째 원판에 적힌 j 번째 수를 (i,j) 로 표현한다.
+        원판을 총 T 번 회전시키고자 한다. 원판의 회전방법은 미리 정해져 있고, i 번째 회전시 사용하는 변수는 xi,di,ki 이다.
+        1. 번호가 xi 의 배수인 원판을 di 방향으로 k1 칸 회전시킨다. di 가 0인 경우엔 시계방향, 1인 경우엔 반시계방향이다.
+        2. 원판에 수가 남아있으면, 인접하면서 수가 같은 것을 모두 찾는다.
+            2.1. (2) 를 만족하는 수가 있다면, 인접하며 같은 수를 모두 지운다.
+            2.2. 만족하는 수가 없다면, 원판에 적힌 수의 평균을 구하고, 평균보다 큰 수에서 1을 빼고, 평균보다 작은수에서 1을 더한다.
+        원판을 T 번 회전시킨 후 원판에 적힌 수의 합을 구하라.
+Input ) 첫째 줄에 N,M,T 가 주어진다
+        둘째 줄부터 N 개의 줄에 원판에 적힌 수가 주어진다.
+        다음 T 개의 줄에 xi,di,ki 가 주어진다.
+Output) 원판을 T 번 회전시킨 후 원판에 적힌 수의 합을 구하라.
+'''
+'''
+2<= N,M <= 50 &&& 1 <= T <= 50 &&& 1 <= 원판에 적힌 수 <= 1,000
+1회차 > 다른 알고리즘은 사용되지 않는듯 하고 모든 정수를 순회하는데 걸리는 시간은 최대 50*50. 주어지는 최대 이동수 50 이므로 모두 체크하는데는 시간이 오래걸리지 않음.
+        단순한 빡구현문제로 추정됨. 인접수 확인함수를 만들고 리스트를 순회하여 실행시키자
+'''
+
+# n,m,t = 4,6,3
+# Circle = [
+#     [1, 2, 3, 4, 5, 6],
+#     [2, 3, 4, 5, 6, 7],
+#     [3, 4, 5, 6, 7, 8],
+#     [4, 5, 6, 7, 8, 9]
+# ]
+# rd = [
+#     [2,1,4],
+#     [3,0,1],
+#     [2,1,2]
+# ]
+import sys
+input = sys.stdin.readline
+n,m,t = map(int,input().split())
+Circle,rd = [],[]
 for i in range(n):
-    data.append(list(map(int,input().split())))
-for j in range(k):
-    a,b,c = map(int,input().split())
-    dot.append([a-1,b-1,c-1])
-for i in range(n):
-    data[i] = [2]+data[i]+[2]
-data = [[2]*(n+2)] + data + [[2]*(n+2)]
-socket = [[[] for _ in range(n)] for _ in range(n)]
-for i,a in enumerate(dot):
-    x,y,d =a
-    socket[x][y].append(i)
-flag = True
-result = 1
+    Circle.append(list(map(int,input().split())))
+for i in range(t):
+    rd.append(list(map(int,input().split())))
 
 
-def check():
-    for i in range(n):
-        for j in range(n):
-            if len(socket[i][j]) >= 4:
-                return False
-    return True
-
-def white(idx):
-    x,y,d = dot[idx]
-    I = socket[x][y].index(idx)
-    nx,ny = x+direction[d][0],y+direction[d][1]
-    C = socket[x][y][I:]
-    for n1 in C:
-        nd = dot[n1][2]
-        dot[n1] = [nx,ny,nd]
-    dot[idx] = [nx,ny,d]
-    socket[nx][ny] += (socket[x][y][I:])
-    del socket[x][y][I:]
-
-def red(idx):
-    x,y,d = dot[idx]
-    I = socket[x][y].index(idx)
-    nx,ny = x+direction[d][0],y+direction[d][1]
-    C = socket[x][y][I:]
-    for n1 in C:
-        nd = dot[n1][2]
-        dot[n1] = [nx,ny,nd]
-    socket[nx][ny] += list(reversed(socket[x][y][I:]))
-    del socket[x][y][I:]
-
-def blue(idx):
-    x,y,d = dot[idx]
-    if d%2 == 1:
-        d-=1
-    else:
-        d+=1
-    dot[idx] = [x,y,d]
-    nx,ny = x+direction[d][0],y+direction[d][1]
-    if data[nx+1][ny+1] == 2:
-        return
-    elif data[nx+1][ny+1] == 1:
-        red(idx)
-    else:
-        white(idx)
-
-def operation(lst):
-    global flag
-    for i in range(len(lst)):
-        x,y,d = lst[i]
-        nx,ny = x+direction[d][0],y+direction[d][1]
-        if data[nx+1][ny+1] == 1:
-            red(i)
-        elif data[nx+1][ny+1] == 2:
-            blue(i)
+def check(x,y):
+    now = Circle[x][y]
+    flag = False
+    if x == 0:
+        if y == m-1:
+            path = [[Circle[x+1][y],[x+1,y]],[Circle[x][y-1],[x,y-1]],[Circle[x][0],[x,0]]]
         else:
-            white(i)
-        if not check():
-            flag = False
-            break
+            path =[[Circle[x+1][y],[x+1,y]],[Circle[x][y-1],[x,y-1]],[Circle[x][y+1],[x,y+1]]]
+    elif x == n-1:
+        if y == m-1:
+            path = [[Circle[x-1][y],[x-1,y]],[Circle[x][y-1],[x,y-1]],[Circle[x][0],[x,0]]]
+        else:
+            path = [[Circle[x-1][y],[x-1,y]],[Circle[x][y-1],[x,y-1]],[Circle[x][y+1],[x,y+1]]]
+    else:
+        if y == m-1:
+            path = [[Circle[x+1][y],[x+1,y]],[Circle[x-1][y],[x-1,y]],[Circle[x][y-1],[x,y-1]],[Circle[x][0],[x,0]]]
+        else:
+            path = [[Circle[x+1][y],[x+1,y]],[Circle[x-1][y],[x-1,y]],[Circle[x][y+1],[x,y+1]],[Circle[x][y-1],[x,y-1]]]
+    
+    for i,P in path:
+        if i == now:
+            flag = True
+        else:
+            continue
+    return flag
 
+def Rotate(R_data):
+    table = [[False]*m for _ in range(n)]
+    C_num,Clockwise,Click = R_data
+    target = [i*C_num for i in range(1,(n//C_num)+1)]
+    if Clockwise == 0:
+        for i in target:
+            i -=1
+            Circle[i] = Circle[i][-Click:]+Circle[i][:-Click]
+    else:
+        for i in target:
+            i -=1
+            Circle[i] = Circle[i][Click:]+Circle[i][:Click]
+    Tflag = False
+    for i in range(n):
+        for j in range(m):
+            if Circle[i][j] != 0:
+                if not Tflag:
+                    Tflag,table[i][j] = check(i,j),check(i,j)
+                table[i][j] = check(i,j)
+    
+    if not Tflag:
+        count = sum([i.count(0) for i in Circle])
+        avgSum = sum([sum(i[:]) for i in Circle])
+        if avgSum != 0:
+            avg = avgSum/((n*m)-count)
+            for i in range(n):
+                for j in range(m):
+                    if Circle[i][j] != 0:
+                        if Circle[i][j] < avg:
+                            Circle[i][j] += 1
+                        elif Circle[i][j] > avg:
+                            Circle[i][j] -=1
+    else:
+        for i in range(n):
+            for j in range(m):
+                if table[i][j]:
+                    Circle[i][j] = 0
 
-while True:
-    operation(dot)
-    if flag == False:
-        break
-    if result > 1000:
-        result = -1
-        break
-    result += 1
+for i in rd:
+    Rotate(i)
 
-print(result)
+print(sum([sum(i[:]) for i in Circle]))
