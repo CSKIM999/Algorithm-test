@@ -954,93 +954,137 @@ Output) 원판을 T 번 회전시킨 후 원판에 적힌 수의 합을 구하�
         단순한 빡구현문제로 추정됨. 인접수 확인함수를 만들고 리스트를 순회하여 실행시키자
 '''
 
-# n,m,t = 4,6,3
-# Circle = [
-#     [1, 2, 3, 4, 5, 6],
-#     [2, 3, 4, 5, 6, 7],
-#     [3, 4, 5, 6, 7, 8],
-#     [4, 5, 6, 7, 8, 9]
-# ]
-# rd = [
-#     [2,1,4],
-#     [3,0,1],
-#     [2,1,2]
-# ]
-import sys
-input = sys.stdin.readline
-n,m,t = map(int,input().split())
-Circle,rd = [],[]
-for i in range(n):
-    Circle.append(list(map(int,input().split())))
-for i in range(t):
-    rd.append(list(map(int,input().split())))
+# # n,m,t = 4,6,3
+# # Circle = [
+# #     [1, 2, 3, 4, 5, 6],
+# #     [2, 3, 4, 5, 6, 7],
+# #     [3, 4, 5, 6, 7, 8],
+# #     [4, 5, 6, 7, 8, 9]
+# # ]
+# # rd = [
+# #     [2,1,4],
+# #     [3,0,1],
+# #     [2,1,2]
+# # ]
+# import sys
+# input = sys.stdin.readline
+# n,m,t = map(int,input().split())
+# Circle,rd = [],[]
+# for i in range(n):
+#     Circle.append(list(map(int,input().split())))
+# for i in range(t):
+#     rd.append(list(map(int,input().split())))
 
 
-def check(x,y):
-    now = Circle[x][y]
-    flag = False
-    if x == 0:
-        if y == m-1:
-            path = [[Circle[x+1][y],[x+1,y]],[Circle[x][y-1],[x,y-1]],[Circle[x][0],[x,0]]]
-        else:
-            path =[[Circle[x+1][y],[x+1,y]],[Circle[x][y-1],[x,y-1]],[Circle[x][y+1],[x,y+1]]]
-    elif x == n-1:
-        if y == m-1:
-            path = [[Circle[x-1][y],[x-1,y]],[Circle[x][y-1],[x,y-1]],[Circle[x][0],[x,0]]]
-        else:
-            path = [[Circle[x-1][y],[x-1,y]],[Circle[x][y-1],[x,y-1]],[Circle[x][y+1],[x,y+1]]]
-    else:
-        if y == m-1:
-            path = [[Circle[x+1][y],[x+1,y]],[Circle[x-1][y],[x-1,y]],[Circle[x][y-1],[x,y-1]],[Circle[x][0],[x,0]]]
-        else:
-            path = [[Circle[x+1][y],[x+1,y]],[Circle[x-1][y],[x-1,y]],[Circle[x][y+1],[x,y+1]],[Circle[x][y-1],[x,y-1]]]
+# def check(x,y):
+#     now = Circle[x][y]
+#     flag = False
+#     if x == 0:
+#         if y == m-1:
+#             path = [[Circle[x+1][y],[x+1,y]],[Circle[x][y-1],[x,y-1]],[Circle[x][0],[x,0]]]
+#         else:
+#             path =[[Circle[x+1][y],[x+1,y]],[Circle[x][y-1],[x,y-1]],[Circle[x][y+1],[x,y+1]]]
+#     elif x == n-1:
+#         if y == m-1:
+#             path = [[Circle[x-1][y],[x-1,y]],[Circle[x][y-1],[x,y-1]],[Circle[x][0],[x,0]]]
+#         else:
+#             path = [[Circle[x-1][y],[x-1,y]],[Circle[x][y-1],[x,y-1]],[Circle[x][y+1],[x,y+1]]]
+#     else:
+#         if y == m-1:
+#             path = [[Circle[x+1][y],[x+1,y]],[Circle[x-1][y],[x-1,y]],[Circle[x][y-1],[x,y-1]],[Circle[x][0],[x,0]]]
+#         else:
+#             path = [[Circle[x+1][y],[x+1,y]],[Circle[x-1][y],[x-1,y]],[Circle[x][y+1],[x,y+1]],[Circle[x][y-1],[x,y-1]]]
     
-    for i,P in path:
-        if i == now:
-            flag = True
-        else:
-            continue
-    return flag
+#     for i,P in path:
+#         if i == now:
+#             flag = True
+#         else:
+#             continue
+#     return flag
 
-def Rotate(R_data):
-    table = [[False]*m for _ in range(n)]
-    C_num,Clockwise,Click = R_data
-    target = [i*C_num for i in range(1,(n//C_num)+1)]
-    if Clockwise == 0:
-        for i in target:
-            i -=1
-            Circle[i] = Circle[i][-Click:]+Circle[i][:-Click]
-    else:
-        for i in target:
-            i -=1
-            Circle[i] = Circle[i][Click:]+Circle[i][:Click]
-    Tflag = False
-    for i in range(n):
-        for j in range(m):
-            if Circle[i][j] != 0:
-                if not Tflag:
-                    Tflag,table[i][j] = check(i,j),check(i,j)
-                table[i][j] = check(i,j)
+# def Rotate(R_data):
+#     table = [[False]*m for _ in range(n)]
+#     C_num,Clockwise,Click = R_data
+#     target = [i*C_num for i in range(1,(n//C_num)+1)]
+#     if Clockwise == 0:
+#         for i in target:
+#             i -=1
+#             Circle[i] = Circle[i][-Click:]+Circle[i][:-Click]
+#     else:
+#         for i in target:
+#             i -=1
+#             Circle[i] = Circle[i][Click:]+Circle[i][:Click]
+#     Tflag = False
+#     for i in range(n):
+#         for j in range(m):
+#             if Circle[i][j] != 0:
+#                 if not Tflag:
+#                     Tflag,table[i][j] = check(i,j),check(i,j)
+#                 table[i][j] = check(i,j)
     
-    if not Tflag:
-        count = sum([i.count(0) for i in Circle])
-        avgSum = sum([sum(i[:]) for i in Circle])
-        if avgSum != 0:
-            avg = avgSum/((n*m)-count)
-            for i in range(n):
-                for j in range(m):
-                    if Circle[i][j] != 0:
-                        if Circle[i][j] < avg:
-                            Circle[i][j] += 1
-                        elif Circle[i][j] > avg:
-                            Circle[i][j] -=1
+#     if not Tflag:
+#         count = sum([i.count(0) for i in Circle])
+#         avgSum = sum([sum(i[:]) for i in Circle])
+#         if avgSum != 0:
+#             avg = avgSum/((n*m)-count)
+#             for i in range(n):
+#                 for j in range(m):
+#                     if Circle[i][j] != 0:
+#                         if Circle[i][j] < avg:
+#                             Circle[i][j] += 1
+#                         elif Circle[i][j] > avg:
+#                             Circle[i][j] -=1
+#     else:
+#         for i in range(n):
+#             for j in range(m):
+#                 if table[i][j]:
+#                     Circle[i][j] = 0
+
+# for i in rd:
+#     Rotate(i)
+
+# print(sum([sum(i[:]) for i in Circle]))
+
+'''
+1회차 > 변환테이블을 불리언타입으로 추가해서 패스했다. 생각한대로 빡구현문제였다.
+'''
+
+###############################################################################################################################################################################################
+###############################################################################    Q1655  _  가운데를 말해요    ###############################################################################
+###############################################################################################################################################################################################
+'''
+Given ) 매번 숫자가 주어지며 나는 현재까지 주어진 숫자들 중, 중간에 해당하는 숫자를 대답해야한다. 만약 현재까지 주어진 숫자 총합이 짝수일 경우 가운데에 해당하는 두 숫자 중 작은수를 말한다.
+Input ) 첫째 줄에 정수의 개수 N 이 주어진다. ( 1<= N <= 100,000 )
+        이후 N 줄에 걸쳐 외치는 정수가 주어지며 정수는 -10,000 이상 10,000 이하이다.
+Output) 첫째줄 이후에 한줄에 하나씩 말해야하는 수를 출력
+'''
+
+'''
+1회차 > 시간제한이 0.1 로 매우매우 촉박하다. 또한 이것이 힌트이다. 
+        매번 1개의 숫자가 주어진다. 따라서 매번 중간위치를 찾을 필요는 없다. 대신 우선순위 큐를 이용해서 삽입해보고자 한다.
+        힌트를 얻어 우선순위큐를 최대힙,최소힙으로 나누어 중간값을 포함한 왼쪽 최대힙, 중간값보다 큰 오른쪽 최소힙을 구현한다
+        1. 제일 처음 주어지는값은 왼쪽 최대힙에 삽입하고 이후 주어지는 값이 중간값보다 크다면 오른쪽 최소힙에 삽입
+        3. 왼쪽,오른쪽 힙의 길이가 같다면 왼쪽 힙에 삽입
+'''
+
+import heapq
+
+give = [ 5, 2, 10, -99, 7, 5]
+
+left,right = [-1],[]
+ll,rl = 0,0
+
+for i in give:
+    mid = -heapq.heappop(left)
+    if i <= mid:
+        heapq.heappush(left,-i)
+        heapq.heappush(right,mid)
     else:
-        for i in range(n):
-            for j in range(m):
-                if table[i][j]:
-                    Circle[i][j] = 0
+        heapq.heappush(right,i)
+        heapq.heappush(left,-mid)
 
-for i in rd:
-    Rotate(i)
 
-print(sum([sum(i[:]) for i in Circle]))
+    temp = -heapq.heappop(left)
+    print(temp)
+    heapq.heappush(left,-temp)
+
