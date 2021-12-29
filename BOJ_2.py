@@ -1066,25 +1066,47 @@ Output) 첫째줄 이후에 한줄에 하나씩 말해야하는 수를 출력
         1. 제일 처음 주어지는값은 왼쪽 최대힙에 삽입하고 이후 주어지는 값이 중간값보다 크다면 오른쪽 최소힙에 삽입
         3. 왼쪽,오른쪽 힙의 길이가 같다면 왼쪽 힙에 삽입
 '''
+# import heapq
+# import sys
+# input = sys.stdin.readline
+# n = int(input())
+# give = int(input())
+# left,right = [-give],[]
+# ll,rl = 1,0
 
-import heapq
+# def hpopleft():
+#     return -heapq.heappop(left)
+# def hpushleft(data):
+#     heapq.heappush(left,-data)
+# def hpopright():
+#     return heapq.heappop(right)
+# def hpushright(data):
+#     heapq.heappush(right,data)
 
-give = [ 5, 2, 10, -99, 7, 5]
-
-left,right = [-1],[]
-ll,rl = 0,0
-
-for i in give:
-    mid = -heapq.heappop(left)
-    if i <= mid:
-        heapq.heappush(left,-i)
-        heapq.heappush(right,mid)
-    else:
-        heapq.heappush(right,i)
-        heapq.heappush(left,-mid)
-
-
-    temp = -heapq.heappop(left)
-    print(temp)
-    heapq.heappush(left,-temp)
-
+# print(-left[0])
+# for _ in range(n-1):
+#     i = int(input())
+#     mid = hpopleft()
+#     ll -= 1
+#     if ll == rl:
+#         hpushleft(min([mid,i]))
+#         hpushright(max([mid,i]))
+#         ll += 1
+#         rl += 1
+#     elif ll<rl:
+#         hpushleft(i)
+#         hpushleft(mid)
+#         ll += 2
+#     else:
+#         print('check error!')
+#         break
+#     tL = hpopleft()
+#     tR = hpopright()
+#     if tL > tR:
+#         hpushright(tL)
+#         print(tR)
+#         hpushleft(tR)
+#     else:
+#         print(tL)
+#         hpushleft(tL)
+#         hpushright(tR)

@@ -1,5 +1,4 @@
-a =[1,2,3,4,5]
-t = 2
-b = a[-t:] + a[:-t]
-print(b)
+give = [ 5, 2, 10, -99, 7, 5]
+mid = 1
 
+print(min([mid,give[0]]))
