@@ -14,5 +14,28 @@ Output) 적절히 움직여 얻을 수 있는 최대점수를 출력한다
 Approach )  말의 개수가 4개이므로, 말 각각의 앞 5칸까지의 획득가능 점수테이블을 작성하고 
             bfs 를 통해 10회의 움직임을 구현하더라도 4^(10) 으로 1,000,000 회정도에 불과하다
             점수테이블 갱신에 신경쓴다면 문제없을듯 하다
+
 '''
 
+get = [1,2,3,4,1,2,3,4,1,2] # A = 190
+nodes = [[2,4,6,8] for _ in range(4)]
+mainTable =[2*i for i in range(1,21)]
+Table1 = [13,16,19,25,30,35,40]
+Table2 = [22,24,25,30,35,40]
+Table3 = [28,27,26,25,30,35,40]
+result = 0
+for i in range(4):
+
+    a,b,c,d = [[nodes[j][i],j] for j in range(4)]
+    point, node = max(a,b,c,d)
+    result += point
+    pointIndex = mainTable.index(point)+1
+    nodes[node] = mainTable[pointIndex:pointIndex+4]
+    print(nodes[node])
+    print(result)
+
+    print(f'point : {point} && node : {node}')
+
+    pass
+
+print(mainTable)
