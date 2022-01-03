@@ -16,26 +16,91 @@ Approach )  말의 개수가 4개이므로, 말 각각의 앞 5칸까지의 획�
             점수테이블 갱신에 신경쓴다면 문제없을듯 하다
 
 '''
-
-get = [1,2,3,4,1,2,3,4,1,2] # A = 190
-nodes = [[2,4,6,8] for _ in range(4)]
-mainTable =[2*i for i in range(1,21)]
-Table1 = [13,16,19,25,30,35,40]
-Table2 = [22,24,25,30,35,40]
-Table3 = [28,27,26,25,30,35,40]
+get = [1,2,3,4,5,5,5,5,5] # A = 190
+socket = [False for _ in range(41)]
+nodes = [[2,4,6,8,10] for _ in range(4)]
+mainTable =[2*i for i in range(21)]
+CrossTable = [[],[13,16,19,25,30,35,40],[22,24,25,30,35,40],[28,27,26,25,30,35,40]]
 result = 0
-for i in range(4):
+nodePosition = [[0,0,False] for _ in range(4)]
 
-    a,b,c,d = [[nodes[j][i],j] for j in range(4)]
-    point, node = max(a,b,c,d)
+for i in get:
+    i -= 1
+    #4개의 노드 테이블 중 i 인덱스 데이터와 해당 노드의 숫자 추출
+    maxTable = [[nodes[j][i],j] for j in range(4)] # [2,4,6,8,10]
+
+
+    #4개의 노드가 갈 수 있는 길 중 현재 주어진 input 인덱스에서 가장 큰 값 반환
+    while True:
+        point, node = max(maxTable)
+        if point == 0: #자리가 없어서 골라인으로 한개는 들어가야 할 때
+            break
+            socket[now] = False #비워주기
+            break
+        ########################################################### <<<<<<<<<<<<< 22/01/03 크로스테이블 인덱스 정리중이었음
+        now = mainTable[nodePosition[node][0]] #현재 max값을 반환받은 노드의 위치
+        if socket[point]:
+            maxTable.remove([point,node])
+            continue
+        socket[now] = False
+        socket[point] = True
+        break
+        # if socket[point]:
+        #     maxTable.remove([point,node])
+        # else:
+        #     now = nodePosition[node][0]
+        #     if point==0:
+        #         socket[now] = False
+        #         break
+        #     socket[now] = False
+        #     socket[point] = True
+        #     break
+
     result += point
-    pointIndex = mainTable.index(point)+1
-    nodes[node] = mainTable[pointIndex:pointIndex+4]
-    print(nodes[node])
+    def pushNode(num):
+        pointIndex = CrossTable[num].index(point)+1
+        alpha = 5 - (len(CrossTable[num]) - pointIndex) #4
+        temp = CrossTable[num][pointIndex:]
+        for _ in range(alpha):
+            temp += [0]
+        nodes[node] = temp[:]
+        nodePosition[node][0] = pointIndex-1
+        # try:
+        #     nodes[node] = CrossTable[num][pointIndex:pointIndex+5]
+        # except IndexError:
+        #     temp = CrossTable[num][pointIndex:]
+        #     if len(temp) < 5:
+        #         alpha = 5 - len(temp)
+        #         for _ in range(alpha):
+        #             temp += [0]
+        #     nodes[node] = temp[:]
+        # nodePosition[node][0] = pointIndex
+
+    #노드 앞의 5칸 갱신
+    if point%10 == 0 and not nodePosition[node][2]: # 파란색 원의 경우
+        pointIndex = mainTable.index(point)+1
+        nodes[node] = CrossTable[point//10][:5]
+        nodePosition[node] = [pointIndex-1,point//10,True]
+
+    elif nodePosition[node][2]:
+        now = nodes[node][0]
+        if 13<=now<=19:
+            pushNode(1)
+        elif 22<=now<=24:
+            pushNode(2)
+        else:
+            pushNode(3)
+
+    else:
+        pointIndex = mainTable.index(point)+1
+        try:
+            nodes[node] = mainTable[pointIndex:pointIndex+5]
+        except IndexError:
+            temp = mainTable[pointIndex:]
+            if len(temp) < 5:
+                alpha = 5 - len(temp)
+                for _ in range(alpha):
+                    temp += [0]
+            nodes[node] = temp[:]
+        nodePosition[node][0] = pointIndex-1
     print(result)
-
-    print(f'point : {point} && node : {node}')
-
-    pass
-
-print(mainTable)
