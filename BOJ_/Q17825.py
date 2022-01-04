@@ -16,13 +16,15 @@ Approach )  말의 개수가 4개이므로, 말 각각의 앞 5칸까지의 획�
             점수테이블 갱신에 신경쓴다면 문제없을듯 하다
 
 '''
-get = [1,2,3,4,5,5,5,5,5] # A = 190
+get = [5,5,5,2,5,5,2,5,2] # A = 190
 socket = [False for _ in range(41)]
+socket[0] = True
 nodes = [[2,4,6,8,10] for _ in range(4)]
 mainTable =[2*i for i in range(21)]
 CrossTable = [[],[13,16,19,25,30,35,40],[22,24,25,30,35,40],[28,27,26,25,30,35,40]]
 result = 0
-nodePosition = [[0,0,False] for _ in range(4)]
+nodePosition = [[0,0,False] for _ in range(4)] # 현재위치, 크로스테이블 인덱스 , 크로스테이블 진입여부
+flag = False
 
 for i in get:
     i -= 1
@@ -34,8 +36,16 @@ for i in get:
     while True:
         point, node = max(maxTable)
         if point == 0: #자리가 없어서 골라인으로 한개는 들어가야 할 때
-            break
-            socket[now] = False #비워주기
+            nodetemp = []
+            for a,maxTableNode in maxTable:
+                Val,CIndex,CNodeBool = nodePosition[maxTableNode]
+                nodetemp.append([CrossTable[CIndex][Val],maxTableNode])
+            
+            div,node= max(nodetemp)
+            nodePosition[node][0] = 40
+            socket[div] = False #비워주기
+            flag = True
+            
             break
         ########################################################### <<<<<<<<<<<<< 22/01/03 크로스테이블 인덱스 정리중이었음
         now = mainTable[nodePosition[node][0]] #현재 max값을 반환받은 노드의 위치
@@ -55,8 +65,11 @@ for i in get:
         #     socket[now] = False
         #     socket[point] = True
         #     break
-
+    
     result += point
+    if flag:
+        point = 40
+        flag = False
     def pushNode(num):
         pointIndex = CrossTable[num].index(point)+1
         alpha = 5 - (len(CrossTable[num]) - pointIndex) #4
@@ -83,14 +96,14 @@ for i in get:
         nodePosition[node] = [pointIndex-1,point//10,True]
 
     elif nodePosition[node][2]:
-        now = nodes[node][0]
-        if 13<=now<=19:
-            pushNode(1)
-        elif 22<=now<=24:
-            pushNode(2)
-        else:
-            pushNode(3)
-
+        pushNode(nodePosition[node][1])
+        # now = nodes[node][0]
+        # if 13<=now<=19:
+        #     pushNode(1)
+        # elif 22<=now<=24:
+        #     pushNode(2)
+        # else:
+        #     pushNode(3)
     else:
         pointIndex = mainTable.index(point)+1
         try:
@@ -103,4 +116,5 @@ for i in get:
                     temp += [0]
             nodes[node] = temp[:]
         nodePosition[node][0] = pointIndex-1
-    print(result)
+    print(nodePosition)
+    print()
