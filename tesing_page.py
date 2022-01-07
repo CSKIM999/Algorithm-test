@@ -1,2 +1,5 @@
-socket = [[False for _ in range(41)],[False for _ in range(5)]]
-print(socket)
+a=[[1],[2],[3]]
+
+a.remove(0)
+
+print(a)
