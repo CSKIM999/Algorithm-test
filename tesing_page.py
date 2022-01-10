@@ -1,5 +1,5 @@
-a=[[1],[2],[3]]
-
-a.remove(0)
-
+n = 2
+a=[[False]*4 for _ in range(n)]
+b=[[False]*4]*n
+print(b)
 print(a)

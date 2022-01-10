@@ -26,9 +26,15 @@ Approach )  이번엔 각 필요 모듈을 확실하게 구현하고 조합해�
 def xprint(a):
     for i in a:
         print(i)
-get = [[1,1,1]]
+
+point = 0
+get = [[2,1,1]] #가로 2칸짜리 1,1 에 놓기
 
 Block = [[[False]*4 for _ in range(6)] for _ in range(2)] # 0 : green 1: blue
+Block[0][3] = [True]*4
+
+xprint(Block[0])
+print()
 def blockdown(t,x,y,block):
     if t == 1:
         lot = [[x,y]]
@@ -37,11 +43,56 @@ def blockdown(t,x,y,block):
     else:
         lot = [[x,y],[x+1,y]]
 
-    stopPosition = 6
-    for row,col in lot:
+    stopPosition = 5
+    for row,col in lot:#정지위치 찾기
         temp = [i[col] for i in block]
         for i in range(len(temp)):
             if temp[i]:
-                stopPosition = min(i,stopPosition)
+                stopPosition = min(i-1,stopPosition)
+    
+    for row,col in lot:
+        if t == 3:
+            block[stopPosition][col],block[stopPosition-1][col] = True, True
+            return
+        block[stopPosition][col] = True
+    return
 
-blockdown(2,1,0,Block[0])
+def getPoint(block):
+    global point
+    flag = False
+    for i in range(len(block)):
+        if False in block[i]:
+            continue
+        block.remove(block[i])
+        block.insert(0,[False]*4)
+        point+=1
+        flag = True
+        break
+    if flag:
+        getPoint(block)
+
+def CheckTheTopBlock(block):
+
+    for i in range(2):
+        if True in block[i]:
+            block.pop()
+
+    for i in range(6-len(block)):
+        block.insert(0,[False]*4)
+
+
+CheckTheTopBlock(Block[0])
+# xprint(Block[0])
+
+def GtoB(lot):
+    temp = []
+    for x,y in lot: #lot = given
+        temp.append([y,(3-x)])
+    return temp
+    
+
+# given 의 열은 trans 의 행값이 됨
+# given 의 행값은 trans 의 열값과 반비례
+# [2,2],[3,2] = [2,1],[2,0]
+# [2,3],[3,3] = [3,1],[3,0]
+print(GtoB([[2,3],[3,3]]))
