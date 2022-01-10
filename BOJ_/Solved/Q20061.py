@@ -22,26 +22,37 @@ Approach )  이번엔 각 필요 모듈을 확실하게 구현하고 조합해�
             블루블럭 모듈
             >>> 1. 주어진 타일 회전
 '''
-
-def xprint(a):
-    for i in a:
-        print(i)
-
+import sys
+n = int(input())
+get = []
+for i in range(n):
+    get.append(list(map(int,input().split())))
 point = 0
-get = [[2,1,1]] #가로 2칸짜리 1,1 에 놓기
-
+sectorPoint = 0
 Block = [[[False]*4 for _ in range(6)] for _ in range(2)] # 0 : green 1: blue
-Block[0][3] = [True]*4
 
-xprint(Block[0])
-print()
-def blockdown(t,x,y,block):
-    if t == 1:
-        lot = [[x,y]]
-    elif t == 2:
-        lot = [[x,y],[x,y+1]]
-    else:
-        lot = [[x,y],[x+1,y]]
+def GtoB(lot):
+    temp = []
+    for x,y in lot: #lot = given
+        temp.append([y,(3-x)])
+    return temp
+    
+def blockdown(t,x,y,block,gnb):
+    if gnb == 1:
+        if t == 1:
+            lot = [[x,y]]   
+        elif t == 2:
+            lot = [[x,y],[x,y+1]]
+        else:
+            lot = [[x,y],[x+1,y]]
+        lot = GtoB(lot)
+    else:    
+        if t == 1:
+            lot = [[x,y]]
+        elif t == 2:
+            lot = [[x,y],[x,y+1]]
+        else:
+            lot = [[x,y],[x+1,y]]
 
     stopPosition = 5
     for row,col in lot:#정지위치 찾기
@@ -51,7 +62,10 @@ def blockdown(t,x,y,block):
                 stopPosition = min(i-1,stopPosition)
     
     for row,col in lot:
-        if t == 3:
+        if gnb == 1 and t == 2:
+            block[stopPosition][col],block[stopPosition-1][col] = True, True
+            return
+        if t == 3 and gnb != 1:
             block[stopPosition][col],block[stopPosition-1][col] = True, True
             return
         block[stopPosition][col] = True
@@ -80,19 +94,27 @@ def CheckTheTopBlock(block):
     for i in range(6-len(block)):
         block.insert(0,[False]*4)
 
-
-CheckTheTopBlock(Block[0])
-# xprint(Block[0])
-
-def GtoB(lot):
-    temp = []
-    for x,y in lot: #lot = given
-        temp.append([y,(3-x)])
-    return temp
+def settle(All):
+    temp = 0
+    for sector in All:
+        for i in sector:
+            for j in i:
+                if j:
+                    temp += 1
     
+    return temp
 
-# given 의 열은 trans 의 행값이 됨
-# given 의 행값은 trans 의 열값과 반비례
-# [2,2],[3,2] = [2,1],[2,0]
-# [2,3],[3,3] = [3,1],[3,0]
-print(GtoB([[2,3],[3,3]]))
+for t,x,y in get:
+    for i in range(2):
+        blockdown(t,x,y,Block[i],i)
+        getPoint(Block[i])
+        CheckTheTopBlock(Block[i])
+sectorPoint = settle(Block)
+print(point)
+print(sectorPoint)
+
+
+'''
+1회차>> 바로 정답판정 1초 추가시간 없는 조건에서 520ms 아주 빠른속도는 아닌듯하다.
+        17825 의 실패를 발판으로 기계적 모듈화해서 풀어보았는데 꽤 효율이 좋았다. 아무래도 구현문제여서 그런것도 있는듯함.
+'''

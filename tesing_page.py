@@ -1,5 +1,6 @@
-n = 2
-a=[[False]*4 for _ in range(n)]
-b=[[False]*4]*n
-print(b)
-print(a)
+n = int(input())
+get = []
+for i in range(n):
+    get.append(list(map(int,input().split())))
+
+print(get)
