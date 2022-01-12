@@ -1,6 +1,6 @@
-n = int(input())
-get = []
-for i in range(n):
-    get.append(list(map(int,input().split())))
+data = [[1],[],[3]]
 
-print(get)
+for i in range(len(data)):
+    if not data[i]:
+        continue
+    print(data[i])
