@@ -36,24 +36,46 @@ Approach )  많지는 않으나 경우의 수가 존재한다. 따라서 bfs 를
                 물고기를 먹고 해당 물고기의 방향 상속
                 바라보는 방향에 물고기 리스트 존재하지 않을경우 종료
 '''
-
+def xprint(a):
+    for i in a:
+        print(i)
 # rotate :  ↑, ↖, ←, ↙, ↓, ↘, →, ↗
-rt = [[-1,0],[-1,-1],[0,-1],[1,-1],[1,0],[1,1],[0,1],[-1,1]]
+rt = [[],[-1,0],[-1,-1],[0,-1],[1,-1],[1,0],[1,1],[0,1],[-1,1]]
 get = [
     [7, 6, 2, 3, 15, 6, 9, 8],
     [3, 1, 1, 8, 14, 7, 10, 1],
     [6, 1, 13, 6, 4, 3, 11, 4],
     [16, 1, 8, 7, 5, 2, 12, 2]
 ] # 출력 33
+
 table = [] #[number,rotate]
-Fish = [] #[인덱스번호 == 물고기번호 ,[x,y,d]]
+Fish = [[]] #[인덱스번호 == 물고기번호 ,[x,y,d]]
+# for i in range(4):
+#     temp = list(map(int,input().split()))
+#     table.append([[temp[i],temp[i+1]] for i in range(0,len(temp),2)])
+for i in get:
+    temp = [[i[j],i[j+1]] for j in range(0,len(i),2)]
+    for a,b in temp:
+        Fish.append([a,b])
+    table.append(temp)
+Fish.sort()
 result = 0
+
+for i in range(4):
+    for j in range(4):
+        now = table[i][j][0]
+        if now == 0:
+            continue
+        Fish[now] = [i,j,Fish[now][1]]
+
 
 #게임시작과 0,0 위치한 물고기 먹기
 num,rot = table[0][0]
 shark = [0,0,rot]
 result += num
 Fish[num] = []
+table[0][0] = [0,6]
+
 def getFlist(shark): # return : [Fishnum,FishRotate] || [] emptylist == gameover
     global rt,table
     temp =[]
@@ -78,10 +100,19 @@ def moveFish(fishes):
         #회전 분기점
         while flag:
             nx,ny = x+rt[d][0],y+rt[d][1]
-            target = table[nx][ny]
-            if target == 0 or (not 0<=nx<4 or not 0<=ny<4):
+            if not 0<=nx<4 or not 0<=ny<4:
                 # 이동 불가의 경우
-                d =  (d+1)%8
+                d =  (d+1)%9
+                if d == 0:
+                    d+=1
+                if d == comp:
+                    flag = False
+                continue
+            target = table[nx][ny][0]
+            if target == 0:
+                d =  (d+1)%9
+                if d == 0:
+                    d+=1
                 if d == comp:
                     flag = False
             elif not target: #만약 비어있다면
@@ -89,7 +120,7 @@ def moveFish(fishes):
                 fishes[i] = [nx,ny,d]
                 flag = False
             else:
-                table[x][y],table[nx][ny] = table[nx][ny],table[x][y]
+                table[x][y],table[nx][ny] = table[nx][ny],[table[x][y][0],d]
                 fishes[i] = [nx,ny,d]
                 fishes[target] = [x,y,fishes[target][2]]
                 flag = False
@@ -107,3 +138,8 @@ def moveShark(Target,Fishes,Shark,Result,Table): #target = [fishnum,fishrot],Fis
 
 def dfs(Result,Table,Fishes,Shark):
     pass
+print(Fish)
+xprint(table)
+moveFish(Fish)
+print()
+xprint(table)
