@@ -35,6 +35,16 @@ Approach )  많지는 않으나 경우의 수가 존재한다. 따라서 bfs 를
                 현재 상어가 바라보는 방향에 존재하는 물고기 리스트 반환
                 물고기를 먹고 해당 물고기의 방향 상속
                 바라보는 방향에 물고기 리스트 존재하지 않을경우 종료
+
+            상어등장
+            dfs 구조
+            물고기 움직이기
+            현재 테이블에서 상어가 먹을 수 있는 물고기 리스트 구하기
+            만약 더이상 먹을 물고기가 없다면 종료
+
+            리스트에서 먹이별 테이블, 물고기위치 리스트 슬라이싱
+            다시 dfs
+
 '''
 def xprint(a):
     for i in a:
@@ -49,15 +59,22 @@ get = [
 ] # 출력 33
 
 table = [] #[number,rotate]
-Fish = [[]] #[인덱스번호 == 물고기번호 ,[x,y,d]]
-# for i in range(4):
-#     temp = list(map(int,input().split()))
-#     table.append([[temp[i],temp[i+1]] for i in range(0,len(temp),2)])
-for i in get:
-    temp = [[i[j],i[j+1]] for j in range(0,len(i),2)]
+Fish = [[]] #[인덱스번호 == 물고기번호 ,[x,y,d]] 각 물고기 위치확인//
+
+for i in range(4):
+    temp = list(map(int,input().split()))
+    temp = [[temp[i],temp[i+1]] for i in range(0,len(temp),2)]
     for a,b in temp:
         Fish.append([a,b])
     table.append(temp)
+
+# for i in get:
+#     temp = [[i[j],i[j+1]] for j in range(0,len(i),2)]
+#     for a,b in temp:
+#         Fish.append([a,b])
+#     table.append(temp)
+
+
 Fish.sort()
 result = 0
 
@@ -71,27 +88,27 @@ for i in range(4):
 
 #게임시작과 0,0 위치한 물고기 먹기
 num,rot = table[0][0]
-shark = [0,0,rot]
+# shark = [0,0,rot]
+Fish[0] = [0,0,rot]
 result += num
 Fish[num] = []
 table[0][0] = [0,6]
 
-def getFlist(shark): # return : [Fishnum,FishRotate] || [] emptylist == gameover
-    global rt,table
+def getFlist(fishes,getTable): # return : [fishnum1,fishnum2...] || [] emptylist == gameover
+    global rt
     temp =[]
-    x,y,r = shark
-    for i in range(4):
+    x,y,r = fishes[0]
+    for i in range(1,4):
         nx,ny = x+(rt[r][0]*i),y+(rt[r][1]*i)
         if not 0<=nx<4 or not 0<=ny<4:
             break
-        if table[nx][ny]: #현재 타겟이 비어있지 않다면 == 빈칸을 추려내기위함
-            temp.append(table[nx][ny])
+        if getTable[nx][ny]: #현재 타겟이 비어있지 않다면 == 빈칸을 추려내기위함
+            temp.append(getTable[nx][ny][0])
 
     return temp
 
-def moveFish(fishes):
-    global table
-    for i in range(len(fishes)):
+def moveFish(fishes,moveTable): #movetable 
+    for i in range(1,len(fishes)):
         if not fishes[i]:
             continue
         x,y,d = fishes[i]
@@ -108,7 +125,10 @@ def moveFish(fishes):
                 if d == comp:
                     flag = False
                 continue
-            target = table[nx][ny][0]
+            try:
+                target = moveTable[nx][ny][0]
+            except:
+                target = []
             if target == 0:
                 d =  (d+1)%9
                 if d == 0:
@@ -116,30 +136,44 @@ def moveFish(fishes):
                 if d == comp:
                     flag = False
             elif not target: #만약 비어있다면
-                table[nx][ny] = i
+                moveTable[x][y],moveTable[nx][ny] =[],[i,d]
                 fishes[i] = [nx,ny,d]
                 flag = False
             else:
-                table[x][y],table[nx][ny] = table[nx][ny],[table[x][y][0],d]
+                moveTable[x][y],moveTable[nx][ny] = moveTable[nx][ny],[moveTable[x][y][0],d]
                 fishes[i] = [nx,ny,d]
                 fishes[target] = [x,y,fishes[target][2]]
                 flag = False
+    return [fishes,moveTable]
         
-def moveShark(Target,Fishes,Shark,Result,Table): #target = [fishnum,fishrot],Fishes : Fish
-    x,y,r = Shark
-    nx,ny,nr = Fishes[Target[0]]
-    Result += Target[0]
-    Shark = [nx,ny,nr]
-    Table[nx][ny] = [0,nr]
+def moveShark(Target,Fishes,Result,moveTable): #target = fishnum,Fishes : Fish
+    x,y,r = Fishes[0]
+    nx,ny,nr = Fishes[Target]
+    Result += Target
+    Fishes[0] = [nx,ny,nr]
+    moveTable[nx][ny] = [0,nr]
 
     Fishes[Target] = []
-    Table[x][y] = []
-    
+    moveTable[x][y] = []
+    return Result,Fishes,moveTable
 
-def dfs(Result,Table,Fishes,Shark):
-    pass
-print(Fish)
-xprint(table)
-moveFish(Fish)
-print()
-xprint(table)
+def dfs(Result,Table,Fishes):
+    global result
+    FIndfs,TIndfs = moveFish(Fishes[:],[i[:] for i in Table])
+    canEat = getFlist(FIndfs,TIndfs)
+    if len(canEat) == 0:
+        result = max(Result,result)
+        return
+    for i in canEat:
+        tResult = Result
+        temp = [FIndfs[:],[j[:] for j in TIndfs]]
+        tResult,temp[0],temp[1] = moveShark(i,temp[0],tResult,temp[1])
+        dfs(tResult,temp[1],temp[0])
+    
+dfs(result,table,Fish)
+print(result)
+
+'''
+정답판정 // 간만에 dfs 쓰려니 슬라이싱이 헷갈려서 자꾸 틀렸다.
+            1차원 리스트는 그냥 슬라이싱 [:] 을 써도 되지만, 2차원 리스트는 리스트컴프리헨션 슬라이싱을 통해서 복사해주어야만 한다
+'''
