@@ -23,24 +23,24 @@ def xprint(a):
     for i in a:
         print(i)
 
-n,k = 4,4
-data = [
-    [0, 0, 2, 0],
-    [0, 0, 1, 0],
-    [0, 0, 1, 2],
-    [0, 2, 0, 0]
-]
-dot = [[1,0,0],[2,1,2],[1,1,0],[3,0,1]]
+# n,k = 4,4
+# data = [
+#     [0, 0, 2, 0],
+#     [0, 0, 1, 0],
+#     [0, 0, 1, 2],
+#     [0, 2, 0, 0]
+# ]
+# dot = [[1,0,0],[2,1,2],[1,1,0],[3,0,1]]
 direction = [[0,1],[0,-1],[-1,0],[1,0]]
 
-# n,k = map(int,input().split())
-# data = []
-# dot = []
-# for i in range(n):
-#     data.append(list(map(int,input().split())))
-# for j in range(k):
-#     a,b,c = map(int,input().split())
-#     dot.append([a-1,b-1,c-1])
+n,k = map(int,input().split())
+data = []
+dot = []
+for i in range(n):
+    data.append(list(map(int,input().split())))
+for j in range(k):
+    a,b,c = map(int,input().split())
+    dot.append([a-1,b-1,c-1])
 
 for i in range(n):
     data[i] = [2]+data[i]+[2]
@@ -60,62 +60,62 @@ def check():
                 return False
     return True
 
-def white(idx):
-    global dot
-    x,y,d = dot[idx]
-    I = socket[x][y].index(idx)
-    nx,ny = x+direction[d][0],y+direction[d][1]
-    C = socket[x][y][I:]
-    for n1 in C:
-        nd = dot[n1][2]
-        dot[n1] = [nx,ny,nd]
-    dot[idx] = [nx,ny,d]
-    socket[nx][ny] += (socket[x][y][I:])
-    del socket[x][y][I:]
+# def white(idx):
+#     global dot
+#     x,y,d = dot[idx]
+#     I = socket[x][y].index(idx)
+#     nx,ny = x+direction[d][0],y+direction[d][1]
+#     C = socket[x][y][I:]
+#     for n1 in C:
+#         nd = dot[n1][2]
+#         dot[n1] = [nx,ny,nd]
+#     dot[idx] = [nx,ny,d]
+#     socket[nx][ny] += (socket[x][y][I:])
+#     del socket[x][y][I:]
 
-def red(idx):
-    global dot
-    x,y,d = dot[idx] 
-    I = socket[x][y].index(idx)
-    nx,ny = x+direction[d][0],y+direction[d][1]
-    C = socket[x][y][I:]
-    for n1 in C:
-        nd = dot[n1][2]
-        dot[n1] = [nx,ny,nd]
-    socket[nx][ny] += list(reversed(socket[x][y][I:]))
-    del socket[x][y][I:]
+# def red(idx):
+#     global dot
+#     x,y,d = dot[idx] 
+#     I = socket[x][y].index(idx)
+#     nx,ny = x+direction[d][0],y+direction[d][1]
+#     C = socket[x][y][I:]
+#     for n1 in C:
+#         nd = dot[n1][2]
+#         dot[n1] = [nx,ny,nd]
+#     socket[nx][ny] += list(reversed(socket[x][y][I:]))
+#     del socket[x][y][I:]
 
-def blue(idx):
-    global dot
-    x,y,d = dot[idx]
-    if d%2 == 1:
-        d-=1
-    else:
-        d+=1
-    dot[idx] = [x,y,d]
-    nx,ny = x+direction[d][0],y+direction[d][1]
-    if data[nx+1][ny+1] == 2:
-        return
-    elif data[nx+1][ny+1] == 1:
-        red(idx)
-    else:
-        white(idx)
+# def blue(idx):
+#     global dot
+#     x,y,d = dot[idx]
+#     if d%2 == 1:
+#         d-=1
+#     else:
+#         d+=1
+#     dot[idx] = [x,y,d]
+#     nx,ny = x+direction[d][0],y+direction[d][1]
+#     if data[nx+1][ny+1] == 2:
+#         return
+#     elif data[nx+1][ny+1] == 1:
+#         red(idx)
+#     else:
+#         white(idx)
 
-def operation(lst):
-    global flag
-    global dot
-    for i in range(len(lst)):
-        x,y,d = lst[i]
-        nx,ny = x+direction[d][0],y+direction[d][1]
-        if data[nx+1][ny+1] == 1:
-            red(i)
-        elif data[nx+1][ny+1] == 2:
-            blue(i)
-        else:
-            white(i)
-        if not check():
-            flag = False
-            break
+# def operation(lst):
+#     global flag
+#     global dot
+#     for i in range(len(lst)):
+#         x,y,d = lst[i]
+#         nx,ny = x+direction[d][0],y+direction[d][1]
+#         if data[nx+1][ny+1] == 1:
+#             red(i)
+#         elif data[nx+1][ny+1] == 2:
+#             blue(i)
+#         else:
+#             white(i)
+#         if not check():
+#             flag = False
+#             break
 
 # while True:
 #     operation(dot)
@@ -125,39 +125,46 @@ def operation(lst):
 #         result = -1
 #         break
 #     result += 1
-nodeAct = [True]*n
-print(socket[2][1])
+nodeAct = [True]*(k)
+
 def W(dotIndex):
+    if not nodeAct[dotIndex]:
+        return
     x,y,d = dot[dotIndex]
     nx,ny = x+direction[d][0],y+direction[d][1]
     nfs = socket[x][y][:]
     for node in nfs:
         d = dot[node][2]
         dot[node] = [nx,ny,d]
-    if not socket[nx][ny]:
-        nodeAct[dotIndex-1] = False
+    if socket[nx][ny]:
+        nodeAct[dotIndex] = False
     socket[nx][ny] += (socket[x][y][:])
     del socket[x][y][:]
 
 def R(dotIndex):
+    if not nodeAct[dotIndex]:
+        return
     x,y,d = dot[dotIndex]
     nx,ny = x+direction[d][0],y+direction[d][1]
     nfs = socket[x][y][:]
+    top = socket[x][y][-1]
     for node in nfs:
         d = dot[node][2]
         dot[node] = [nx,ny,d]
     if not socket[nx][ny]:
-        nodeAct[dotIndex-1] =False
+        nodeAct[dotIndex] =False
+        nodeAct[top] = True
     else:
-        nodeAct[dotIndex-1] = False
-        
+        nodeAct[dotIndex] = False
     socket[nx][ny] += list(reversed(socket[x][y][:]))
     del socket[x][y][:]
 
 def B(dotIndex):
+    if not nodeAct[dotIndex]:
+        return
     x,y,d = dot[dotIndex]
     if d%2 == 1:
-        d-=1
+        d-=1 
     else:
         d+=1
     dot[dotIndex][2] = d
@@ -168,3 +175,32 @@ def B(dotIndex):
         R(dotIndex)
     else:
         W(dotIndex)
+
+
+def OP(lst):
+    global flag
+    global dot
+    for i in range(len(lst)):
+        x,y,d = lst[i]
+        nx,ny = x+direction[d][0],y+direction[d][1]
+        if data[nx+1][ny+1] == 1:
+            R(i)
+        elif data[nx+1][ny+1] == 2:
+            B(i)
+        else:
+            W(i)
+        if not check():
+            flag = False
+            break
+
+
+while True:
+    OP(dot)
+    if not flag:
+        break
+    if result > 1000:
+        result = -1
+        break
+    result += 1
+
+print(result)
