@@ -7,14 +7,17 @@ nodes = [0,0]*4
 
 turn = [1, 2, 3, 4, 1 ,2, 3, 4, 1, 2]
 
-def move(dots):
+def move(point):
     Glist = []
-    for node in dots:
+    for node in nodes:
         a,b = node
         if P[a][b]:
             
+            Glist.append([table[a][b+point],node])
+
+
     return Glist
-    pass
+
 
 
 print(table)
