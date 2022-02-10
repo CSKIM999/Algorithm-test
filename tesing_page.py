@@ -1,2 +1,4 @@
-lst =[]
-print(lst == True)
+a = [1]
+a+=[0]
+
+print(a)
