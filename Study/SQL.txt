@@ -1,0 +1,164 @@
+SQL 의 기본문법
+Select >> 내가 원하는 정보 가져오기 (사실상 print 와 같은 역할)
+    ******* 여기서 select & from 과 같은 문법은 대소문자가 상관 없으나, Customers 와 같은 참조항은 정확해야함
+    
+    -- Customers 의 모든 정보 가져오기
+    Select * from Customers; 
+
+    -- Customers 에서 CustomerName 만 가져오기
+    Select CustomerName from Customers; 
+
+    -- WHERE {{ ITEM }} // 원하는 조건의 row 만 걸러서 보기
+    Select * from Orders
+    where EmployeeID = 3;
+    
+    -- ORDER BY {{ ITEM }} [[ RULE ]] // 원하는 순서대로 정렬하여 가져오기
+    Select * from Customers
+    ORDER BY ContactName;
+    
+    Select * from OrderDetails
+    ORDER BY ProductID ASC, Quantity DESC;
+    >> ORDER BY {{ ITEM }} [[ ASC or DESC ]]
+    >> ASC : 오름차순 // DESC : 내림차순
+
+    -- LIMIT [ {{ 가져올 갯수 }} or {{ 건너 뛸 갯수, 가져올 갯수 }} ] // 원하는 갯수만 가져오기
+    Select * from Customers
+    LIMIT 10;
+
+    Select * from Customers
+    limit 30,10;
+
+    -- {{ ITEM }} AS " NAME " // 일반적인 as 사용법과 같음
+    SELECT
+    CustomerId AS ID,
+    CustomerName AS NAME,
+    Address AS ADDR
+    FROM Customers;
+
+SQL 연산자
+    -- A % B // A 를 B 로 나눈 나머지
+    SELECT 10 % 3; 
+    > 1
+
+    -- 연산자와 as
+    SELECT 5 - 2.5 AS DIFFERENCE;
+    > low 가 DIFFERENCE 로 출력됨
+
+    -- IS , IS NOT , AND , OR // 모두 똑같이 활용됨
+    -- = , != , < , <= // 똑같음
+
+    --BETWEEN {min} AND {max} // 두 값 사이에 있는가?
+    SELECT * FROM Customers
+    WHERE CustomerName BETWEEN 'b' AND 'c';
+    > Customers 의 CustomerName 중 맨 앞글자가 b 인 친구들이 출력
+
+    -- {{ ITEM }} in (list) // in 사용법과 같음
+
+    -- LIKE " % " 갯수 미정, " _ " 갯수 만큼의 길이를 가지는 문자열
+    SELECT "HELLO" LIKE 'HEL%' >> TRUE
+    SELECT "HELLO" LIKE 'H%' >> TRUE
+    SELECT "HELLO" LIKE '%H' >> FALSE
+    SELECT "HELLO" LIKE 'L%' >> FALSE
+
+    SELECT "HELLO" LIKE 'HEL__' >> TRUE
+    SELECT "HELLO" LIKE 'H___O' >> TRUE
+    SELECT "HELLO" LIKE '_____' >> TRUE
+    SELECT "HELLO" LIKE 'HEL_' >> FALSE
+
+
+숫자와 문자열을 다루는 함수들
+
+    -- ################ 숫자열 관련 함수 ################
+    -- ROUND, CEIL, FLOOR // CEIL 은 올림 FLOOR 은 내림
+    SELECT 
+    ROUND(0.5),
+    CEIL(0.4),
+    FLOOR(0.6);
+    > 1,1,0
+    
+    -- ABS // 절대값
+    -- { GREATEST or LEAST }( LIST ) //  GREATEST : MAX && LEAST : min  (다만 item 에는 사용 불가)
+    -- { MAX, MIN, COUNT, SUM, AVG }( ITEM ) // 예상하는 효과 그대로
+    -- { POW }(A,B) // A를 B만큼 제곱, SQRT : 제곱근
+    
+    -- { TRUNCATE }(N,n) // N 을 소수점 n 번째 자리까지 선택
+    SELECT
+    TRUNCATE(1234.5678, 1),
+    TRUNCATE(1234.5678, -1)
+    >> 1234.5,1230
+
+    -- ################ 문자열 관련 함수 ################
+    -- {UPPER,LOWER}(STR) // 모두 대,소문자로
+
+    -- { CONCAT }(STR) // 괄호의 내용 이어붙이기
+    SELECT CONCAT('HELLO', ' ', 'THIS IS ', 2021)
+    > HELLO THIS IS 2021
+
+    -- { CONCAT_WS }(S,STR) // 괄호의 내용을 S 를 통해 이어붙이기
+    SELECT CONCAT_WS('-', 2021, 8, 15, 'AM')
+    > 2021-8-15-AM
+
+    -- { SUBSTR }(STR,NUM) // STR 을 NUM만큼 자름
+    SELECT
+    SUBSTR('ABCDEFG', 3),
+    SUBSTR('ABCDEFG', 3, 2),
+    SUBSTR('ABCDEFG', -4),
+    SUBSTR('ABCDEFG', -4, 2);
+    > CDEFG, CD, DEFG, DE
+        -- {LEFT,RIGHT}(STR,NUM) // 왼쪽 OR 오른쪽에서 NUM 글자
+
+    -- {LENGTH}(STR) // STR 의 바이트 길이
+    -- {CHAR_LENGTH}(STR) // STR 의 문자 길이 << 실제로 쓰이게 될 듯?
+
+    -- {TRIM,LTRIM,RTRIM}(STR) // 양쪽,왼쪽,오른쪽 공백제거
+
+    -- {LPAD,RPAD}(S,N,P) // S가 N자가 될때까지 P 를 이어붙임
+    SELECT
+    LPAD('ABC', 5, '-'),
+    RPAD('ABC', 5, '-');
+    > --ABC, ABC--
+
+    -- {REPLACE}(S, A, B) // S 중 A 를 B 로 변경
+    SELECT
+    REPLACE('맥도날드에서 맥도날드 햄버거를 먹었다.', '맥도날드', '버거킹');
+    > '버거킹에서 버거킹 햄버거를 먹었다.'
+
+    -- {INSTR}(STR,s) // STR 중 s 의 첫 위치 반환, 없을경우 0 반환
+
+
+날짜 DATETIME 을 다루는 함수들
+    -- DATETIME 의 기본형은 2022-02-25 10:11:41 와 같이 주어짐
+
+    -- { DATE, TIME }(STR) // 주어진 STR에 따라 날짜 혹은 시간을 생성
+
+    -- { YEAR, MONTHNAME, MONTH, WEEKDAY, DAYNAME, DAY }(DATETIME) // **NAME 은 영문값을 반환받고, 나머진 각자 함수명에 대한 값 숫자반환
+    -- { HOUR, MINUTE, SECOND }(DATETIME) // 주어진 DATETIME 의 시,분,초 를 반환
+    -- { ADDDATE, SUBDATE }(DATETIME) // 시간,날짜 더하기,빼기
+
+    -- { DATE_DIFF, TIME_DIFF }(DATETIME_1,DATETIME_2) // 두 시간 간 일수차,시간차
+
+    -- { LAST_DAY }(DATETIME) // 해당 달의 마지막 날짜
+    
+    -- { DATE_FORMAT }( %Y, %y, %M, %m, %D, %d, %T, %r, %H, %h, %i, %S, %p ) // Y:년도4자리 y:년도2자리 M:월영문 m:월숫자 D:일영문 d:일숫자 T:HH:MM:SS r:HH:MM:SS AM/PM H:24시 h:12시
+    -- { STR_TO_DATE }(S,F) // S를 F형식으로 해석하여 시간/날짜 출력
+
+    -- { IF }(조건,T,F) // 조건 TRUE 시 T, FALSE 시 F 반환
+
+    -- { IFNULL }(A,B) // A 가 NULL 일 시 B 출력
+
+
+조건에 따른 그룹화
+    -- { GROUP BY }(ITEM) // 참조DATA 에서 ITEM 에 존재하는 GROUP 들을 묶어서 출력
+
+    -- WITH ROLLUP // 각 함수 쿼리 끝에 WITH ROLLUP 을 추가하면 해당 함수 쿼리의 집계값(합) 이 추가되어 출력됨
+
+    -- HAVING 조건 // 조건에 따른 WHERE 과 같은 역할을 수행
+    SELECT Country, COUNT(*) as Count
+    from Suppliers
+    group by Country
+    HAVING Count >= 3
+    > Fance 3, Germany 3, USA 4 (Count 가 3 이상인 값 출력)
+
+    -- DISTINCT // 중복된 값의 제거
+    SELECT DISTINCT CategoryID
+    from Products
