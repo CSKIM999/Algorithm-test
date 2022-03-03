@@ -1,12 +1,5 @@
-a=[[1],[2],[]]
-def check():
-    cC = 0
-    for i in a:
-        if i:
-            cC+=1
-    if cC == 1:
-        return False
-    else:
-        return True
-
-print(check())
+input = '''2 1
+5 10
+100 100\n11'''
+print('a')
+print(list(map(int,input.split())))

@@ -162,3 +162,46 @@ SQL 연산자
     -- DISTINCT // 중복된 값의 제거
     SELECT DISTINCT CategoryID
     from Products
+
+
+서브쿼리
+
+    -- ################# 비상관 서브쿼리 ########################
+    -- 가져온 서브쿼리와 본 쿼리가 구분되어 사용되어짐
+    SELECT
+    CategoryID, CategoryName, Description,
+    (SELECT ProductName FROM Products WHERE ProductID = 1)
+    FROM Categories;
+
+    -- 서브쿼리의 경우 특정 원소가 다른 참조쿼리 안에 있는지 IN 정도에만 쓸 수 있을 듯 함.
+    -- 각각의 원소에 대입해서 사용하기엔 어려움
+
+    SELECT * FROM Products
+    WHERE Price > ALL (
+    SELECT Price FROM Products
+    WHERE CategoryID = 2
+    );
+    -- 위 코드에서 괄호 안 서브쿼리의 모든 값보다 큰 PRICE 만 WHERE 필터링에 걸쳐 나옴
+    -- 단순하게 보자면 MAX 와 비슷한 용도로 쓸듯
+    SELECT
+        CategoryID, CategoryName, Description
+    FROM Categories
+    WHERE
+        CategoryID = ANY
+        (SELECT CategoryID FROM Products
+        WHERE Price > 50);
+    -- 여기서 ANY 는 서브쿼리 내 아무거나와 충족되면 된다는 뜻
+
+    -- ################# 상관 서브쿼리 ########################
+    -- 서브쿼리와 본 쿼리가 연동되어 사용됨
+    SELECT
+    ProductID, ProductName,
+    (
+        SELECT CategoryName FROM Categories C
+        WHERE C.CategoryID = P.CategoryID
+    ) AS CategoryName
+    FROM Products P;
+    -- 위 코드에서 C의 ID 와 P 의 ID 가 일치하는 C 에서의 CATEGORYNAME 을 가져온다는 뜻
+
+    -- 상관서브쿼리는 RETURN 값에 해당 새로운 값 COLUMN 을 첨부해야하는 경우 사용해야 할 듯
+    
