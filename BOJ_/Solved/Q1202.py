@@ -1,4 +1,5 @@
-from lib import xprint
+from lib import xprint,Prepare_Coding_Test
+Prepare_Coding_Test()
 '''
 BOJ_ QuestionNumber __ 1202
 #######  TODAY  #######
@@ -13,25 +14,35 @@ INPUT ) 첫째 줄에 N,K 가 주어진다 ( 1 <= N, K <= 300,000 )
 OUTPUT) 훔칠 수 있는 보석 가격 합의 최대를 출력하라
 
 Approach ) 난이도가 없었으면 단순히 가장 비싼 물품부터 넣고자 시도했을 것 그 방법으로 해보자
+            2중 for 문은 시간초과가 남. 두번째 for 문을 이분탐색으로 해볼까 함
+            이분탐색도 시간초과가 난다고 함. 내 생각에 해봐야 300,000*log2(300,000) 해봐야 580만 케이스 아닌가 싶은데
+            
 '''
-
-import sys
 import heapq
-input = sys.stdin.readline
+
+# import sys
+# input = sys.stdin.readline
 
 
 n,k = map(int,input().split())
 J = []
-JT = [False * n]
+bP = []
 for i in range(n):
-    a = list(map(int,input().split()))
-    a.append(i)
-    J.append(a)
-c = []
+    heapq.heappush(J,list(map(int,input().split())))
+    
 for i in range(k):
     a = int(input())
-    c.append((i,a))
-heapq.heapify(J)
-heapq.heapify(c)
-print(heapq.heappop(J))
-print(c)
+    heapq.heappush(bP,a)
+
+bP.sort()
+print(J)
+result = 0
+temp = []
+for i in bP:
+    while J and i >= J[0][0]:
+        heapq.heappush(temp, -heapq.heappop(J)[1])
+    if temp:
+        result -= heapq.heappop(temp)
+    elif not J:
+        break
+print(result)

@@ -38,6 +38,8 @@ for i in range (1,N+1) : #만족도인덱스
             print(f'i : {i} && j : {j}')
             print(f'V[i] : {V[i]} ***&*** DP[i][j-W[i]] : {DP[i][j-W[i]]} ***&*** DP[i-1][j] : {DP[i-1][j]}')
             DP[i][j] = max(V[i]+DP[i][j-W[i]],DP[i-1][j])
+            print(f'{W} :: W')
+            print(f'{V} :: V')
             xprint(DP)
             print()
         else :
@@ -46,5 +48,4 @@ for i in range (1,N+1) : #만족도인덱스
 
 print(f'{W} :: W')
 print(f'{V} :: V')
-print(DP)
 xprint(DP)
