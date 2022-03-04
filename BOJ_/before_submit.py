@@ -1,48 +1,50 @@
 import sys
-from collections import deque 
 input = sys.stdin.readline
-
-
-
-n,k = map(int,input().split())
-J = []
-bP = []
-for i in range(n):
-    a,b = list(map(int,input().split()))
-    J.append(tuple([b,a]))
-for i in range(k):
-    a = int(input())
-    bP.append((a))
-
-J.sort(reverse=True)
-bP.sort()
-q = deque(J)
-result = 0
-while q:
-
-    if len(bP) == 0:
-        break
-    V,M = q.popleft()
-    if M > bP[-1]:
-        continue
-    end = len(bP)-1
-    start = 0
-    # 이분탐색 시작
-    while True:
-        mid = (end-start)//2
-        if bP[mid] >= M:
-            end = mid
-        else:
-            start = mid
-
-        if end-start <= 1:
-            if bP[start]>M:
-                node = start
-                del bP[start]
-            else:
-                node = end
-                del bP[end]
-            result += V
+key = 1000000
+dp = [0]*5001
+dp[1],dp[2] = 1,2
+for i in range(3,5001):
+    dp[i] = dp[i-1]+dp[i-2]
+x = list(str(input().strip()))
+c = 1
+flag = False
+temp = []
+for k in range(len(x)):
+    i = x[k]
+    if 1<=int(i)<=2:
+        c+=1
+        flag = True
+    elif int(i) == 0:
+        if k==0 or not 1<=int(x[k-1])<=2:
+            flag = False
+            temp = [0]
             break
+        if c>2:
+            c -= 2
+        else:
+            c=1
+        temp.append(c)
+        c = 1
+        flag= False
+    else:
+        if 6<int(i) and k>0 and x[k-1]=='2':
+            c-=1
+        if flag:
+            temp.append(c)
+        c = 1
+        flag = False
+if flag:
+    temp.append(c-1)
+elif not temp and len(x) > 0:
+    temp.append(1)
+result = 0
+if temp[0] != 0:
+    result = dp[temp[0]]
+    for t in temp[1:]:
+        if t>100:
+          for i in range(len(dp),t+1):
+            dp[i] = dp[i-1]+dp[i-2]
+        result *= dp[t]
 
-print(result)
+print(result%key)
+    
