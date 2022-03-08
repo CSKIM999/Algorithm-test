@@ -1,2 +1,2 @@
-for i in range(3,50):
-    print(i)
+a = [[1,11],[2,400]]
+print(min(a))

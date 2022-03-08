@@ -1,16 +1,22 @@
 import sys
 input = sys.stdin.readline
 
-N = int(input())
-nums = list(map(int,input().split()))
-dp = [[0 for i in range(21)] for _ in range(N-1)]
-dp[0][nums[0]] = 1
-for i in range(1,N-1):
-    now = nums[i]
-    for j in range(21):
-        if dp[i-1][j]:
-            if 0<=j+now<=20:
-                dp[i][j+now] += dp[i-1][j]
-            if 0<=j-now<=20:
-                dp[i][j-now] += dp[i-1][j]
-print(dp[-1][nums[-1]])
+N,K = map(int,input().split())
+item = []
+for i in range(N):
+    item.append(list(map(int,input().split())))
+dp = [[0 for _ in range(K+1)] for _ in range(N+1)]
+result = 0
+for i in range(1,N+1):
+    w,v = item[i-1]
+    for j in range(1,K+1):
+        if j>=w:
+            dp[i][j] = max(dp[i-1][j],dp[i-1][j-w]+v)
+        # dp[i][j]=max()
+        else:
+            dp[i][j] = dp[i-1][j]
+        if dp[i][j]>result:
+            result = dp[i][j]
+    pass
+
+print(result)
