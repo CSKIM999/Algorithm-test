@@ -1,2 +1,2 @@
-a = [[1,11],[2,400]]
-print(min(a))
+for i in range(1,8,2):
+    print(i)

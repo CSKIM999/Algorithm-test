@@ -1,49 +1,18 @@
-import sys
-input = sys.stdin.readline
-
-from collections import deque
-
-n,m,v = map(int,input().split())
-
-node = [[] for _ in range(n+1)]
-
-for i in range(m):
-    a,b = list(map(int,input().split()))
-    node[a].append(b)
-    node[b].append(a)
-
-def bfs(given,start):
-    for i in range(n+1):
-        given[i].sort()
-    q = deque(given[start])
-    hist = [False for _ in range(n+1)]
-    result = f"{start} "
-    hist[start] = True
-    while q:
-        now = q.popleft()
-        if not hist[now]:
-            result += f"{now} "
-            hist[now] = True
-            for bnode in given[now]:
-                if not hist[bnode]:
-                    q.append(bnode)
-    print(result)
-
-def dfs(given,start):
-    for i in range(n+1):
-        given[i].sort(reverse = True)
-    q = deque(given[start])
-    hist = [False for _ in range(n+1)]
-    result = f"{start} "
-    hist[start] = True
-    while q:
-        now = q.pop()
-        if not hist[now]:
-            result += f"{now} "
-            hist[now] = True
-            for bnode in given[now]:
-                if not hist[bnode] and bnode not in q:
-                    q.append(bnode)
-    print(result)
-dfs(node,v)
-bfs(node,v)
+n = int(input())
+tower = [[i+1 for i in range(n)],[],[]]
+hist = []
+def move(N,s,t):
+    tower[s-1].pop()
+    tower[t-1].append(N)
+    hist.append([s,t])
+def hanoi(N,s,v,t):
+    if N ==1:
+        move(1,s,t)
+    else:
+        hanoi(N-1,s,t,v)
+        move(N,s,t)
+        hanoi(N-1,v,s,t)
+hanoi(n,1,2,3)
+print(len(hist))
+for a,b in hist:
+    print(f"{a} {b}")
