@@ -1,2 +1,1 @@
-for i in range(1,8,2):
-    print(i)
+print(int(10*0.05))
