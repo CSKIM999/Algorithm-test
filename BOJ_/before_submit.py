@@ -1,58 +1,34 @@
 import sys
 input = sys.stdin.readline
-N = int(input())
+from itertools import permutations
+N,M,K = list(map(int,input().split()))
 table = []
+rt = []
+result =1e9
 for i in range(N):
-    table.append(list(map(int,input().split())))
-lane = []
-S = [N//2,N//2]
-c,d = 1,[1,-1]
-result = 0
-while True:
-    for i in range(1,c+1):
-        lane.append([S[0],S[1],S[0],S[1]+d[1]])
-        S = [S[0],S[1]+d[1]]
-    for i in range(1,c+1):
-        lane.append([S[0],S[1],S[0]+d[0],S[1]])
-        S = [S[0]+d[0],S[1]]
-    d = [d[0]*-1,d[1]*-1]
-    c +=1
-    if c == N:
-        for i in range(1,c):
-            lane.append([S[0],S[1],S[0],S[1]+d[1]])
-            S = [S[0],S[1]+d[1]]
-        break
-def move(lst):
+    table.append(list(map(int,(input().split()))))
+for i in range(K):
+    rt.append(list(map(int,(input().split()))))
+get = list(permutations(rt,K))
+def rot(table,lst):
     global result
-    x,y,nx,ny = lst
-    new = table[nx][ny]
-    s = list(map(int,[(new*0.05),(new*0.1),(new*0.1),(new*0.07),(new*0.07),(new*0.02),(new*0.02),(new*0.01),(new*0.01)]))
-    new = new-sum(s)
-    d = [[0,2],[1,1],[-1,1],[1,0],[-1,0],[2,0],[-2,0],[-1,-1],[1,-1]]
-    if y!=ny: #가로이동의 경우
-        iD = ny-y
-        table[nx][ny] = 0
-        if not 0<= ny+iD < N:
-            result += new
-        else:
-            table[nx][ny+iD] += new
-        for i in range(len(d)):
-            if not 0<= nx+d[i][0]*iD<N or not 0<= ny+d[i][1]*iD < N:
-                result += s[i]
-                continue
-            table[nx+d[i][0]*iD][ny+d[i][1]*iD] += s[i]
-    else: #세로이동
-        iD = nx-x
-        table[nx][ny] = 0
-        if not 0<= nx+iD < N:
-            result += new
-        else:
-            table[nx+iD][ny] += new
-        for i in range(len(d)):
-            if not 0<= nx+d[i][1]*iD <N or not 0<= ny+d[i][0]*iD<N:
-                result += s[i]
-                continue
-            table[nx+d[i][1]*iD][ny+d[i][0]*iD] += s[i]
-for i in lane:
-    move(i)
+    for x,y,c in lst:
+        x = x-c-1
+        y = y-c-1
+        c = c*2+1
+        for j in range(c):
+            l,u,r,d = [i[y+j] for i in table[x+j:x+c-j]],table[x+j][y+j:y+c-j],[i[y+c-1-j] for i in table[x+j:x+c-j]],table[x+c-1-j][y+j:y+c-j]
+            ll,uu,rr,dd = l[1],u[-2],r[-2],d[1]
+            tl,tr = l[1:]+[dd],[uu]+r[:-1]
+            table[x+j][y+j:y+c-j],table[x+c-1-j][y+j:y+c-j] = [ll]+u[:-1], d[1:]+[rr]
+            # print(tl,tr)
+            for i in range(len(tl)):
+                table[x+j+i][y+j] = tl[i]
+                table[x+j+i][y+c-j-1] = tr[i]
+            if 2<=len(l)<=3:
+                break
+    for i in table:
+        result = min(result,sum(i))
+for cs in get:
+    rot([i[:] for i in table],cs)
 print(result)
