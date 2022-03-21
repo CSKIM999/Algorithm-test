@@ -1,41 +1,105 @@
-import sys
-sys.setrecursionlimit(60000)
+'''
 
-def matrix_mult(A, B):
-    temp = [[0] * (len(A)) for _ in range(len(B[0]))]
-    for i in range(len(A)):
-        for j in range(len(A[0])):
-            for k in range(len(B[0])):
-                temp[i][k] += A[i][j] * B[j][k]
-    return temp
+'''
+from collections import deque
 
-
-def matrix_pow(A, n):
-    if n == 1:
-        return A
-    if n % 2 == 0:
-        temp = matrix_pow(A, n//2)
-        return matrix_mult(temp, temp)
+processes =["read 1 3 1 2","read 2 6 4 7","write 4 3 3 5 2","read 5 2 2 5","write 6 1 3 3 9", "read 9 1 0 7"]
+# rw 요청시간 고요시간 A B 인덱스 C쓸내용
+arr =["1","2","4","3","3","4","1","5"]
+arr = list(map(int,arr))
+P = []
+for i in processes:
+    if i[0] == 'r':
+        a = list(map(int,(i.split(' '))[1:]))
+        P.append([0]+a)
     else:
-        temp = matrix_pow(A, n-1)
-        return matrix_mult(temp, A)
+        a = list(map(int,(i.split(' '))[1:]))
+        P.append([1]+a)
 
-m = 1000000007
-def solution(n):
-    dp=[0 for _ in range(n+1)]
-    dp[1],dp[2] =1,2
-    if n==0:
-        return 0
-    elif n == 1:
-        return 1
-    elif n == 2:
-        return 2
+standby = deque()
+time = 0
+q = deque(P)
+result = []
+def write(a,b,c):
+    L = len(arr[a:b+1])
+    arr[a:b+1] = [c]*L
+def read(a,b,Count):
+    global result
+    result.append(arr[a:b+1]+[Count])
+TT = 0
+running = []
+count = 0
+while True:
+    time+=1
+    temp = []
+    for l in range(len(running)):
+        now = running[l]
+        if now[2] == time:
+            if now[0] == 0:
+                read(now[3],now[4],now[-1])
+            else:
+                write(now[3],now[4],now[5])
+            temp.append(l)
+    temp.sort(reverse=True)
+    for i in temp:
+        del running[i]
+    if not running and not standby and not q:
+        break
+    if q and time == q[0][1]:
+        # standby.append(q.popleft())
+        ta = q.popleft()+ [count]
+        count += 1
+        standby.append(ta)
+        
+    if not running and standby:
+        if 1 in [i[0] for i in standby]:
+            f = [i[0] for i in standby].index(1)
+            a = standby[f]
+            del standby[f]
+            a[2] = time+a[2]
+            running.append(a)
+        else:
+            while standby:
+                a = standby.popleft()
+                a[2] = time+a[2]
+                running.append(a)
+
+    elif running and standby: #비어있지 않으나
+        if standby[0][0] == 0 and running[0][0] != 1: #들어가려는 프로세스가 읽기일경우
+            if 1 not in [k[0] for k in standby]: #스탠바이 중 쓰기프로세스마저 없을 때
+                a = standby.popleft()
+                a[2] = time+a[2]
+                running.append(a)
+            else: #있다면
+                pass
+        else: #쓰기 프로세스일경우
+            pass
     
-    for i in range(3,n+1):
-        dp[i] = dp[i-2]+dp[i-1]
-    answer = dp[-1]
-    return answer
+    if running:
+        TT+=1
+    #구동부
 
-aa = [[1,1],[1,0]]
-# print(solution(1000)%m)
-print(matrix_pow(aa,100))
+    # temp = []
+    # for l in range(len(running)):
+    #     now = running[l]
+    #     if now[2] == time:
+    #         if now[0] == 0:
+    #             read(now[3],now[4])
+    #         else:
+    #             write(now[3],now[4],now[5])
+    #         temp.append(l)
+    # temp.sort(reverse=True)
+    # for i in temp:
+    #     del running[i]
+    # if not running and not standby and not q:
+    #     break
+
+result.sort(key=lambda x: x[-1])
+answer = []
+for i in result:
+    why = ''
+    for j in i[:-1]:
+        why += f'{j}'
+    answer.append(why)
+answer.append(f'{TT}')
+print(answer)
