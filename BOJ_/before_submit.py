@@ -1,102 +1,72 @@
 import sys
 input = sys.stdin.readline
 from collections import deque
-d=[[1,0],[-1,0],[0,1],[0,-1]]
-dic = {0:'.',1:'x','x':1,'.':0}
-r,c = map(int,input().split())
-table = []
-for i in range(r):
-    t = map(lambda x:dic[x],list(input().strip()))
-    table.append(list(t))
-n = int(input())
-stick = list(map(int,input().split()))
-def check():
+def spreadFire(Queue,table):
+    fireTable = [i[:] for i in table[:]]
     q = deque()
-    flag = True
-    rt = [[0 for _ in range(c)] for _ in range(r)]
-    count = 0
-    for i in range(r):
-        for j in range(c):
-            if table[i][j] and not rt[i][j]:
-                count += 1
-                tempq = deque()
-                tempq.append([i,j])
-                q.append([i,j])
-                rt[i][j] = count
-                while q:
-                    x,y = q.popleft()
-                    for k in range(4):
-                        nx,ny = d[k][0]+x,d[k][1]+y
-                        if 0<=nx<r and 0<=ny<c: #테이블 유효범위
-                            if not rt[nx][ny] and table[nx][ny]:
-                                q.append([nx,ny])
-                                tempq.append([nx,ny])
-                                rt[nx][ny] = count
-                
-                if count not in rt[-1][:]:
-                    flag = False
-                    while tempq:
-                        x,y = tempq.popleft()
-                        rt[x][y] *= -1
-    if flag:
-        return rt,True
+    while Queue:
+        x,y = Queue.popleft()
+        fireTable[x][y] = '0'
+        q.append([x,y,0])
+    while q:
+        x,y,c = q.popleft()
+        for i in range(4):
+            nx,ny = x+d[i][0], y+d[i][1]
+            if 0<=nx<len(table) and 0<=ny<len(table[0]):
+                if not fireTable[nx][ny].isdigit() and fireTable[nx][ny] == '.': 
+                    fireTable[nx][ny]=str(c+1)
+                    q.append([nx,ny,c+1])
+                elif fireTable[nx][ny].isdigit():
+                    if int(fireTable[nx][ny])>c+1:
+                        fireTable[nx][ny] = str(c+1)
+                        q.append([nx,ny,c+1])
+    return fireTable
+
+
+def bfs(table):
+    global hist
+    fireq = deque()
+    a = False
+    for x in range(len(table)):
+        for y in range(len(table[0])):
+            if table[x][y] == "@":
+                table[x][y] = '.'
+                a,b = x,y
+            elif table[x][y] == '*':
+                fireq.append([x,y])
+            elif table[x][y] == "#":
+                table[x][y] = '-1'
+    maxCost = 0
+    q = deque()
+    q.append([a,b,0])
+    fireTable = spreadFire(fireq,table)
+    while q:
+        x,y,c = q.popleft()
+        if maxCost and c>maxCost:
+            continue
+        table[x][y] = c
+        for i in range(4):
+            nx,ny = x+ d[i][0], y+d[i][1]
+            if nx<0 or nx>=h or ny<0 or ny>=w:
+                maxCost = c+1
+                continue
+            if fireTable[nx][ny]=='.' or int(fireTable[nx][ny])>c+1:
+                if table[nx][ny] =='.':
+                    q.append([nx,ny,c+1])
+                    table[nx][ny] = c+1
+                elif table[nx][ny] < c+1:
+                    continue
+    if maxCost == 0:
+        print('IMPOSSIBLE')
     else:
-        return rt,False
+        print(maxCost)
 
-def fall(given):
-    R = []
-    for i in range(c):
-        temp = [j[i] for j in given]
-        if min(temp)<0:
-            # R.append(i)
-            rm = r
-            mc = 0
-            for k in range(1,r+1):
-                if not temp[-k]:
-                    mc += 1
-                elif temp[-k]>0:
-                    mc = 0
-                else:
-                    rm = min(rm,mc)
-            R.append([i,rm])
-    m = min([i[1] for i in R])
-    for i in range(c):
-        temp = [j[i] for j in given]
-        if min(temp)<0:
-            for k in range(1,r+1):
-                if given[-k][i]<0:
-                    table[-k][i] = 0
-                    table[-k+m][i] = 1
-def broke(h,s):
-    if s == -1:
-        for i in range(c):
-            if table[-h][i]:
-                table[-h][i] = 0
-                return
-    else:
-        for i in range(1,c+1):
-            if table[-h][-i]:
-                table[-h][-i] = 0
-                return
-
-
-lr = -1
-for i in stick:
-    broke(i,lr)
-    lr *= -1
-    a,t = check()
-    if t:
-        continue
-    else:
-        fall(a)
-
-ans = []
-for i in table:
-    temp = ''
-    for j in i:
-        temp += dic[j]
-    ans.append(temp)
-for i in ans:
-    print(i)
-
-
+tc = int(input())
+d = [[-1,0],[1,0],[0,-1],[0,1]]
+for i in range(tc):
+    hist = []
+    w,h = map(int,input().split())
+    table = []
+    for i in range(h):
+        table.append(list(input()))
+    bfs(table)
