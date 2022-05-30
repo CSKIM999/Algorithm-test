@@ -33,26 +33,26 @@ Approach )  list = [[index,sum=0],[index,sum=0],[index,sum=0]]
 
 N = int(input())
 K = int(input())
+n,k = N,K
 lst = list(map(int, input().split()))
-lst.sort()
-lst = [[i, 0] for i in lst]
+Lst = lst[:]
 
-while True:
-    if K < N:
-        minimum = 1e9
-        minIndex = N
-        for i in range(N-1):
-            dist, summary = lst[i]
-            Dist, Summary = lst[i+1]
-            if minimum > Dist - dist + Summary:
-                minIndex = i
-                minimum = Dist - dist + Summary
-        dist, summary = lst[minIndex]
-        Dist, Summary = lst[minIndex+1]
-        lst[minIndex][1] = Dist-dist+Summary
-        N -=1
-        del lst[minIndex+1]
-    else:
-        total = sum(i[1] for i in lst)
-        print(total)
-        break
+if K >= N:
+    print(0)
+else:
+    lst.sort()
+    gap = []
+    for i in range(1, N):
+        gap.append((lst[i]-lst[i-1], i))
+    gap.sort()
+
+    temp = [0]
+    result = 0
+    for i in range(K-1):
+        temp.append(gap.pop()[1])
+    temp.append(0)
+
+    result = 0
+    for i in range(K): # 0, 1
+        result += lst[temp[i+1]-1]-lst[temp[i]]
+    print(result)
