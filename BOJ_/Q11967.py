@@ -28,35 +28,117 @@ Vnode = []
 for i in range(M):
     x,y,a,b = map(int,input().split())
     data[x-1][y-1].append([a-1,b-1])
-def lightOn(get):
-    LQ = deque(get)
-    while LQ:
-        lx,ly = LQ.popleft()
-        light[lx][ly] = True
 
-def bfs(): #항상 0,0 에서 시작해서 퍼져나가자.
-    global light,Vnode
-    Vlst = []
-    q = deque()
-    res = []
-    q.append([0,0])
-    Vlst.append([0,0])
-    while q:
-        x,y = q.popleft()
+def bfs4route(node,hist):
+    sx,sy = node
+    ret = []
+
+    sq = deque()
+    sq.append([sx,sy])
+    shist = []
+    while sq:
+        sx,sy = sq.popleft()
         for i in range(4):
-            nx,ny = x+d[i][0],y+d[i][1]
-            if 0<= nx< N and 0<= ny < N and [nx,ny] not in Vlst:
+            nsx,nsy = sx+d[i][0], sy+d[i][1]
+            if 0<=nsx<N and 0<=nsy<N and light[nsx][nsy]:
+                if [nsx,nsy] not in shist and [nsx,nsy] not in hist:
+                    ret.append([nsx,nsy])
+                    sq.append([nsx,nsy])
+                    shist.append([nsx,nsy])
+    
+    return ret
+result = 1
+hist = []
+q =deque([[0,0]])
 
-                if light[nx][ny]:
-                    q.append([nx,ny])
-                    Vlst.append([nx,ny])
+while q:
+    x,y = q.popleft()
+    if [x,y] not in hist:
+        hist.append([x,y])
+    data[x][y].sort()
+    for node in data[x][y]: #현재 방문한 노드에서 불을 킨 노드
+        lx,ly = node
+        if not light[lx][ly]: #아직 불이 켜지지않은 노드라면
+            light[lx][ly] = True
+            result += 1
+            flag = False
+            for i in range(4): #이번에 불을 킨 노드가 방문이 가능한 노드라면 q에 삽입
+                if not flag:
+                    nx,ny = lx+d[i][0], ly+d[i][1]
+                    if [nx,ny] in hist and not flag:
+                        flag = True
+                        q.append([lx,ly])
+                        hist.append([lx,ly])
+                        bfs = bfs4route([lx,ly],hist)
+                        for sn in bfs:
+                            q.append(sn)
 
-                    if [nx,ny] not in Vnode and data[nx][ny]:
-                        for lx,ly in data[nx][ny]:
-                            res.append([lx,ly])
-                        Vnode.append([nx,ny])
-    return res
-lightOn(data[0][0])
+# route = deque()
+# route.append([0,0])
+# res = 0
+# Rhist = set()
+# while route:
+#     x,y = route.popleft()
+#     res += 1
+#     for i in range(4):
+#         nx,ny = x+d[i][0], y+d[i][1]
+#         if 0<=nx<N and 0<=ny<N and light[nx][ny]:
+#             route.append([nx,ny])
+#             Rhist.add([nx,ny])
 xprint(light)
-print(bfs())
+print(result)
 
+
+
+
+###################################################
+###################################################
+###################################################
+
+
+# def lightOn(get):
+#     global result
+#     LQ = deque(get)
+#     while LQ:
+#         lx,ly = LQ.popleft()
+#         if not light[lx][ly]:
+#             light[lx][ly] = True
+#             result += 1
+#             # if data[lx][ly]:
+#             #     for x in data[lx][ly]:
+#             #         LQ.append(x)
+                    
+
+# def bfs(): #항상 0,0 에서 시작해서 퍼져나가자.
+#     global light
+#     q = deque()
+#     res = []
+#     q.append([0,0])
+#     if [0,0] not in Vnode and data[0][0]:
+#         for lx,ly in data[0][0]:
+#             res.append([lx,ly])
+#         Vnode.append([0,0])
+#     while q:
+#         x,y = q.popleft()
+#         for i in range(4):
+#             nx,ny = x+d[i][0],y+d[i][1]
+#             if 0<= nx< N and 0<= ny < N and [nx,ny] not in Vnode:
+
+#                 if light[nx][ny]:
+#                     q.append([nx,ny])
+#                     Vnode.append([nx,ny])
+
+#                     if [nx,ny] not in Vnode and data[nx][ny]:
+#                         for lx,ly in data[nx][ny]:
+#                             res.append([lx,ly])
+#                         Vnode.append([nx,ny])
+
+#     return res
+
+# while True:
+#     nodes = bfs()
+#     if not nodes:
+#         break
+#     lightOn(nodes)
+
+# print(result)
