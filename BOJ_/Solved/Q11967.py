@@ -1,7 +1,24 @@
+from lib import xprint,Prepare_Coding_Test
+Prepare_Coding_Test()
+'''
+BOJ_ QuestionNumber __ Q11967
+#######  TODAY  #######
+##### 2022. 06. 10 #####
+GIVEN ) N*N 크기의 헛간 안에 (1<= N <= 100) 불이 꺼진 방들이 존재한다.
+        나는 최대한 많은 방의 불을 키고싶어하며 방 안의 스위치로 지정된 방의 불을 킬 수 있다.
+        나는 오로지 불이 켜진, 상하좌우에 인접한 방에만 들어갈 수 있을 때 최대한 킬수 있는 방의 수를 구하라
+INPUT ) 첫째 줄에 N 과 M 이 정수로 주어진다 ( 1 <= M <= 20,000 ) 
+        다음 M 개의 줄에 x,y,a,b 가 주어지며 (x,y) 방에서 (a,b) 방의 불을 키는 스위치가 존재한다는 뜻
+OUTPUT) 최대 개수를 구하라 
+Approach ) 불키기와 탐색을 나눠서 해야할듯
+            불키기는 딕셔너리로 만들고
+            탐색은 visited 리스트 bfs 로 관리하자 해봐야 만개
+'''
 import sys
 from collections import deque
+# input = sys.stdin.readline
 
-N, M = map(int, sys.stdin.readline().split())
+N,M = map(int,input().split())
 data = [[[] for _ in range(N)] for _ in range(N)]
 light = [[0 for _ in range(N)] for _ in range(N)]
 visit = [[0 for _ in range(N)] for _ in range(N)]
@@ -46,3 +63,10 @@ for i in range(N):
         result += light[i][j]
 
 print(result)
+
+
+'''
+문제 자체는 어렵지 않은 반면에, 테스트케이스가 존내 까다로웠음.
+
+이상하게 안맞아서 보니까 line 55 의 nxny 를 xy 가 아닌 lxly 로 돌리고있었음 븅신같이
+'''
