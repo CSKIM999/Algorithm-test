@@ -1,40 +1,48 @@
-
+import heapq
 import sys
 input = sys.stdin.readline
-import heapq
-
 hpush = heapq.heappush
 hpop = heapq.heappop
-inf = 1e9
 
-N = int(input())
-M = int(input())
-data = []
-for _ in range(N):
-    data.append(list(map(int,input().split())))
-path = list(map(int,input().split()))
-start = path[0]-1
-dist = [inf]*N
-dist[start] = 0
+T = int(input())
+for _ in range(T):
+    n, m, t = map(int, input().split())
+    s, g, h = map(int, input().split())
+    s, g, h = s-1, g-1, h - 1
+    dest = []
+    data = [[] for _ in range(n)]
+    for i in range(m):
+        a, b, d = map(int, input().split())
+        a, b = a-1, b-1
+        data[a].append((d, b))
+        data[b].append((d, a))
+    for i in range(t):
+        dest.append(int(input()))
 
-q = []
-hpush(q,(0,start))
+    q = [[0, s]]
+    dist = [[1e9, 0] for _ in range(n)]
+    dist[s] = [0, 0]
+    while q:
+        nowDist, now = hpop(q)
+        if nowDist > dist[now][0]:
+            continue
+        for x, y in data[now]:
 
-while q:
-    c,node = hpop(q)
-    if c>dist[node]:
-        continue
-    for i in range(N):
-        if c+1<dist[i] and data[node][i]:
-            hpush(q,(c+1,i))
-            dist[i] = c+1
+            if dist[y][0] >= dist[now][0] + x:
+                if dist[y][0] == dist[now][0] + x:
+                    if not dist[now][1] and [y, now] not in [[g, h], [h, g]]:
+                        continue
+                if dist[now][1] or [y, now] in [[g, h], [h, g]]:
+                    dist[y] = [dist[now][0] + x, 1]
+                else:
+                    dist[y][0] = dist[now][0] + x
+                    if dist[y][1]:
+                        dist[y][1] = dist[now][1]
+                hpush(q, [dist[now][0] + x, y])
 
-flag = 0
-for i in path:
-    if dist[i-1] == inf:
-        flag = 1
-        print('NO')
-        break
-if not flag:
-    print('YES')
-
+    dest.sort()
+    answer = []
+    for i in dest:
+        if dist[i-1][1]:
+            answer.append(f'{i}')
+    print(' '.join(answer))
