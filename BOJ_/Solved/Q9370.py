@@ -11,7 +11,7 @@ GIVEN ) 한 무리가 특정 노드에서 출발하여 무작위 목적지로 �
 INPUT ) 첫째 줄에 테스트 케이스의 수 T ( 1<= T <= 100 ) 가 주어진다
             >>> 각 테스트케이스의 첫번째 줄에 n,m,t ( 2<= n <= 2,000 ) // ( 1 <= m <= 50,000 ) // ( 1 <= t <= 100 )
             가 주어진다. 각각 교차로, 도로, 목적지 후보의 개수 를 뜻한다
-            >>> 두번째 줄에 s,g,m 가 주어진다. s는 무리의 출발지, g,h 는 지나갔다고 특정가능한 도로
+            >>> 두번째 줄에 s,g,h 가 주어진다. s는 무리의 출발지, g,h 는 지나갔다고 특정가능한 도로
             >>> 그다음 m 개의 줄에 a,b,d 가 주어진다. ( 1 <= a < b <= n  //  1 <= d <= 1,000 ) 가 주어지며 a,b 사이에 d 의 도로가 있다는 뜻
             각 노드 사이에는 2개 미만의 도로가 존재하며 g,h 사이의 도로는 무조건 존재한다. 
 OUTPUT) 목적지 후보군을 공백을 구분으로 오름차순 정렬하여 출력
@@ -74,3 +74,56 @@ for _ in range(T):
             answer.append(f'{i}')
     print(' '.join(answer))
 '''
+
+import heapq
+hpush = heapq.heappush
+hpop = heapq.heappop
+
+#일단 3 점에서의 다익스트라 돌려보자
+T = int(input())
+
+for _ in range(T):
+    n,m,t = map(int,input().split())
+    s,g,h = map(int,input().split())
+    s,g,h = s-1,g-1,h-1
+
+    data = [[] for _ in range(n)]
+    ghdist = 1e9
+    for _ in range(m):
+        a,b,d = map(int,input().split())
+        a,b,d = a-1,b-1,d
+        if [a,b] in [[g,h],[h,g]]:
+            ghdist = min(ghdist,d)
+        data[a].append([d,b])
+        data[b].append([d,a])
+    dest = []
+    for _ in range(t):
+        dest.append(int(input()))
+
+    def dijkstra(start):
+        dist = [1e9]*n
+        q = [[0,start]]
+        dist[start] = 0
+        while q:
+            nowdist, node = hpop(q)
+            if dist[node] < nowdist:
+                continue
+            for nextdist,nextnode in data[node]:
+                if dist[nextnode] > dist[node] + nextdist:
+                    dist[nextnode] = dist[node] + nextdist
+                    hpush(q,[dist[nextnode],nextnode])
+        return dist
+    db_s = dijkstra(s)
+    db_g = dijkstra(g)
+    db_h = dijkstra(h)
+    res = []
+    for i in dest:
+        i -= 1
+        if db_s[g]+db_g[h]+db_h[i] == db_s[i] or db_s[h]+db_h[g]+db_g[i] == db_s[i]:
+            res.append(i+1)
+    res.sort()
+
+    for f in res:
+        print(f, end=' ')
+    print()
+    
