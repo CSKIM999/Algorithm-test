@@ -1,42 +1,43 @@
 import sys
 input = sys.stdin.readline
-T = int(input())
-Tr = []
-for _ in range(T):
-    func = list(input())
-    N = int(input())
+from collections import deque
 
-    arrInput = input().strip()[1:-1]
-    if N>0:
-        arr = arrInput.split(',')
-        arr = list(map(int,arr))
-    else:
-        arr = []
-
-    flag = True
-    rflag = True
-    fm, bm, tm = 0, 0, 0
-    res = []
-    for f in func:
-        if f == 'R':
-            flag = not flag
-        elif f == 'D':
-            if flag:
-                fm += 1
-                tm +=1
-            else:
-                bm +=1
-                tm +=1
-        if tm>N:
-            print('error')
-            Tr.append('error')
-            rflag = False
-            break
-    if rflag:
-        if bm!= 0:
-            res =arr[fm:-bm]
+table = []
+for _ in range(8):
+    a = list(input().strip())
+    temp = []
+    for i in a:
+        if i == "#":
+            temp.append(1)
         else:
-            res = arr[fm:]
-        if not flag:
-            res.reverse()
-        print(str(res).replace(' ',''))
+            temp.append(0)
+    table.append(temp)
+case = []
+case.append(table)
+
+for i in range(1,9):
+    temp = []
+    for j in range(i):
+        temp.append([0]*8)
+    temp.extend(table[:-i])
+    case.append(temp)
+
+def sol():
+    q = deque()
+    q.append([7,0,0])
+    while q:
+        x,y,sec = q.popleft()
+        for i in range(-1,2):
+            for j in range(-1,2):
+                nx,ny = x+i,y+j
+                if 0<= nx < 8 and 0<= ny < 8:
+                    try:
+                        if not case[sec+1][nx][ny] and not case[sec][nx][ny]:
+                            if nx==0 and ny ==7:
+                                return 1
+                            q.append([nx,ny,sec+1])
+                    except IndexError:
+                        return 1
+    return 0
+
+print(sol())
