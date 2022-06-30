@@ -34,29 +34,29 @@ import sys
 input = sys.stdin.readline
 from collections import deque
 
-table = []
-for _ in range(8):
-    a = list(input().strip())
-    temp = []
-    for i in a:
-        if i == "#":
-            temp.append(1)
-        else:
-            temp.append(0)
-    table.append(temp)
-case = []
-case.append(table)
+def sol(input):
+    table = []
+    for _ in range(8):
+        a = list(input().strip())
+        temp = []
+        for i in a:
+            if i == "#":
+                temp.append(1)
+            else:
+                temp.append(0)
+        table.append(temp)
+    case = []
+    case.append(table)
 
-for i in range(1,9):
-    temp = []
-    for j in range(i):
-        temp.append([0]*8)
-    temp.extend(table[:-i])
-    case.append(temp)
+    for i in range(1,9):
+        temp = []
+        for j in range(i):
+            temp.append([0]*8)
+        temp.extend(table[:-i])
+        case.append(temp)
 
-def sol():
-    q = deque()
-    q.append([7,0,0])
+        q = deque()
+        q.append([7,0,0])
     while q:
         x,y,sec = q.popleft()
         for i in range(-1,2):
@@ -72,4 +72,4 @@ def sol():
                         return 1
     return 0
 
-print(sol())
+print(sol(input))
