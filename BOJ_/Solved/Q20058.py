@@ -1,3 +1,34 @@
+from lib import xprint,Prepare_Coding_Test
+Prepare_Coding_Test()
+'''
+BOJ_ QuestionNumber __ Q20058
+#######  TODAY  #######
+##### 2022. 07. 01 #####
+GIVEN ) 마법사상어와 파이어스톰
+        마법사상어가 2^N * 2^N 크기의 얼음판위에서 파이어스톰을 연습한다.
+        매 파이어스톰을 시전할때마다 단계 L 을 결정한다. 이는 얼음판을 2^L*2^L 크기로 나눈 후
+        모든 각각의 격자를 90도 시계방향으로 회전 후 얼음 3개 이상과 인접하지 않은 칸이 1씩 줄어드는 마법이다.
+        각각의 칸에 위치한 정수는 얼음의 양을 의미하며 0 은 얼음이 없음을 의미한다.
+        모든 마법이 끝나고 남아있는 얼음의 합과 그 중 가장 큰 덩어리의 크기를 구하라
+INPUT ) 첫 번째 줄에 N,Q 가 주어진다. (2<=N<=6 , 1<= Q <= 1,000 )
+        둘째 줄부터 얼음판의 데이터가 빈칸으로 구분되어 주어진다. 0 혹은 100 이하의 자연수
+        마지막 줄에 마법사가 시전하는 마법의 단계들이 총 Q 개 주어진다.
+OUTPUT) 첫째 줄에 남은 얼음의 합, 둘째 줄에 가장 큰 덩어리의 칸 개수를 출력하라. 만약 덩어리가 없다면 0 을 출력하라
+
+Approach ) 
+모듈 1 - 마법모듈
+    모듈(N)
+        i in 레인지(0,x,N)
+            임시 = []
+            j in 레인지(0,y,N)
+                임시 = [ q[j:j+2] for q in 데이터[i:i+2]]
+                for k in range(N):
+
+
+얼음녹이기
+
+모듈 2 - 유니온파인드
+'''
 import sys
 from collections import deque
 sys.setrecursionlimit(25000)
@@ -70,3 +101,8 @@ res = sum([sum(i) for i in table])
 u = unionFind()
 print(res)
 print(u)
+
+
+'''
+unionFind 부분에서 뒷걸음치다 쥐잡은격으로 union 크기가 구해졌는데 아무튼 좋은게 좋은거지
+'''
