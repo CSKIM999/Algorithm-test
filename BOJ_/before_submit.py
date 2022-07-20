@@ -1,72 +1,51 @@
 import sys
-from collections import deque
-sys.setrecursionlimit(25000)
+from datetime import datetime,timedelta
 input = sys.stdin.readline
-d = [[1,0],[0,-1],[0,1],[-1,0]]
-N,Q = map(int,input().split())
-table = []
-X = 2**N
-for _ in range(X):
-    table.append(list(map(int,input().split())))
-queue = list(map(int,input().split()))
-def magic(S): # S mean Size
-    for i in range(0,X,S):
-        TX = table[i:i+S]
-        for j in range(0,X,S):
-            TY = [q[j:j+S] for q in TX]
 
-            for ti in range(S):
-                for tj in range(S):
-                    table[i+ti][j+tj] = TY[-(tj+1)][ti]
+n,l,f = list(input().split())
+n,f = map(int,[n,f])
 
-def unionFind():
-    
-    dummy = [[0]*X for _ in range(X)]
-    result = 0
-    for ui in range(X):
-        for uj in range(X):
-            if table[ui][uj] and not dummy[ui][uj]:
-                q = deque()
-                hq = deque()
-                q.append([ui,uj])
-                hq.append([ui,uj])
-                c = 0
-                while q:
-                    qx,qy = q.popleft()
-                    for qd in range(4):
-                        qnx,qny = qx+d[qd][0],qy+d[qd][1]
-                        if 0<=qnx<X and 0<=qny<X and table[qnx][qny] and not dummy[qnx][qny]:
-                            q.append([qnx,qny])
-                            hq.append([qnx,qny])
-                            dummy[qnx][qny] = 1
-                            c += 1 
-                
-                while hq:
-                    qx,qy = hq.popleft()
-                    dummy[qx][qy] = c
-                if result < c:
-                    result = c
-    return result
+l = list(l.split('/'))
+d = int(l[0])*24*60
+l = list(map(int,l[1].split(':')))
+l = l[0]*60 + l[1] + d
 
-for M in queue:
+dic = {}
+plst = []
+nameIndex = {}
+i = 0
+for _ in range(n):
+    nowday,nowtime,p,name = list(input().split())
+    nowday = list(map(int,nowday.split('-')))
+    nowtime = list(map(int,nowtime.split(':')))
+    nowday = datetime(nowday[0],nowday[1],nowday[2],nowtime[0],nowtime[1])
 
-    magic(2**M)
-    melt = [[0]*X for _ in range(X)]
-    for MI in range(X):
-        for MJ in range(X):
-            c = 0
-            for MD in range(4):
-                nx,ny = MI+d[MD][0],MJ+d[MD][1]
-                if 0<=nx<X and 0<=ny<X and table[nx][ny]:
-                    c +=1
-            if c < 3:
-                melt[MI][MJ] = 1
-    for MI in range(X):
-        for MJ in range(X):
-            if melt[MI][MJ] and table[MI][MJ]:
-                table[MI][MJ] -=1
-    
-res = sum([sum(i) for i in table])
-u = unionFind()
-print(res)
-print(u)
+    try:
+        items = dic[name]
+    except KeyError:
+        items = dic[name] = {}
+        plst.append([0,name])
+        nameIndex[name] = i
+        i += 1
+
+    try:
+        bday = items[p]
+        delta = (nowday-bday)
+        btime = (delta.seconds // 60) + (delta.days * 60 * 24)
+        if btime > l:
+            Index = nameIndex[name]
+            plst[Index][0] += btime - l
+        del dic[name][p]
+
+    except KeyError:
+        dic[name][p] = nowday
+
+plst.sort(key=lambda x: x[1])
+flag = True
+for a,b in plst:
+    if not a:
+        continue
+    print(b,a*f)
+    flag = False
+if flag:
+    print(-1)
