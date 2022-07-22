@@ -1,5 +1,20 @@
+from lib import xprint,Prepare_Coding_Test
+Prepare_Coding_Test()
+'''
+BOJ_ QuestionNumber __ Q16719
+#######  TODAY  #######
+##### 2022. 07. 22 #####
+GIVEN ) 주어진 문자열을 "항상" 사전순 가장 앞으로 오도록 하고자한다.
+        ZOAC 을 보여주고싶다면 A -> C -> O -> Z 순으로 추가해주면 된다.
+INPUT ) 첫째 줄에 알파벳 대문자로 구성된 최대 100자의 문자열이 주어진다.
+OUTPUT) 규칙에 맞게 문자열을 출력
+Approach )  아스키코드와 힙큐 사용해서 구현하자
+            힙큐로는 구현제약이 많이생김
+            최대길이가 100인만큼 N^3 으로 짜도 백만번 연산.
+            3번 순회로 결정
+'''
 import sys
-input = sys.stdin.readline
+# input = sys.stdin.readline
 
 I = list(list(input().split())[0])
 N = len(I)
