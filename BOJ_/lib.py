@@ -1,6 +1,12 @@
 import sys
 def Prepare_Coding_Test():
     sys.stdin = open('BOJ_\Input_Data.txt','r')
+    beta = open('BOJ_\Output_Data.txt','r')
+    delta = beta.readlines()
+    beta = []
+    for i in delta:
+        beta.append(int(i.strip()))
+    return beta
 
 def xprint(a):
     for i in a:
