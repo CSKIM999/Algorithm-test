@@ -1,4 +1,6 @@
-from lib import xprint,Prepare_Coding_Test
+from datetime import datetime, timedelta
+import sys
+from lib import xprint, Prepare_Coding_Test
 Prepare_Coding_Test()
 '''
 BOJ_ QuestionNumber __ Q21942
@@ -24,7 +26,7 @@ Approach )  대여정보 N 는 최대 8만개, DAY 는 최대 200 각 부품이�
             입력이 모두 끝나면 무조건 반납이 끝나게 된다.
             우선 벌금은 딕셔너리로 구현하자. key = ID , Value = 늦은시간(분) 새로운 ID 를 만날때마다 ID:0 을 추가하고 연체시마다 value 값에 늦은 시간 더해주기
             
-n,l,f 입력받기
+n,l,f 입력받기 
 
 l => 총시간(분) 으로 정제
 패널티리스트 = []
@@ -57,16 +59,14 @@ n 번 돌리기
 패널티리스트 heappop 쓰기
 
 '''
-import sys
-from datetime import datetime,timedelta
 # input = sys.stdin.readline
 
-n,l,f = list(input().split())
-n,f = map(int,[n,f])
+n, l, f = list(input().split())
+n, f = map(int, [n, f])
 
 l = list(l.split('/'))
 d = int(l[0])*24*60
-l = list(map(int,l[1].split(':')))
+l = list(map(int, l[1].split(':')))
 l = l[0]*60 + l[1] + d
 
 dic = {}
@@ -74,16 +74,16 @@ plst = []
 nameIndex = {}
 i = 0
 for _ in range(n):
-    nowday,nowtime,p,name = list(input().split())
-    nowday = list(map(int,nowday.split('-')))
-    nowtime = list(map(int,nowtime.split(':')))
-    nowday = datetime(nowday[0],nowday[1],nowday[2],nowtime[0],nowtime[1])
+    nowday, nowtime, p, name = list(input().split())
+    nowday = list(map(int, nowday.split('-')))
+    nowtime = list(map(int, nowtime.split(':')))
+    nowday = datetime(nowday[0], nowday[1], nowday[2], nowtime[0], nowtime[1])
 
     try:
         items = dic[name]
     except KeyError:
         items = dic[name] = {}
-        plst.append([0,name])
+        plst.append([0, name])
         nameIndex[name] = i
         i += 1
 
@@ -103,10 +103,10 @@ for _ in range(n):
 
 plst.sort(key=lambda x: x[1])
 flag = True
-for a,b in plst:
+for a, b in plst:
     if not a:
         continue
-    print(b,a*f)
+    print(b, a*f)
     flag = False
 if flag:
     print(-1)
