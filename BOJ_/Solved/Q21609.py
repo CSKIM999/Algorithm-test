@@ -1,5 +1,5 @@
-from collections import deque
 import sys
+from collections import deque
 from lib import xprint, Prepare_Coding_Test
 Prepare_Coding_Test()
 '''
@@ -19,20 +19,22 @@ Approach )
 2.중력작용
 3.로테이트
 '''
+
 sys.setrecursionlimit(25000)
-# input = sys.stdin.readline
-
-
+input = sys.stdin.readline
 n, m = list(map(int, input().split()))
 table = []
 for i in range(n):
     table.append(list(map(int, input().split())))
 d = [[-1, 0, 0, 1], [0, -1, 1, 0]]
+result = 0
 
 
 def bfs():
+    global result
     rtable = [[6 for _ in range(n)] for _ in range(n)]
-
+    if result == 668:
+        result
     dic = {i: [0, 0, [0, 0], []] for i in range(m+1)}
     for ix in range(n):
         for iy in range(n):
@@ -59,15 +61,26 @@ def bfs():
                             hist[0].append([nx, ny])
                             q.append([nx, ny])
                         elif node != 0 and table[nx][ny] == 0 and [nx, ny] not in hist[1]:
-                            # rtable[nx][ny] = 0
                             hist[1].append([nx, ny])
                             q.append([nx, ny])
-            block, zblock = len(hist[0]), len(hist[1])+len(hist[0])
+            block, zblock = len(hist[0])+len(hist[1]), len(hist[1])
             hist = hist[0]+hist[1]
-            if dic[node][0] < block:
+            d1, d2, d3, d4 = dic[node]
+            if d1 < block:
                 dic[node] = [block, zblock, [ix, iy], [i[:] for i in hist]]
-            elif dic[node][0] == block and dic[node][1] < zblock:
-                dic[node] = [block, zblock, [ix, iy], [i[:] for i in hist]]
+            elif d1 == block:
+                if d2 < zblock:
+                    dic[node] = [block, zblock, [ix, iy], [i[:] for i in hist]]
+                    continue
+                elif d2 == zblock and d3[0] <= ix:
+                    if d3[0] < ix:
+                        dic[node] = [block, zblock, [ix, iy], [i[:]
+                                                               for i in hist]]
+                        continue
+                    elif d3[0] == ix and d3[1] < iy:
+                        dic[node] = [block, zblock, [ix, iy], [i[:]
+                                                               for i in hist]]
+
     target = [0, 0, [0, 0]]
 
     def setTarget(lst):
@@ -84,23 +97,58 @@ def bfs():
                 if b > target[1]:
                     setTarget(dic[i])
                     continue
-                if c[0] <= target[2][0]:
-                    if c[0] < target[2][0]:
+                if c[0] >= target[2][0]:
+                    if c[0] > target[2][0]:
                         setTarget(dic[i])
                         continue
                     if c[1] > target[2][1]:
                         setTarget(dic[i])
     if target[0] == 0:
-        setTarget(dic[0])
-        if target[0] == 0:
-            return False
+        return False
+    elif target[0]+target[1] < 2:
+        return False
+    result += target[0] ** 2
     target = target[3]
     for x, y in target:
         table[x][y] = []
 
 
+def gravity():
+    for i in range(n-1, -1, -1):
+        empty = []
+        for j in range(n-1, -1, -1):
+            if empty == []:
+                if table[j][i] == []:
+                    empty = [j, i]
+            else:
+                if table[j][i] == []:
+                    continue
+                if table[j][i] >= 0:
+                    x, y = empty
+                    table[x][y] = table[j][i]
+                    table[j][i] = []
+                    empty = [x-1, y]
+                else:
+                    empty = []
+                    continue
+
+
+def rotate():
+    global table
+    newTable = [[table[j][i] for j in range(n)] for i in range(n-1, -1, -1)]
+    table = [i[:] for i in newTable]
+
+
 while True:
     if bfs() == False:
         break
-    xprint(table)
-    print()
+    gravity()
+    rotate()
+    gravity()
+
+print(result)
+
+'''
+구현도 구현이지만 필터링에서 좀 애를 먹음
+필터링 연습 필요성.
+'''
