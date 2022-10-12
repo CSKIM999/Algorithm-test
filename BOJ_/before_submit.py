@@ -1,39 +1,48 @@
-from collections import deque
+import bisect
 import sys
 input = sys.stdin.readline
-n, m = list(map(int, input().split()))
-table = []
-for _ in range(n):
-    table.append(list(map(int, input().strip())))
-vtable = [[[1e9, 1e9] for _ in range(m)]for _ in range(n)]
-dx = [-1, 0, 0, 1]
-dy = [0, -1, 1, 0]
-q = deque()
-q.append([0, 0, 1, True])
-vtable[0][0] = [1, 1]
-result = 1e9
-while q:
-    x, y, count, ticket = q.popleft()
-    if x == n-1 and y == m-1 and count < result:
-        result = count
+bl = bisect.bisect_left
+n = int(input())
+lst = list(map(int, input().split()))
+
+dic = {}
+stack = []
+answer = [0]*n
+for index, tower in enumerate(lst):
+    alphaIndex = bl(stack, tower)
+    if alphaIndex == len(stack):
+        stack = [tower]
+        dic[tower] = index
         continue
+    tango = stack[alphaIndex]
+    # stack.insert(alphaIndex, tower)
+    stack = [tower] + stack[alphaIndex:]
+    answer[index] = dic[tango]+1
+    dic[tower] = index
+print(answer)
+'''
+import sys
+input = sys.stdin.readline
+n = int(input())
+lst = list(map(int, input().split()))
+dic = {}
+stack = []
+answer = ["0"]*n
+for index, tower in enumerate(lst):
+    while stack:
+        top = stack.pop()
+        if top > tower:
+            answer[index] = f"{dic[top]+1}"
+            dic[tower] = index
+            stack.append(top)
+            stack.append(tower)
+            break
 
-    for i in range(4):
-        nx, ny = x+dx[i], y+dy[i]
-        if 0 <= nx < n and 0 <= ny < m:
-            if ticket:
-                if table[nx][ny] == 0 and vtable[nx][ny][0] > count+1:
-                    vtable[nx][ny][0] = count+1
-                    q.append([nx, ny, count+1, ticket])
-                else:
-                    if vtable[nx][ny][1] > count + 1:
-                        vtable[nx][ny][1] = count+1
-                        q.append([nx, ny, count+1, False])
-            else:
-                if table[nx][ny] == 0 and vtable[nx][ny][1] > count+1:
-                    vtable[nx][ny][1] = count+1
-                    q.append([nx, ny, count+1, False])
+    if not stack:
+        stack.append(tower)
+        dic[tower] = index
+        continue
+answer = ' '.join(answer)
+print(answer)
 
-if result == 1e9:
-    result = -1
-print(result)
+'''
