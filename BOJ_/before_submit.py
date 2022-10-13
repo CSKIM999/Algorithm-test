@@ -1,48 +1,26 @@
-import bisect
 import sys
 input = sys.stdin.readline
-bl = bisect.bisect_left
-n = int(input())
-lst = list(map(int, input().split()))
 
-dic = {}
-stack = []
-answer = [0]*n
-for index, tower in enumerate(lst):
-    alphaIndex = bl(stack, tower)
-    if alphaIndex == len(stack):
-        stack = [tower]
-        dic[tower] = index
-        continue
-    tango = stack[alphaIndex]
-    # stack.insert(alphaIndex, tower)
-    stack = [tower] + stack[alphaIndex:]
-    answer[index] = dic[tango]+1
-    dic[tower] = index
-print(answer)
-'''
-import sys
-input = sys.stdin.readline
-n = int(input())
-lst = list(map(int, input().split()))
-dic = {}
-stack = []
-answer = ["0"]*n
-for index, tower in enumerate(lst):
-    while stack:
-        top = stack.pop()
-        if top > tower:
-            answer[index] = f"{dic[top]+1}"
-            dic[tower] = index
-            stack.append(top)
-            stack.append(tower)
-            break
 
-    if not stack:
-        stack.append(tower)
-        dic[tower] = index
-        continue
-answer = ' '.join(answer)
-print(answer)
+def solution(MIN, MAX):
+    answer = MAX-MIN+1
+    check = [False]*(MAX-MIN+1)
+    i = 2
+    while i*i <= MAX:
+        square_number = i*i  # 제곱수
+        # remain
+        # 제곱수가 딱 나누어 떨어지면 상관없지만 그게 아니라면 소수점이 버림 처리 된다.
+        # 그래서 remain으로 그 값을 보정해준다.
+        remain = 0 if MIN % square_number == 0 else 1
+        j = MIN//square_number + remain  # 제곱수로 나눈 몫 => 배수
+        while square_number*j <= MAX:  # 제곱수의 j배 (에라토스테네스의 체)
+            if not check[square_number*j-MIN]:
+                check[square_number*j-MIN] = True
+                answer -= 1
+            j += 1  # 배수 점점 증가
+        i += 1
+    print(answer)
 
-'''
+
+a, b = map(int, input().split())
+solution(a, b)
