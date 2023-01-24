@@ -1,5 +1,9 @@
 SQL 의 기본문법
 Select >> 내가 원하는 정보 가져오기 (사실상 print 와 같은 역할)
+    SELECT (줘)
+    SELECT { ITEM } FROM { TABLE } [ ORDER BY (DESC,ASC) ] [LIMIT NUMBER]
+    Select CustomerName from Customers; 
+    >> Customers (테이블)에서 CustomerName (열) 을 가져와
     ******* 여기서 select & from 과 같은 문법은 대소문자가 상관 없으나, Customers 와 같은 참조항은 정확해야함
     
     -- Customers 의 모든 정보 가져오기
@@ -165,7 +169,6 @@ SQL 연산자
 
 
 서브쿼리
-
     -- ################# 비상관 서브쿼리 ########################
     -- 가져온 서브쿼리와 본 쿼리가 구분되어 사용되어짐
     SELECT
