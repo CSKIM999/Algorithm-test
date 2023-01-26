@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 from collections import deque
 
 
@@ -64,3 +65,27 @@ answer = dp[-1][-1]
 
 [print(i) for i in dp]
 print(answer)
+=======
+'''python
+TC 25번 시간초과 해결을 위해 코드깎기 도중에 발견한 부분입니다.
+
+# case 1 [ 25번 시간초과 판정 ] 단순히 sort 만 해준 기존 코드입니다.
+summits.sort()
+gates.sort()
+
+# case 2 [ 12, 14, 25 오답 판정 ]  set의 정렬 + 중복제거를 이용하려 함.
+summits = set(summits)
+gates = set(gates)
+
+# case 3 [ 정답 판정 . . . why? ] 
+summits.sort()
+gates = set(gates)
+checkSummits = {i for i in summits}
+
+'''
+
+i = [1, 2, 3, 4, 5]
+
+b = {j for j in i}
+print(type(b))
+>>>>>>> Stashed changes
