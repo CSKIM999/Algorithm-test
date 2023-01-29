@@ -1,59 +1,91 @@
-users = [[1, 2000], [10, 10000]]
-emoticons = [1000, 1100, 1200, 1300]
+def solution(commands):
+    s, m = "single", "merged"
+    table = [[[s, None] for _ in range(51)] for _ in range(51)]
+    dic = {}
 
+    def C(r, c):
+        if table[r][c][0] == s:
+            return [r, c]
+        else:
+            if type(table[r][c][1]) != list:
+                return [r, c]
+            return table[r][c][1]
 
-def solution(users, emoticons):
-    emo = emoticons
-    e = len(emo)
-    sales = {10: .9, 20: .8, 30: .7, 40: .6}
-    pt = [10, 20, 30, 40]
-    ticket = [[0, i] for i in range(e)]
-    users.sort()
+    def U(value1, value2):
+        if type(value1) == list:
+            r, c = value1
+            r, c = C(r, c)
+            table[r][c][1] = value2
+        else:
+            for i in range(51):
+                for j in range(51):
+                    if table[i][j][1] == value1:
+                        table[i][j][1] = value2
 
-    def check(promo):
-        ra = [0, 0]
-        pd = {i: 0 for i in pt}
-        for p, i in promo:
-            for j in range(p+1):
-                pd[pt[j]] += emo[i]*sales[pt[p]]
-        for w, m in users:
-            sp = ((w // 10))*10
-            if sp == 0:
-                sp = 10
-            if sp > 40:
-                sp = 40
-            if pd[sp] >= m:
-                ra[0] += 1
-            else:
-                ra[1] += pd[sp]
-        return ra
-    answer = [0, 0]
-    flag = True
-    while flag:
-        if ticket == [[1, 0], [1, 1], [1, 2], [1, 3]]:
-            flag
-        ra = check(ticket)
-        if ra[0] > answer[0]:
-            answer = ra[:]
-        elif ra[0] == answer[0] and ra[1] > answer[1]:
-            answer = ra[:]
-        if answer == [1, 3680.0]:
-            flag
-        i = 0
-        while True:
-            ticket[i][0] += 1
-            p = ticket[i][0]
-            if p == 4:
-                if i == e-1:
-                    flag = False
-                    break
-                ticket[i][0] = 0
-                i += 1
-                continue
-            break
+    def M(value1, value2):
+        ar, ac, br, bc = [*value1, *value2]
+        ar, ac, br, bc = [*C(ar, ac), *C(br, bc)]
+        if ar == br and ac == bc:
+            return
+        if table[ar][ac][1] == None:
+            value = table[br][bc][1]
+        else:
+            value = table[ar][ac][1]
+        try:
+            dic[(ar, ac)].append((br, bc))
+        except KeyError:
+            dic[(ar, ac)] = [(br, bc)]
+        if table[br][bc][0] == m:
+            childList = dic[(br, bc)]
+            for i, j in childList:
+                table[i][j][1] = [ar, ac]
+                dic[(ar, ac)].append((i, j))
+            dic.pop((br, bc))
+            table[br][bc][1] = [ar, ac]
+        else:
+            table[ar][ac] = [m, value]
+            table[br][bc] = [m, [ar, ac]]
 
+    def UM(r, c):
+        cr, cc = C(r, c)[:]
+        value = table[cr][cc][1]
+        try:
+            child = dic[(cr, cc)]
+            for ir, ic in child:
+                table[ir][ic] = [s, None]
+            dic.pop((cr, cc))
+        except KeyError:
+            pass
+        table[cr][cc] = [s, None]
+        table[r][c] = [s, value]
+
+    def P(r, c):
+        r, c = C(r, c)
+        value = table[r][c][1]
+        if value == None:
+            return "EMPTY"
+        else:
+            return value
+    answer = []
+
+    for string in commands:
+        SS = list(string.split())
+        if SS[0] == "UPDATE":
+            try:
+                value2 = SS[3]
+                value1 = [int(SS[1]), int(SS[2])]
+            except IndexError:
+                value1 = SS[1]
+                value2 = SS[2]
+            U(value1, value2)
+        elif SS[0] == "MERGE":
+            value1 = [int(SS[1]), int(SS[2])]
+            value2 = [int(SS[3]), int(SS[4])]
+            M(value1, value2)
+        elif SS[0] == "UNMERGE":
+            r, c = int(SS[1]), int(SS[2])
+            UM(r, c)
+        elif SS[0] == "PRINT":
+            r, c = int(SS[1]), int(SS[2])
+            answer.append(P(r, c))
     return answer
-
-
-a = '4'
-print(type(a))
