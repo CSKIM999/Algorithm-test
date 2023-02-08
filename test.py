@@ -1,37 +1,19 @@
-cap, n, deliveries, pickups = 2, 7, [
-    1, 0, 2, 0, 1, 0, 2], [0, 2, 0, 1, 0, 2, 0]
+from collections import deque
+value = 100
+test = [[0 for _ in range(value)] for _ in range(value)]
+
+test = [[1 if index == 0 else 0 for index, _ in enumerate(j)] for j in test]
+test[0] = [1 for _ in range(value)]
+# [print(i) for i in test]
+for i in range(1, value):
+    for j in range(1, value):
+        test[i][j] = test[i-1][j] + test[i][j-1]
+print(test[-1][-1])
+q = deque()
 
 
-def solution(cap, n, deliveries, pickups):
-    d, p = deliveries, pickups
-    answer = 0
-    point = [0, 0]
-    fuel = 0
+a = set()
 
-    def charge(index):
-        nonlocal fuel, cap, point
-        fuel += index+1
-        print(fuel)
-        point = [i+cap for i in point]
-        return point
-
-    for i in range(n-1, -1, -1):
-        if d[i]:
-            if not point[0]:
-                charge(i)
-            point[0] -= d[i]
-            if point[0] < 0:
-                while point[0] < 0:
-                    charge(i)
-        if p[i]:
-            if not point[1]:
-                charge(i)
-            point[1] -= p[i]
-            if point[1] < 0:
-                while point[1] < 0:
-                    charge(i)
-
-    return answer
-
-
-print(solution(cap, n, deliveries, pickups))
+a.add((1, 2))
+a.add((1, 2))
+print(a)
