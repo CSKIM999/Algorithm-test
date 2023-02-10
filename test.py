@@ -1,91 +1,55 @@
-def solution(commands):
-    s, m = "single", "merged"
-    table = [[[s, None] for _ in range(51)] for _ in range(51)]
-    dic = {}
+'''
+0121233000
+012   3000
 
-    def C(r, c):
-        if table[r][c][0] == s:
-            return [r, c]
-        else:
-            if type(table[r][c][1]) != list:
-                return [r, c]
-            return table[r][c][1]
+012312344000
+0123    4000
+'''
+# import sys
+# input = sys.stdin.readline
 
-    def U(value1, value2):
-        if type(value1) == list:
-            r, c = value1
-            r, c = C(r, c)
-            table[r][c][1] = value2
-        else:
-            for i in range(51):
-                for j in range(51):
-                    if table[i][j][1] == value1:
-                        table[i][j][1] = value2
+# # output = "VhcL2gG57qPJDQibBkUZArnzxELrLMrXRrutlL57BoQRapABp7quwrhFWpMq5je8CGIDwXcs7UVKNt5eI43v3URmlPOqCDGGJ7O4fe4JWNIhxwtz8W8x4DaTHDNjhjJUax3iAgPvgzkqGyTwQSahgIkRbPXIsaaza0XNcpTutgMUbcdRQi0grPmiQMfIYpnRFAkPgm"
+# string = input().strip()
+# bomb = input().strip()
+# i = 0
+# bl = len(bomb)
+# last = 0
+# bombed = set()
+# answer = ""
+# stack = set()
 
-    def M(value1, value2):
-        ar, ac, br, bc = [*value1, *value2]
-        ar, ac, br, bc = [*C(ar, ac), *C(br, bc)]
-        if ar == br and ac == bc:
-            return
-        if table[ar][ac][1] == None:
-            value = table[br][bc][1]
-        else:
-            value = table[ar][ac][1]
-        try:
-            dic[(ar, ac)].append((br, bc))
-        except KeyError:
-            dic[(ar, ac)] = [(br, bc)]
-        if table[br][bc][0] == m:
-            childList = dic[(br, bc)]
-            for i, j in childList:
-                table[i][j][1] = [ar, ac]
-                dic[(ar, ac)].append((i, j))
-            dic.pop((br, bc))
-            table[br][bc][1] = [ar, ac]
-        else:
-            table[ar][ac] = [m, value]
-            table[br][bc] = [m, [ar, ac]]
+# l = len(string)
+# while string:
+#     if i + bl - len(stack) > l:
+#         break
+#     if i in bombed:
+#         i += 1
+#         continue
+#     stack.add(i)
+#     if len(stack) > bl:
+#         stack = stack[1:]
+#     if stack == bomb:
+#         [bombed.add(j) for j in range(i-bl+1, i+1)]
+#         stack = ""
+#         i -= bl
+#         if i < 0:
+#             i = 0
+#     else:
+#         i += 1
+# for i in range(l):
+#     if i not in bombed:
+#         answer += string[i]
 
-    def UM(r, c):
-        cr, cc = C(r, c)[:]
-        value = table[cr][cc][1]
-        try:
-            child = dic[(cr, cc)]
-            for ir, ic in child:
-                table[ir][ic] = [s, None]
-            dic.pop((cr, cc))
-        except KeyError:
-            pass
-        table[cr][cc] = [s, None]
-        table[r][c] = [s, value]
+# if not string:
+#     answer = "FRULA"
+# else:
+#     answer = string
+# print(answer)
 
-    def P(r, c):
-        r, c = C(r, c)
-        value = table[r][c][1]
-        if value == None:
-            return "EMPTY"
-        else:
-            return value
-    answer = []
-
-    for string in commands:
-        SS = list(string.split())
-        if SS[0] == "UPDATE":
-            try:
-                value2 = SS[3]
-                value1 = [int(SS[1]), int(SS[2])]
-            except IndexError:
-                value1 = SS[1]
-                value2 = SS[2]
-            U(value1, value2)
-        elif SS[0] == "MERGE":
-            value1 = [int(SS[1]), int(SS[2])]
-            value2 = [int(SS[3]), int(SS[4])]
-            M(value1, value2)
-        elif SS[0] == "UNMERGE":
-            r, c = int(SS[1]), int(SS[2])
-            UM(r, c)
-        elif SS[0] == "PRINT":
-            r, c = int(SS[1]), int(SS[2])
-            answer.append(P(r, c))
-    return answer
+# if answer == output:
+#     print("YY")
+# else:
+#     print(answer)
+#     print("NN")
+a = set([1, 2, 3])
+print(a[0])

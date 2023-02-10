@@ -1,5 +1,64 @@
 import sys
-input = sys.stdin.readline
+from lib import xprint, Prepare_Coding_Test
+Prepare_Coding_Test()
+'''
+BOJ_ QuestionNumber __ Q5052
+#######  TODAY  #######
+##### 2023. 02. 10 #####
+GIVEN ) 
+
+INPUT ) 
+
+OUTPUT) 
+
+Approach )  
+'''
+sys.setrecursionlimit(25000)
+# input = sys.stdin.readline
+output = '''
+NO
+YES
+YES
+YES
+NO
+YES
+YES
+YES
+YES
+YES
+YES
+YES
+YES
+YES
+YES
+YES
+YES
+YES
+YES
+NO
+NO
+YES
+YES
+YES
+YES
+YES
+YES
+YES
+YES
+YES
+YES
+YES
+NO
+YES
+NO
+YES
+YES
+YES
+YES
+YES
+'''
+ye = output.split()
+print(len(ye))
 
 
 def insert(d, v):
@@ -51,3 +110,26 @@ for i in range(n):
         print("YES")
     else:
         print("NO")
+
+# n = int(input())
+# for _ in range(n):
+#     k = int(input())
+#     arr = []
+#     for _ in range(k):
+#         arr.append(input())
+#     arr = tuple(arr)
+#     l = len(arr)
+#     flag = False
+#     for i in range(l):
+#         pivot = arr[i]
+#         for j in range(i+1, l):
+#             if flag:
+#                 break
+#             now = arr[j]
+#             flag = now.startswith(pivot)
+#         if flag:
+#             break
+#     if flag:
+#         print("NO")
+#     else:
+#         print("YES")
