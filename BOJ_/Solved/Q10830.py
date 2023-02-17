@@ -1,4 +1,18 @@
 import sys
+from lib import xprint, Prepare_Coding_Test
+Prepare_Coding_Test()
+'''
+BOJ_ QuestionNumber __ Q10830
+#######  TODAY  #######
+##### 2023. 02. 15 #####
+GIVEN ) 행렬제곱
+
+INPUT ) 
+
+OUTPUT) 
+
+Approach )  
+'''
 input = sys.stdin.readline
 
 
@@ -85,3 +99,10 @@ arr.sort()
 
 a.exp(count)
 a.play(arr)
+
+'''
+1000 이상의 원소에서 1000의 자리 초과는 어차피 정답에 영향을 안줘서 %1000해준다는 아이디어가 있긴 했으나,
+첫 적용에서 오류가 생기길래 안되는갑다 지레짐작해버림.
+
+하지만 첫 적용에서 거듭제곱값이 달라서 생긴 문제였던거임 ㅋㅋ
+'''
