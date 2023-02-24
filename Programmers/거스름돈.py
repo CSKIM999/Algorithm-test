@@ -1,5 +1,5 @@
-n = 5
-money = [1, 2, 5]
+n = 7
+money = [1, 2, 3, 4]
 # answer ---- 4
 l = len(money)
 
