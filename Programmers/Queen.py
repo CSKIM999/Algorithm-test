@@ -78,6 +78,3 @@ def solution(n):
     answer = res
     print(answer)
     return answer
-
-
-solution(5)
