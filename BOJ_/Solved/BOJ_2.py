@@ -257,7 +257,7 @@ Approach ) 우선 R/C 연산을 구현하고 몇번 반복해보자. 반복에 �
 꺼내는 속도를 더욱 더 빠르게 하기위해 queue 를 써볼까 한다
 '''
 
-# from collections import deque
+# from collections import dequer
 
 # def Csort(lst):
 #     counting = [[i,0] for i in range(101)]
